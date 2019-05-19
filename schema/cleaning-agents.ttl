@@ -1,0 +1,40 @@
+
+# Equipment/detergents for cleaning
+
+@prefix tb: <http://www.garshol.priv.no/2014/trad-beer/> .
+@prefix clean: <http://www.garshol.priv.no/2014/trad-beer/cleaning/> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# ===== DETAILED CLASSIFICATION
+
+clean:juniper-infusion a tb:CleaningAgent;
+  rdfs:label "Juniper infusion";
+  dc:description """Hot juniper infusion for cleaning the vessels.""".
+
+clean:sulphur-smoke a tb:CleaningAgent;
+  rdfs:label "Sulphur smoke";
+  dc:description """Sulphur smoking the vessels.""".
+
+clean:ash-lye a tb:CleaningAgent;
+  rdfs:label "Ash lye";
+  dc:description """Lye made from ash.""".
+
+clean:sand a tb:CleaningAgent;
+  rdfs:label "Sand";
+  dc:description """Sand used for scrubbing.""".
+
+clean:boiling-water a tb:CleaningAgent;
+  rdfs:label "Boiling water";
+  dc:description """Scrubbed in boiling water.""".
+
+clean:soda-water a tb:CleaningAgent;
+  rdfs:label "Soda water";
+  dc:description """Not sure exactly what it is.""".
+
+clean:chains a tb:CleaningAgent;
+  rdfs:label "Chains";
+  dc:description """Pieces and bits of chains.""".
+
+clean:sulphuric-acid a tb:CleaningAgent;
+  rdfs:label "Sulphuric acid".

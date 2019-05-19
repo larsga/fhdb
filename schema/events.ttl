@@ -1,0 +1,79 @@
+
+# Events that people might brew for.
+
+@prefix tb: <http://www.garshol.priv.no/2014/trad-beer/> .
+@prefix event: <http://www.garshol.priv.no/2014/trad-beer/events/> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# ===== DETAILED CLASSIFICATION
+
+event:xmas a tb:Event;
+  rdfs:label "Christmas";
+  dc:description """.""".
+
+event:easter a tb:Event;
+  rdfs:label "Easter";
+  dc:description """.""".
+
+event:whitsun a tb:Event;
+  rdfs:label "Whitsun";
+  dc:description """.""".
+
+event:martinisingen a tb:Event;
+  rdfs:label "Martinisingen";
+  dc:description """Also known as Mardipäev. November 10.""".
+
+event:midsummer a tb:Event;
+  rdfs:label "Midsummer";
+  dc:description """The midsummer celebration.""".
+
+event:summer a tb:Event;
+  rdfs:label "Summer";
+  dc:description """Just generally for the summer.""".
+
+event:haymaking a tb:Event;
+  rdfs:label "Haymaking";
+  dc:description """The cutting of grass for animal feed.""".
+
+event:harvest-celebration a tb:Event;
+  rdfs:label "Harvest celebration";
+  dc:description """Beer for drinking at the celebration at the end of harvest,
+  not for during the actual harvest work.""".
+
+event:autumn a tb:Event;
+  rdfs:label "Autumn";
+  dc:description """Not really clear.""".
+
+event:kingerit a tb:Event;
+  rdfs:label "Kingerit";
+  dc:description """Some kind of visit from the priest. Need to ask ML.""".
+
+event:pentecost a tb:Event;
+  rdfs:label "Pentecost";
+  dc:description """Pinse in Norwegian.""".
+
+event:spring-work a tb:Event;
+  rdfs:label "Våronn";
+  dc:description """Ploughing and sowing.""".
+
+event:new-years-eve a tb:Event;
+  rdfs:label "New Year's Eve".
+
+event:candlemas a tb:Event;
+  rdfs:label "Candlemas";
+  dc:description """Not sure when this is.""".
+
+event:dugnad a tb:Event;
+  rdfs:label "Collective work event";
+  dc:description """Any kind of work where the neighbours gather to help out
+  one of the farmers with some work.""".
+
+event:weddings a tb:Event;
+  rdfs:label "Wedding".
+
+event:funerals a tb:Event;
+  rdfs:label "Funerals".
+
+event:baptisms a tb:Event;
+  rdfs:label "Baptisms".
