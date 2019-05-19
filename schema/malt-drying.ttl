@@ -1,0 +1,224 @@
+
+# Equipments/methods for malt drying
+
+@prefix tb: <http://www.garshol.priv.no/2014/trad-beer/> .
+@prefix malt: <http://www.garshol.priv.no/2014/trad-beer/malt-drying/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix dbp: <http://dbpedia.org/resource/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix neg: <http://www.garshol.priv.no/2014/neg/> .
+
+# ===== TASTE CLASSIFICATION
+
+malt:SmokyHot a tb:SimpleMaltMethod;
+  rdfs:label "Smoky, hot";
+  dc:description """Dried in hot, lightly smoked place.""";
+  tb:smoky neg:borderline;
+  tb:colour neg:darkish.
+
+malt:VerySmokyHot a tb:SimpleMaltMethod;
+  rdfs:label "Very smoky, hot";
+  dc:description """Dried with hot smoke going through malts.""";
+  tb:smoky true;
+  tb:colour neg:darkish.
+
+malt:Warm a tb:SimpleMaltMethod;
+  rdfs:label "Warm, not smoked";
+  dc:description """Dried somewhere warm but not hot. No smoke.""";
+  tb:smoky false;
+  tb:colour neg:pale.
+
+malt:HotUneven a tb:SimpleMaltMethod;
+  rdfs:label "Strong, uneven heat";
+  dc:description "Unsmoked. Colour not clear.";
+  tb:smoky false;
+  tb:colour neg:paleish. # guessing
+
+malt:HotThenWarm a tb:SimpleMaltMethod;
+  rdfs:label "Caramel";
+  dc:description "Effectively unsmoked caramel malts.";
+  tb:smoky false;
+  tb:colour neg:darkish.
+
+# ===== DETAILED CLASSIFICATION
+
+malt:badstu a tb:MaltDryingMethod;
+  rdfs:label "Badstu";
+  dc:description """Small wooden house with a central fireplace with no
+  chimney, and the malts on shelves round the walls. Openings in the walls
+  to let the smoke out.""";
+  neg:variant-of malt:SmokyHot.
+
+malt:smoke-sauna a tb:MaltDryingMethod;
+  rdfs:label "Smoke sauna";
+  dc:description """Finnish-style smoke sauna with a platform for the malts
+  kind of like a 'hems'.""";
+  neg:variant-of malt:SmokyHot.
+
+malt:badstu-perforated a tb:MaltDryingMethod;
+  rdfs:label "Badstu, perforated";
+  dc:description """Exactly like an ordinary badstu, except the bottoms of the
+  shelves have lots of holes in them.""";
+  neg:variant-of malt:VerySmokyHot.
+
+malt:badstu-perforated-soinn a tb:MaltDryingMethod;
+  rdfs:label "Badstu, perforated, plus såinn";
+  dc:description """Exactly like an ordinary badstu, except the bottoms of the
+  shelves have lots of holes in them, also the oven has a shelf with holes right
+  on top of the oven itself.""";
+  neg:variant-of malt:VerySmokyHot.
+
+malt:badstu-soinn a tb:MaltDryingMethod;
+  rdfs:label "Badstu-såinn";
+  dc:description """Exactly like an ordinary badstu, except the bottoms of the
+  shelves have lots of holes in them and are right over the oven.""";
+  neg:variant-of malt:VerySmokyHot.
+
+malt:heated-floor a tb:MaltDryingMethod;
+  rdfs:label "Heated floor";
+  dc:description """On a floor that is heated by a heat channel underneath
+  fed by a fireplace. The room is closed.""";
+  neg:variant-of malt:Warm.
+
+malt:chimney-channel a tb:MaltDryingMethod;
+  rdfs:label "Chimney channel";
+  dc:description """Fireplace on ground floor, side channel to chimney on
+  floor above. Malts dried on the channel without contact with smoke.""";
+  neg:variant-of malt:Warm.
+
+malt:hot-stones a tb:MaltDryingMethod;
+  rdfs:label "Hot stones";
+  dc:description """Drying the malts by dropping hot stones into the malts.
+  """;
+  neg:variant-of malt:HotUneven.
+
+malt:kjone a tb:MaltDryingMethod;
+  rdfs:label "Kjone";
+  dc:description """Two-storey building with fire on the ground floor and
+  drying surface with smoke holes on the floor above.""";
+  neg:variant-of malt:VerySmokyHot.
+
+malt:loft a tb:MaltDryingMethod;
+  rdfs:label "Loft";
+  dc:description """On a floor in a heated room with open windows.""";
+  neg:variant-of malt:Warm.
+
+malt:loft-kiln a tb:MaltDryingMethod;
+  rdfs:label "Loft-kiln";
+  dc:description """Side channel to chimney that leads to perforated rack
+  on the loft where the malts are dried. Gotländsk kölna.""";
+  neg:variant-of malt:VerySmokyHot.
+
+malt:perforated-frame a tb:MaltDryingMethod;
+  rdfs:label "Perforated frame";
+  dc:description """A small shelf or frame next to or over the fireplace with
+  perforated bottom to let the smoke through. Fireplace may be right next to
+  the frame, or on the floor below.""";
+  neg:variant-of malt:VerySmokyHot.
+
+malt:oven a tb:MaltDryingMethod;
+  rdfs:label "Oven-drying";
+  dc:description """Malts dried in baking/cooking oven.""";
+  neg:variant-of malt:HotThenWarm.
+
+malt:oven-rack a tb:MaltDryingMethod;
+  rdfs:label "Oven-mounted rack";
+  dc:description """A rack with a thin bottom mounted above the oven, which has
+  a chimney leading the smoke off, using the heat from the oven to dry the
+  malts. The room must not be a custom-built kiln.""";
+  neg:variant-of malt:Warm.
+
+malt:oven-rack-smoke a tb:MaltDryingMethod;
+  rdfs:label "Smoky oven-mounted rack";
+  dc:description """A rack with a thin bottom mounted above the oven, but there
+  is no chimney, so the smoke stays in the room.  The room must not be a
+  custom-built kiln.""";
+  neg:variant-of malt:SmokyHot.
+
+malt:chimey-rack a tb:MaltDryingMethod;
+  rdfs:label "Rack in the chimney";
+  dc:description """A rack with perforated bottom in the house chimney.""";
+  neg:variant-of malt:SmokyHot.
+
+malt:oven-chimney a tb:MaltDryingMethod;
+  rdfs:label "Inside oven chimney";
+  dc:description """On some surface inside the chimney from the oven.""";
+  neg:variant-of malt:VerySmokyHot.
+
+malt:oven-drawer a tb:MaltDryingMethod;
+  rdfs:label "Oven drawer";
+  dc:description """Drawer underneath the oven. Not sure how it works.""";
+  neg:variant-of malt:Warm.
+
+malt:oven-shelf a tb:MaltDryingMethod;
+  rdfs:label "Oven shelf";
+  dc:description """The small shelf next to the fireplace.""";
+  neg:variant-of malt:Warm.
+
+malt:smoke-oven-shelf a tb:MaltDryingMethod;
+  rdfs:label "Smoke oven shelf";
+  dc:description """Røykovn with stone shelf above.""";
+  rdfs:seeAlso <https://no.wikipedia.org/wiki/R%C3%B8ykovn>;
+  neg:variant-of malt:Warm.
+
+malt:horsehair-mat a tb:MaltDryingMethod;
+  rdfs:label "Horsehair mat over oven or fireplace";
+  neg:variant-of malt:SmokyHot.
+
+malt:pot a tb:MaltDryingMethod;
+  rdfs:label "Pot";
+  dc:description """In an iron pot.""";
+  neg:variant-of malt:HotUneven.
+
+malt:riihi a tb:MaltDryingMethod;
+  rdfs:label "Riihi/ria";
+  dc:description """Dried on the riihi floor.""";
+  neg:variant-of malt:Warm.
+
+malt:soinn a tb:MaltDryingMethod;
+  rdfs:label "Såinn";
+  dc:description """Wide and deep oven with fireplace on the floor and a
+  perforated drying surface at 1-2m height.""";
+  neg:variant-of malt:VerySmokyHot.
+
+malt:chimney-soinn a tb:MaltDryingMethod;
+  rdfs:label "Såinn with chimney";
+  dc:description """Wide and deep oven with fireplace on the floor and a
+  perforated drying surface at 1-2m height, but a chimney from the fireplace,
+  so the malts are little smoked.""";
+  neg:variant-of malt:SmokyHot.
+
+malt:channel-soinn a tb:MaltDryingMethod;
+  rdfs:label "Såinn with channel";
+  dc:description """Stone channel with fireplace at the end, leading into the
+  såinn box, but otherwise like normal såinn.""";
+  neg:variant-of malt:VerySmokyHot.
+
+malt:sun-drying a tb:MaltDryingMethod;
+  rdfs:label "Sun-drying";
+  dc:description """Drying the malts in the sun, regardless of the surface.""";
+  neg:variant-of malt:Warm.
+
+malt:lithuanian-oven a tb:MaltDryingMethod;
+  rdfs:label "On top of .lt-style oven";
+  dc:description """Large brick oven. Dry the malts on top of it. When it cools,
+  put the malts inside.""";
+  neg:variant-of malt:Warm.
+
+malt:a-shaped-kiln a tb:MaltDryingMethod;
+  rdfs:label "A-shaped kiln with sloping drying surfaces";
+  dc:description """Stone oven below with a bar right over it, and perforated
+  boards down on each side.""";
+  neg:variant-of malt:VerySmokyHot.
+
+malt:a-chimney a tb:MaltDryingMethod;
+  rdfs:label "A-shaped kiln with chimney";
+  dc:description """Stone oven below with a bar right over it, and boards down
+  on each side. Chimney from the oven.""";
+  neg:variant-of malt:Warm.
+
+malt:undried a tb:MaltDryingMethod;
+  rdfs:label "Undried";
+  dc:description """The malts are not dried at all.""";
+  neg:variant-of malt:Warm. # kind of ...

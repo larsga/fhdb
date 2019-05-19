@@ -1,0 +1,595 @@
+
+# Schema for the traditional brewing data, used to validate that the
+# structure is right.
+
+@prefix neg: <http://www.garshol.priv.no/2014/neg/> .
+@prefix neu: <http://www.garshol.priv.no/2015/neu/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix tbs: <http://www.garshol.priv.no/2014/trad-beer-schema/> .
+@prefix tb: <http://www.garshol.priv.no/2014/trad-beer/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix luf: <http://www.garshol.priv.no/2015/luf/> .
+@prefix km: <http://www.garshol.priv.no/2016/km/> .
+@prefix sls: <http://www.garshol.priv.no/2015/sls/> .
+@prefix voko: <http://www.garshol.priv.no/2016/voko/> .
+@prefix eu: <http://www.garshol.priv.no/2017/eu/> .
+@prefix dbo: <http://dbpedia.org/ontology/> .
+@prefix dot: <http://www.garshol.priv.no/2016/dot/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dbp: <http://dbpedia.org/resource/> .
+@prefix sm: <http://www.garshol.priv.no/2018/sm/> .
+@prefix erm: <http://www.garshol.priv.no/2019/erm/> .
+
+# ===== META
+
+rdfs:subClassOf rdfs:domain rdfs:Class;
+  rdfs:range rdfs:Class.
+
+# ===== GENERAL
+
+# FIXME: this has to be a mistake?
+#rdf:type rdfs:domain tb:Account;
+#  rdfs:range rdfs:Class.
+
+# ===== TOO WIDE
+
+geo:lat rdfs:domain rdf:Resource;
+  rdfs:range xsd:decimal.
+
+geo:long rdfs:domain rdf:Resource;
+  rdfs:range xsd:decimal.
+
+# ===== GENERAL STRUCTURAL METADATA
+
+dc:date rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal;
+  rdfs:comment """The date the account was either written, published, or
+  received by the archive institution.""".
+
+tb:references rdfs:domain tb:Account;
+  rdfs:range tb:Reference;
+  rdfs:comment "Lists what sources the account references.".
+
+tb:same-informant-as rdfs:domain tb:Account;
+  rdfs:range tb:Account;
+  rdfs:comment """Refers to another account to make it clear that both derive
+  from the same informant.""".
+
+tb:part-of rdfs:domain rdf:Resource;
+  rdfs:range dbp:Country. # used to override data set inference
+
+tb:translation rdfs:domain tb:Account;
+  rdfs:range rdf:Resource;
+  rdfs:comment "English translation".
+
+# ===== FARMHOUSE DOMAIN
+
+tb:year rdfs:domain tb:Account;
+  rdfs:range xsd:decimal;
+  rdfs:comment """The year the account was written, published, or received by
+  the institution. Used when the exact date is unknown.""".
+
+tb:brewer-sex rdfs:domain tb:Account;
+  rdfs:range tb:Gender.
+
+tb:malter-sex rdfs:domain tb:Account;
+  rdfs:range tb:Gender;
+  rdfs:comment "Who made malts? Men or women or both?".
+
+tb:strainer rdfs:domain tb:Account;
+  rdfs:range neg:Thing;
+  rdfs:comment "What materials were used in the lauter tun filter.".
+
+tb:herbs rdfs:domain tb:Account;
+  rdfs:range neg:Herb;
+  rdfs:comment """What herbs/spice were used in the beer. Any herb even
+  mentioned is listed, even if the informant is uncertain about it.""".
+
+tb:brewing-ended rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal;
+  rdfs:comment "The year brewing ended in this place. Or false if still alive.".
+
+tb:pitch-temperature rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal;
+  rdfs:comment """Yeast pitching temperature. Give as text when precise numbers
+  are not known""".
+
+neg:informant-born rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal.
+
+tb:hops rdfs:domain tb:Account;
+  rdfs:range neg:Thing;
+  rdfs:comment "Were the hops locally grown or bought? Needs revision.".
+
+tb:mead rdfs:domain tb:Account;
+  rdfs:range neg:Boolean;
+  rdfs:comment "Did they make mead or not.".
+
+tb:oppskake rdfs:domain tb:Account;
+  rdfs:range neg:Boolean;
+  rdfs:comment """Were the neighbours invited to a party when the beer was
+  racked? Should be redone to be more detailed.""".
+
+tb:own-yeast rdfs:domain tb:Account;
+  rdfs:range neg:Boolean;
+  rdfs:comment "Did they have their own yeast.".
+
+tb:grain rdfs:domain tb:Account;
+  rdfs:range tb:grain;
+  rdfs:comment "Main types of grain (barley, oats, ...) the malts made from.".
+
+tb:secondary-grain rdfs:domain tb:Account;
+  rdfs:range tb:grain;
+  rdfs:comment """Less common/preferred types of grain (barley, oats, ...) the
+  malts were made from.""".
+
+neg:notes rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal;
+  rdfs:comment "Used to keep text notes on the content.".
+
+dc:subject rdfs:domain tb:Account;
+  rdfs:range neg:Topic.
+
+tb:own-malts rdfs:domain tb:Account;
+  rdfs:range neg:Boolean;
+  rdfs:comment "Did they make their own malts.".
+
+tb:adjuncts rdfs:domain tb:Account;
+  rdfs:range neg:Adjunct;
+  rdfs:comment """Used for any kind of starch or sugar added to the beer besides
+  the malts.""".
+
+tb:strainer-type rdfs:domain tb:Account;
+  rdfs:range tb:StrainerType;
+  rdfs:comment "The most common (or oldest) type of lauter tun.".
+
+# juniper
+
+tb:juniper-infusion rdfs:domain tb:Account;
+  rdfs:range neg:Boolean;
+  rdfs:comment "Did they use juniper infusion in the beer?".
+
+tb:juniper-preference rdfs:domain tb:Account;
+  rdfs:range neg:Thing;
+  rdfs:comment "What kind of juniper did they prefer?".
+
+# terminology
+
+tb:beer-name rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal;
+  rdfs:comment "What did people call the good farmhouse ale?".
+
+tb:yeast-term rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal.
+
+tb:spent-grain-term rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal;
+  rdfs:comment "The local term for the spent grain.".
+
+# malting
+
+tb:barley-rows rdfs:domain tb:Account;
+  rdfs:range xsd:decimal;
+  rdfs:comment "What type of barley was preferred for malting. Values: 2, 4, 6".
+
+tb:malt-drying rdfs:domain tb:Account;
+  rdfs:range tb:MaltDryingMethod.
+
+tb:malt-drying-wood rdfs:domain tb:Account;
+  rdfs:range neg:Wood.
+
+tb:shoot-length rdfs:domain tb:Account;
+  rdfs:comment """Absolute length of the shoot when germination should be
+  stopped, in cm.""";
+  rdfs:range rdfs:Literal.
+
+tb:shoot-length-ratio rdfs:domain tb:Account;
+  rdfs:comment """The correct length of the shoot when it was time to stop
+  sprouting, divided by length of the grain itself.""";
+  rdfs:range rdfs:Literal.
+
+tb:smoky rdfs:domain tb:Account;
+  rdfs:comment """Whether the malts/beer should be smoky.""";
+  rdfs:range neg:Boolean.
+
+# preparations
+
+tb:clean-with rdfs:domain tb:Account;
+  rdfs:range tb:CleaningAgent;
+  rdfs:comment "What was used to clean the wooden brewing vessels.".
+
+# brewing process
+
+tb:process rdfs:domain tb:Account;
+  rdfs:range neg:Process;
+  rdfs:comment "The most common (or oldest) brewing process in the area.".
+
+neg:boiled rdfs:domain tb:Account;
+  rdfs:range neg:Boolean;
+  rdfs:comment """Whether the wort was boiled. When possible this should be
+  indicated via tb:process. This property is for when we don't know enough to
+  do that.""".
+
+tb:juniper-boil rdfs:domain tb:Account;
+  rdfs:range neg:Boolean.
+
+neg:mash-temperature rdfs:domain tb:Account;
+  rdfs:range xsd:decimal;
+  rdfs:comment "Mash temperature in Celsius.".
+
+# actually belongs on process (these are deprecated and will go away)
+
+neg:hot-stones rdfs:domain tb:Account; # really on process
+  rdfs:range neg:Boolean;
+  rdfs:comment "Deprecated. Don't use.".
+
+neg:hop-tea rdfs:domain tb:Account; # really on process
+  rdfs:range neg:Boolean;
+  rdfs:comment "Deprecated. Don't use.".
+
+neg:mash-boil rdfs:domain tb:Account; # really on process
+  rdfs:range neg:Boolean;
+  rdfs:comment "Deprecated. Don't use.".
+
+# time
+
+tb:mash-boil-time rdfs:domain tb:Account;
+  rdfs:comment "Mash boiling time in minutes";
+  rdfs:range xsd:decimal.
+
+tb:boil-time rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal;
+  rdfs:comment "How long the wort was boiled, in minutes.".
+
+tb:fermentation-time rdfs:domain tb:Account;
+  rdfs:comment "Primary fermentation time, before racking, in hours";
+  rdfs:range xsd:decimal;
+  tbs:min 4;
+  tbs:max 250.
+
+# numerics
+
+tb:og rdfs:domain tb:Account;
+  rdfs:comment "Specific gravity of the wort before yeast is pitched";
+  rdfs:range xsd:decimal;
+  tbs:min 1.0;
+  tbs:max 1.2.
+
+tb:fg rdfs:domain tb:Account;
+  rdfs:comment "Specific gravity of the finished beer";
+  rdfs:range xsd:decimal;
+  tbs:min 1.0;
+  tbs:max 1.06.
+
+tb:refracto-fg rdfs:domain tb:Account;
+  rdfs:comment "Uncorrected refractometer FG";
+  rdfs:range xsd:decimal;
+  tbs:min 1.0;
+  tbs:max 1.2.
+
+tb:abv rdfs:domain tb:Account;
+  rdfs:comment "Alcohol by volume";
+  rdfs:range xsd:decimal;
+  tbs:min 0.0;
+  tbs:max 15.0.
+
+tb:mash-ph rdfs:domain tb:Account;
+  rdfs:range xsd:decimal;
+  rdfs:comment "The pH of the mash.".
+
+tb:malts-per-brew rdfs:domain tb:Account;
+  rdfs:range xsd:decimal;
+  rdfs:comment "How much malts was used per batch of beer? For the good beer.".
+
+tb:brew-frequency rdfs:domain tb:Account;
+  rdfs:range xsd:decimal;
+  rdfs:comment "Number of brews per year.".
+
+tb:brew-for rdfs:domain tb:Account;
+  rdfs:range tb:Event;
+  rdfs:comment "What events it was common to brew for.".
+
+tb:batch-size rdfs:domain tb:Account;
+  rdfs:range xsd:decimal;
+  rdfs:comment "The normal batch size in liters, for the good beer.".
+
+tb:small-beer-batch-size rdfs:domain tb:Account;
+  rdfs:range xsd:decimal;
+  rdfs:comment "The normal batch size for the small beer, in liters.".
+
+tb:hop-wort-ratio rdfs:domain tb:Account;
+  rdfs:range xsd:decimal;
+  rdfs:comment "Grams of hops per liter of beer.".
+
+tb:malt-wort-ratio rdfs:domain tb:Account;
+  rdfs:range xsd:decimal.
+
+tb:annual-malts-consumption rdfs:domain tb:Account;
+  rdfs:range xsd:decimal;
+  rdfs:comment "The normal household's usage of malts per year, in kilos.".
+
+tb:annual-hops-consumption rdfs:domain tb:Account;
+  rdfs:range xsd:decimal;
+  rdfs:comment "The normal household's usage of hops per year, in grams.".
+
+tb:hops-per-brew rdfs:domain tb:Account;
+  rdfs:range xsd:decimal;
+  rdfs:comment "Grams of hops per batch of beer. For the good beer only.".
+
+# yeast
+
+tb:yeast-harvest rdfs:domain tb:Account;
+  rdfs:range neg:YeastHarvestPlace;
+  rdfs:comment "Where was the yeast harvested from.".
+
+tb:yeast-keeping rdfs:domain tb:Account;
+  rdfs:range neg:YeastKeepingMethod;
+  rdfs:comment """The most common (or oldest) method for preserving the yeast
+  between brews.""".
+
+# ===== DUBIOUS
+
+# FIXME: should be removed
+#neg:cold-mash-over-night rdfs:domain tb:Account;
+#  rdfs:range rdfs:Literal.
+
+neg:mash-time rdfs:domain tb:Account;
+  rdfs:comment "Mash time in minutes.";
+  rdfs:range rdfs:Literal.
+
+tb:preferred-colour rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal;
+  rdfs:comment "What colour should the beer be?".
+
+neg:brewing-tradition rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal; # FIXME: should be boolean, no?
+  rdfs:comment """Did this place ever have a brewing tradition? If not
+  specified we assume the value is true.""".
+
+neg:remove-sprout rdfs:domain tb:Account;
+  rdfs:range neg:Boolean;
+  rdfs:comment """Whether the sprouts/rootlets were removed from the malts
+  before they were used.""".
+
+tb:grain-text rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal;
+  rdfs:comment """The exact text in the original account describing what
+  grain was malted. (Not in use.)""".
+
+tb:juniper-berries rdfs:domain tb:Account;
+  rdfs:range neg:Boolean.
+
+tb:mash-juniper rdfs:domain tb:Account;
+  rdfs:range neg:Boolean.
+
+tb:juniper-boil-length rdfs:domain tb:Account;
+  rdfs:range xsd:decimal;
+  rdfs:comment "How long was the juniper infusion boiled, in minutes.".
+
+# ===== NEG-specific
+
+neg:fylke rdfs:domain neg:Response;
+  rdfs:range dbo:Place.
+
+neg:bygdelag rdfs:domain neg:Response;
+  rdfs:range rdfs:Literal.
+
+neg:recorded-by rdfs:domain neg:Response;
+  rdfs:range rdfs:Literal.
+
+neg:gnr rdfs:domain neg:Response;
+  rdfs:range rdfs:Literal.
+
+neg:brnr rdfs:domain neg:Response;
+  rdfs:range rdfs:Literal.
+
+tb:herbs-text rdfs:domain neg:Response;
+  rdfs:range rdfs:Literal.
+
+neg:gard rdfs:domain neg:Response;
+  rdfs:range rdfs:Literal.
+
+neg:herad rdfs:domain neg:Response;
+  rdfs:range rdfs:Literal.
+
+neg:useful rdfs:domain neg:Response;
+  rdfs:range rdfs:Literal.
+
+neg:adresse rdfs:domain neg:Response;
+  rdfs:range rdfs:Literal.
+
+neg:info-from rdfs:domain neg:Response;
+  rdfs:range rdfs:Literal.
+
+neg:summary rdfs:domain neg:Response;
+  rdfs:range rdf:Resource.
+
+# ===== NEU-specific
+
+neu:topnr rdfs:domain tb:Account; # also on uff:Response
+  rdfs:range neu:TopNummer.
+
+neu:title rdfs:domain tb:Account; # also on uff:Response
+  rdfs:range rdfs:Literal.
+
+neu:kind rdfs:domain neu:Item;
+  rdfs:range neu:ItemType.
+
+neu:address rdfs:domain tb:Account; # also on uff:Response
+  rdfs:range rdfs:Literal.
+
+neu:informant rdfs:domain tb:Account; # also on uff:Response
+  rdfs:range rdfs:Literal.
+
+neu:response-to rdfs:domain neu:Item;
+  rdfs:range tb:Reference.
+
+neu:includes rdfs:domain neu:Item;
+  rdfs:range rdfs:Literal.
+
+# ===== LUF-specific
+
+luf:recorded-by rdfs:domain luf:Response;
+  rdfs:range rdfs:Literal.
+
+luf:socken rdfs:domain luf:Response;
+  rdfs:range rdfs:Literal.
+
+luf:haerad rdfs:domain luf:Response;
+  rdfs:range rdfs:Literal.
+
+luf:address rdfs:domain luf:Response;
+  rdfs:range rdfs:Literal.
+
+luf:landskap rdfs:domain luf:Response;
+  rdfs:range rdfs:Literal.
+
+luf:born rdfs:domain luf:Response;
+  rdfs:range rdfs:Literal.
+
+luf:born-in rdfs:domain luf:Response;
+  rdfs:range rdfs:Literal.
+
+luf:told-by rdfs:domain luf:Response;
+  rdfs:range rdfs:Literal.
+
+luf:laen rdfs:domain luf:Response;
+  rdfs:range rdfs:Literal.
+
+# ===== KM-specific
+
+km:informant rdfs:domain km:Account;
+  rdfs:range rdfs:Literal.
+
+km:response-to rdfs:domain km:Account;
+  rdfs:range tb:Reference.
+
+km:place rdfs:domain km:Account;
+  rdfs:range tb:Reference.
+
+# ===== SLS-specific
+
+sls:informant rdfs:domain sls:Response;
+  rdfs:range rdfs:Literal.
+
+sls:born rdfs:domain sls:Response;
+  rdfs:range rdfs:Literal.
+
+sls:place rdfs:domain sls:Response;
+  rdfs:range rdfs:Literal.
+
+# ===== VOKO-specific
+
+voko:kreis rdfs:domain voko:Manuskript;
+  rdfs:range rdfs:Literal.
+
+voko:ort rdfs:domain voko:Manuskript;
+  rdfs:range rdfs:Literal.
+
+voko:ortsteil rdfs:domain voko:Manuskript;
+  rdfs:range rdfs:Literal.
+
+voko:einsendedatum rdfs:domain voko:Manuskript;
+  rdfs:range rdfs:Literal.
+
+voko:zeitraum rdfs:domain voko:Manuskript;
+  rdfs:range rdfs:Literal.
+
+voko:zeitangabe rdfs:domain voko:Manuskript;
+  rdfs:range rdfs:Literal.
+
+voko:beschreibung rdfs:domain voko:Manuskript;
+  rdfs:range rdfs:Literal.
+
+voko:autor rdfs:domain voko:Manuskript;
+  rdfs:range rdfs:Literal.
+
+voko:title rdfs:domain voko:Manuskript;
+  rdfs:range rdfs:Literal.
+
+voko:region rdfs:domain voko:Manuskript;
+  rdfs:range rdfs:Literal.
+
+# ===== EU-specific
+
+eu:place rdfs:domain eu:Response;
+  rdfs:range rdfs:Literal.
+
+eu:socken rdfs:domain eu:Response;
+  rdfs:range rdfs:Literal.
+
+eu:landskap rdfs:domain eu:Response;
+  rdfs:range rdfs:Literal.
+
+eu:author rdfs:domain eu:Response;
+  rdfs:range rdfs:Literal.
+
+eu:harad rdfs:domain eu:Response;
+  rdfs:range rdfs:Literal.
+
+tb:found-in rdfs:domain tb:Account;
+  rdfs:range tb:Reference;
+  rdfs:comment """For accounts found in published sources, refers to the
+  source it was found in.""".
+
+eu:town rdfs:domain eu:Response;
+  rdfs:range rdfs:Literal.
+
+eu:contained-in rdfs:domain eu:PseudoResponse;
+  rdfs:range eu:Response.
+
+eu:informant rdfs:domain eu:Response;
+  rdfs:range eu:Response.
+
+# ===== Recipe-specific
+
+dc:title rdfs:domain tb:Account; # also dot
+  rdfs:range rdfs:Literal;
+  rdfs:comment "A title for the account.".
+
+rdfs:label rdfs:domain dbo:Place;
+  rdfs:range rdfs:Literal.
+
+tb:place-of-origin rdfs:domain tb:Account; # also dot
+  rdfs:range dbo:Place;
+  rdfs:comment "What place does the account describe?".
+
+neg:year rdfs:domain tb:Recipe;
+  rdfs:range rdfs:Literal;
+  rdfs:comment """The year the account was written, published, or received by
+  the institution. Used when the exact date (dc:date) is not known.""".
+
+#tb:part-of rdfs:domain dbo:Place;
+#  rdfs:range dbo:Place.
+
+# ===== DOT-specific
+
+# ===== SM-specific
+
+sm:vl rdfs:domain sm:Account;
+  rdfs:range rdfs:Literal.
+  # not sure what it means yet
+
+sm:aps rdfs:domain sm:Account;
+  rdfs:range rdfs:Literal;
+  rdfs:comment "Apskrites".
+
+# ===== ERM-specific
+
+erm:khk rdfs:domain erm:Account;
+  rdfs:label "Kihelkond";
+  rdfs:range rdfs:Literal.
+
+erm:vld rdfs:domain erm:Account;
+  rdfs:label "Vald";
+  rdfs:range rdfs:Literal.
+
+erm:kirjeldand rdfs:domain erm:Account;
+  rdfs:label "Kirjeldand";
+  rdfs:range rdfs:Literal.
+
+erm:contained-in rdfs:domain erm:PseudoAccount;
+  rdfs:label "Contained in";
+  rdfs:range erm:Account.
