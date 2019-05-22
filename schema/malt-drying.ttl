@@ -75,6 +75,12 @@ malt:badstu-soinn a tb:MaltDryingMethod;
   shelves have lots of holes in them and are right over the oven.""";
   neg:variant-of malt:VerySmokyHot.
 
+malt:badstu-like-soinn a tb:MaltDryingMethod;
+  rdfs:label "Badstu/såinn hybrid";
+  dc:description """Most of the room covered by shelves with no holes in the
+  bottom. Fireplace underneath.""";
+  neg:variant-of malt:SmokyHot.
+
 malt:heated-floor a tb:MaltDryingMethod;
   rdfs:label "Heated floor";
   dc:description """On a floor that is heated by a heat channel underneath

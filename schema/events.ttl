@@ -77,3 +77,7 @@ event:funerals a tb:Event;
 
 event:baptisms a tb:Event;
   rdfs:label "Baptisms".
+
+event:tekkjardona a tb:Event;
+  rdfs:label "House-thatching dugnad";
+  dc:description "Collective work to thatch someone's roof".
