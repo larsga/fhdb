@@ -38,3 +38,6 @@ clean:chains a tb:CleaningAgent;
 
 clean:sulphuric-acid a tb:CleaningAgent;
   rdfs:label "Sulphuric acid".
+
+clean:calcium-permanganate a tb:CleaningAgent;
+  rdfs:label "Calcium permanganate".

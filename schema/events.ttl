@@ -6,7 +6,9 @@
 @prefix dc: <http://purl.org/dc/terms/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
-# ===== DETAILED CLASSIFICATION
+# ===== DETAILED EVENT CLASSIFICATION
+
+# ----- REPEATING EVENTS
 
 event:xmas a tb:Event;
   rdfs:label "Christmas";
@@ -22,7 +24,8 @@ event:whitsun a tb:Event;
 
 event:martinisingen a tb:Event;
   rdfs:label "Martinisingen";
-  dc:description """Also known as Mardipäev. November 10.""".
+  dc:description """Also known as Mardipäev. November 10. Also known as
+  St. Martin's Day.""".
 
 event:midsummer a tb:Event;
   rdfs:label "Midsummer";
@@ -63,6 +66,12 @@ event:new-years-eve a tb:Event;
 event:candlemas a tb:Event;
   rdfs:label "Candlemas";
   dc:description """Not sure when this is.""".
+
+event:spring-day a tb:Event;
+  rdfs:label "Spring day (May 1st)";
+  dc:description """In Estonia.""".
+
+# ----- SINGULAR EVENTS
 
 event:dugnad a tb:Event;
   rdfs:label "Collective work event";
