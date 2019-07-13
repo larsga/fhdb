@@ -1,5 +1,6 @@
 
-import sparqllib
+import sys
+import sparqllib, tablelib
 
 names = {
     'http://www.garshol.priv.no/2014/trad-beer/Recipe' : 'Own collection',
@@ -57,16 +58,22 @@ rows = list(sparqllib.query_for_rows(query))
 
 biggest = reduce(max, [len(name) for name in names.values()])
 
-TEMPLATE = '%20s   %4s   %4s   %5s'
-print TEMPLATE % ('Dataset', 'Accts', 'Pages', 'Triples')
+import tablelib
+
+writer = tablelib.ConsoleWriter(sys.stdout)
+#writer = tablelib.HtmlWriter(sys.stdout)
+writer.start_table()
+
+writer.header_row('Dataset', 'Accts', 'Pages', 'Triples')
+
 for (t, c) in rows:
     name = names[t]
     name = name + (' ' * (biggest + 2 - len(name)))
 
-    print TEMPLATE % \
-        (name, c, pages.get(t, ''), triples.get(t, ''))
+    writer.row(name, c, pages.get(t, ''), triples.get(t, ''))
     total += int(c)
     ptotal += int(pages.get(t, 0))
     ttotal += int(triples.get(t, 0))
 
-print TEMPLATE % ('TOTAL', total, ptotal, ttotal)
+writer.row('TOTAL', total, ptotal, ttotal)
+writer.end_table()
