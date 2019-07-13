@@ -27,12 +27,6 @@
 rdfs:subClassOf rdfs:domain rdfs:Class;
   rdfs:range rdfs:Class.
 
-# ===== GENERAL
-
-# FIXME: this has to be a mistake?
-#rdf:type rdfs:domain tb:Account;
-#  rdfs:range rdfs:Class.
-
 # ===== TOO WIDE
 
 geo:lat rdfs:domain rdf:Resource;
@@ -334,10 +328,6 @@ tb:secondary-yeast-keeping rdfs:domain tb:Account;
   rdfs:comment """All other yeast keeping methods that are mentioned.""".
 
 # ===== DUBIOUS
-
-# FIXME: should be removed
-#neg:cold-mash-over-night rdfs:domain tb:Account;
-#  rdfs:range rdfs:Literal.
 
 neg:mash-time rdfs:domain tb:Account;
   rdfs:comment "Mash time in minutes.";
