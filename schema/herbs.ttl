@@ -1,0 +1,152 @@
+
+@prefix neg: <http://www.garshol.priv.no/2014/neg/> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix top: <http://www.garshol.priv.no/2014/trad-beer/topic/> .
+
+neg:juniper a neg:Herb;
+  rdfs:label "Einer", "Juniper"@en.
+
+neg:laurel a neg:Herb;
+  rdfs:label "Bay laurel"@en, "Laurus nobilis".
+
+neg:artemisia a neg:Herb;
+  rdfs:label "Artemisia absinthium", "Wormwood"@en.
+
+neg:olkong a neg:Herb;
+  rdfs:label "Ølkong";
+  rdfs:seeAlso <http://www.rolv.no/urtemedisin/medisinplanter/arni_mon.htm>;
+  # owl:sameAs neg:arnica-montana; # probably false
+  rdfs:seeAlso <https://wiki.umb.no/NLO/index.php/perikum>;
+  rdfs:seeAlso <http://www.forn.no/maltol/212.htm>;
+  dc:description """NEG 7512 claims it's the same as perikum.""";
+  owl:sameAs neg:perikum. # seems like this is correct
+
+neg:perikum a neg:Herb;
+  rdfs:label "Perikum", "St. John's wort"@en;
+  rdfs:seeAlso <http://no.wikipedia.org/wiki/Perikumslekten>;
+  dc:description """Not entirely clear which species is meant, but one
+  respondent specified it as Hypericum quadrangulum which according to
+  English Wikipedia can be either Hypericum maculatum or Hypericum
+  tetrapterum.  Tetrapterum seems to be very little known, but maculatum
+  is known as firkantperikum in Norway. According to one anecdote,
+  perikum is crunchy in the final beer.""".
+
+neg:olkall a neg:Herb;
+  rdfs:label "Ølkall";
+  rdfs:seeAlso <http://www.nob-ordbok.uio.no/%C3%98LKALL>;
+  rdfs:seeAlso <http://www.rolv.no/urtemedisin/medisinplanter/prune_vul.htm>;
+  dc:description """It seems to mean either ryllik or blåkoll depending on
+  region. The one response using it seems to hint that they mean ryllik.""";
+  owl:sameAs neg:ryllik.
+
+neg:ryllik a neg:Herb;
+  rdfs:label "Ryllik", "Yarrow"@en;
+  dc:description "Latin: Achillea millefolium";
+  rdfs:seeAlso <http://no.wikipedia.org/wiki/Ryllik>.
+
+neg:myrica-gale a neg:Herb;
+  rdfs:label "Pors", "Myrica"@en;
+  rdfs:seeAlso <http://no.wikipedia.org/wiki/Pors>.
+
+neg:carraway a neg:Herb;
+  rdfs:label "Karve", "Caraway"@en;
+  rdfs:seeAlso <http://no.wikipedia.org/wiki/Karve>.
+
+neg:reinfann a neg:Herb;
+  rdfs:label "Reinfann", "Tanacetum vulgare", "Tansy"@en;
+  rdfs:seeAlso <http://no.wikipedia.org/wiki/Reinfann>.
+
+neg:hops a neg:Herb;
+  rdfs:label "Humle", "Hops"@en;
+  rdfs:seeAlso <http://no.wikipedia.org/wiki/Humle_(plante)>.
+
+neg:potato-plant a neg:Herb;
+  rdfs:label "Potetris";
+  dc:description "The above-ground part of the potato plant, possibly dried.";
+  rdfs:seeAlso <https://wiki.umb.no/NLO/index.php/potetris>.
+
+neg:svimling a neg:Herb;
+  rdfs:label "Svimling".
+
+neg:grobone a neg:Herb;
+  rdfs:label "Grobone";
+  dc:description """Nordland thinks this must be wormwood, Artemisia absinthium.
+  Ove Arbo Høeg records 'gråbu' and 'gråbonde' as names for wormwood.""";
+  rdfs:seeAlso top:artemisia, neg:artemisia.
+
+neg:roispost a neg:Herb;
+  rdfs:label "Røispost", "Røyspost";
+  dc:description """One mention in NEG from Vestre Gausdal. Arbo Høeg is very
+  clear that in this area it means Origanum vulgare, actually oregano, or in
+  Norwegian 'bergmynte'. Bråtå 2012 interprets this the same way. Nordland does
+  not appear to mention it.""";
+  rdfs:seeAlso <https://no.wikipedia.org/wiki/Bergmynte>.
+
+neg:finnmarkspors a neg:Herb;
+  rdfs:label "Finnmarkspors", "Wild rosemary"@en, "Skvattram"@sv;
+  dc:description """Often connected with pors, but in Norway it only grows in
+  Troms and Finnmark, and can therefore hardly have been used in beer. The
+  Latin name is Ledum palustre L (formerly), now Rhododendron tomentosum.
+  It's definitely poisonous.""";
+  rdfs:seeAlso <https://en.wikipedia.org/wiki/Rhododendron_tomentosum>.
+
+neg:hyssopus a neg:Herb;
+  rdfs:label "Hyssopus", "Hyssop"@en, "Isop"@da;
+  rdfs:seeAlso <https://en.wikipedia.org/wiki/Hyssopus_officinalis>;
+  dc:description "The plant is quite strongly antiseptic.".
+
+neg:artemisia-vulgaris a neg:Herb;
+  rdfs:label "Burot", "Artemisia vulgaris"@en, "Common wormwood"@en.
+
+neg:sisselrot a neg:Herb;
+  rdfs:label "Sisselrot";
+  rdfs:seeAlso <https://no.wikipedia.org/wiki/Sisselrot>;
+  dc:description "Polypodium vulgare.".
+
+neg:menyantes-trifoliata a neg:Herb;
+  rdfs:label "Menyanthes trifoliata";
+  rdfs:seeAlso <https://no.wikipedia.org/wiki/Bukkeblad>;
+  dc:description "Polypodium vulgare.".
+
+neg:chicory a neg:Herb;
+  rdfs:label "Cichorium intybus", "Chicory"@en;
+  rdfs:seeAlso <https://da.wikipedia.org/wiki/Almindelig_Cikorie>.
+
+neg:ginger a neg:Herb;
+  rdfs:label "Ingefær", "Ginger"@en.
+
+neg:blackberry-leaves a neg:Herb;
+  rdfs:label "Blackberry leaves".
+
+neg:bitter-orange-peel a neg:Herb;
+  rdfs:label "Pomeransskal", "Bitter orange peel".
+
+neg:raphanus-raphanistrum a neg:Herb;
+  rdfs:label "Raphanus raphanistrum", "Wild radish".
+
+neg:pimenta-dioica a neg:Herb;
+  rdfs:label "Pimenta dioica", "Allspice".
+
+neg:matricaria-chamomilla a neg:Herb;
+  rdfs:label "Matricaria chamomilla", "Chamomile".
+
+neg:meadwort a neg:Herb;
+  rdfs:label "Meadwort", "mjødurt".
+
+neg:vikis a neg:Herb;
+  rdfs:label "Bush vetch", "Vicia sepium";
+  rdfs:seeAlso <https://gamtininkas.lt/augalai/vikis-patvorinis-lot-vicia-sepium/>.
+  # https://en.wikipedia.org/wiki/Vicia_sepium
+
+neg:calamus a neg:Herb;
+  rdfs:label "Calamus";
+  dc:description "Known as 'northern ginger' in Estonia";
+  rdfs:seeAlso <https://en.wikipedia.org/wiki/Acorus_calamus>.
+
+neg:aspen-bark a neg:Herb;
+  rdfs:label "Aspen bark".
+
+neg:cloves a neg:Herb;
+  rdfs:label "Cloves", "Nellik"@no.
