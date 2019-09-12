@@ -39,6 +39,10 @@ event:haymaking a tb:Event;
   rdfs:label "Haymaking";
   dc:description """The cutting of grass for animal feed.""".
 
+event:harvest a tb:Event;
+  rdfs:label "Grain harvest";
+  dc:description """The harvesting of the grain. Høstonn.""".
+
 event:harvest-celebration a tb:Event;
   rdfs:label "Harvest celebration";
   dc:description """Beer for drinking at the celebration at the end of harvest,
@@ -71,6 +75,9 @@ event:spring-day a tb:Event;
   rdfs:label "Spring day (May 1st)";
   dc:description """In Estonia.""".
 
+event:spring-fishing a tb:Event;
+  rdfs:label "The spring fishery".
+
 # ----- SINGULAR EVENTS
 
 event:dugnad a tb:Event;
@@ -90,3 +97,7 @@ event:baptisms a tb:Event;
 event:tekkjardona a tb:Event;
   rdfs:label "House-thatching dugnad";
   dc:description "Collective work to thatch someone's roof".
+
+event:auctions a tb:Event;
+  rdfs:label "Auctions";
+  dc:descriptions "Should be self-evident. See sources.".

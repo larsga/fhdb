@@ -1,0 +1,42 @@
+
+@prefix neg: <http://www.garshol.priv.no/2014/neg/> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+
+neg:alder a neg:WoodType;
+  rdfs:label "Alder".
+
+neg:ash a neg:WoodType;
+  rdfs:label "Ash".
+
+neg:beech a neg:WoodType;
+  rdfs:label "Beech".
+
+neg:birch a neg:WoodType;
+  rdfs:label "Birch".
+
+neg:hatleris a neg:WoodType;
+  rdfs:label "Hatleris";
+  dc:description "Have not been able to figure out what this is.".
+
+neg:hazel a neg:WoodType;
+  rdfs:label "Hassel", "Corylus avellana", "Hazel".
+
+neg:heather a neg:WoodType;
+  rdfs:label "Heather".
+
+neg:juniper a neg:WoodType;
+  rdfs:label "Juniper".
+
+neg:mosetre a neg:WoodType;
+  rdfs:label "Mosetræ";
+  rdfs:seeAlso <http://ordnet.dk/ods/ordbog?query=Mosetr%C3%A6>;
+  dc:description """Wood that's been lying in a turf-bog.""".
+
+# should we change the class to fuel-type?
+neg:peat a neg:WoodType;
+  rdfs:label "Peat".
+
+neg:willow a neg:WoodType;
+  rdfs:label "Willow".

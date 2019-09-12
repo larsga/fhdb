@@ -43,7 +43,7 @@ dc:date rdfs:domain tb:Account;
   received by the archive institution.""".
 
 tb:references rdfs:domain tb:Account;
-  rdfs:range tb:Reference;
+  rdfs:range rdf:Resource; # tb:Reference, really, but ...
   rdfs:comment "Lists what sources the account references.".
 
 tb:same-informant-as rdfs:domain tb:Account;
@@ -111,11 +111,11 @@ tb:own-yeast rdfs:domain tb:Account;
   rdfs:comment "Did they have their own yeast.".
 
 tb:grain rdfs:domain tb:Account;
-  rdfs:range tb:grain;
+  rdfs:range tb:GrainType;
   rdfs:comment "Main types of grain (barley, oats, ...) the malts made from.".
 
 tb:secondary-grain rdfs:domain tb:Account;
-  rdfs:range tb:grain;
+  rdfs:range tb:GrainType;
   rdfs:comment """Less common/preferred types of grain (barley, oats, ...) the
   malts were made from.""".
 
@@ -131,7 +131,7 @@ tb:own-malts rdfs:domain tb:Account;
   rdfs:comment "Did they make their own malts.".
 
 tb:adjuncts rdfs:domain tb:Account;
-  rdfs:range neg:Adjunct;
+  rdfs:range tb:Adjunct;
   rdfs:comment """Used for any kind of starch or sugar added to the beer besides
   the malts.""".
 
@@ -172,7 +172,7 @@ tb:malt-drying rdfs:domain tb:Account;
   rdfs:range tb:MaltDryingMethod.
 
 tb:malt-drying-wood rdfs:domain tb:Account;
-  rdfs:range neg:Wood.
+  rdfs:range neg:WoodType.
 
 tb:shoot-length rdfs:domain tb:Account;
   rdfs:comment """Absolute length of the shoot when germination should be
@@ -319,12 +319,12 @@ tb:yeast-harvest rdfs:domain tb:Account;
   rdfs:comment "Where was the yeast harvested from.".
 
 tb:yeast-keeping rdfs:domain tb:Account;
-  rdfs:range neg:YeastKeepingMethod;
+  rdfs:range tb:YeastKeepingMethod;
   rdfs:comment """The most common (or oldest) method for preserving the yeast
   between brews.""".
 
 tb:secondary-yeast-keeping rdfs:domain tb:Account;
-  rdfs:range neg:YeastKeepingMethod;
+  rdfs:range tb:YeastKeepingMethod;
   rdfs:comment """All other yeast keeping methods that are mentioned.""".
 
 # ===== DUBIOUS
@@ -365,7 +365,7 @@ tb:juniper-boil-length rdfs:domain tb:Account;
 # ===== NEG-specific
 
 neg:fylke rdfs:domain neg:Response;
-  rdfs:range dbo:Place.
+  rdfs:range dbp:Province.
 
 neg:bygdelag rdfs:domain neg:Response;
   rdfs:range rdfs:Literal.

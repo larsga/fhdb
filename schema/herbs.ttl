@@ -8,6 +8,9 @@
 neg:juniper a neg:Herb;
   rdfs:label "Einer", "Juniper"@en.
 
+neg:juniper-berries a neg:Herb;
+  rdfs:label "Juniper berries"@en. # captured separately from branches
+
 neg:laurel a neg:Herb;
   rdfs:label "Bay laurel"@en, "Laurus nobilis".
 
@@ -150,3 +153,22 @@ neg:aspen-bark a neg:Herb;
 
 neg:cloves a neg:Herb;
   rdfs:label "Cloves", "Nellik"@no.
+
+neg:tobacco a neg:Herb;
+  rdfs:label "Tobacco".
+
+neg:pepper a neg:Herb;
+  rdfs:label "Pepper".
+
+neg:tyrirot a neg:Herb;
+  rdfs:label "Tyrirot".
+
+neg:alder-bark a neg:Herb;
+  rdfs:label "Alder bark".
+
+neg:bryggergras a neg:Herb;
+  rdfs:label "Bryggergras";
+  dc:description "Not sure what this is.".
+
+neg:dandelion a neg:Herb;
+  rdfs:label "Dandelion"@en, "Løvetann".

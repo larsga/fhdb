@@ -1,0 +1,132 @@
+
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dbp: <http://dbpedia.org/resource/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix tb: <http://www.garshol.priv.no/2014/trad-beer/> .
+
+# COUNTRIES
+
+dbp:Austria rdfs:label "Austria"; a dbp:Country.
+dbp:Belarus rdfs:label "Belarus"; a dbp:Country.
+dbp:Belgium rdfs:label "Belgium"; a dbp:Country.
+dbp:Denmark rdfs:label "Denmark"; a dbp:Country.
+dbp:Estonia rdfs:label "Estonia"; a dbp:Country.
+dbp:Finland rdfs:label "Finland"; a dbp:Country.
+dbp:France rdfs:label  "France"; a dbp:Country.
+dbp:Georgia rdfs:label "Georgia"; a dbp:Country.
+dbp:Germany rdfs:label "Germany"; a dbp:Country.
+dbp:Greece rdfs:label  "Greece"; a dbp:Country.
+dbp:Iceland rdfs:label "Iceland"; a dbp:Country.
+dbp:Ireland rdfs:label "Ireland"; a dbp:Country.
+dbp:Latvia rdfs:label  "Latvia"; a dbp:Country.
+dbp:Lithuania rdfs:label "Lithuania"; a dbp:Country.
+dbp:Netherlands rdfs:label "Netherlands"; a dbp:Country.
+dbp:Norway rdfs:label "Norway"; a dbp:Country.
+dbp:Russia rdfs:label "Russia"; a dbp:Country.
+dbp:Sweden rdfs:label "Sweden"; a dbp:Country.
+dbp:United_Kingdom rdfs:label "United Kingdom"; a dbp:Country.
+  dbp:England rdfs:label "England";
+    tb:part-of dbp:United_Kingdom.
+  dbp:Scotland rdfs:label "Scotland";
+    tb:part-of dbp:United_Kingdom.
+  dbp:Wales rdfs:label "Wales";
+    tb:part-of dbp:United_Kingdom.
+
+# NORWEGIAN REGIONS
+
+dbp:Setesdal rdfs:label "Setesdal";
+  tb:part-of dbp:Aust-Agder.
+dbp:Gudbrandsdalen rdfs:label "Gudbrandsdalen";
+  tb:part-of dbp:Oppland.
+dbp:Sogn rdfs:label "Sogn";
+  tb:part-of dbp:Sogn_og_Fjordane.
+dbp:Nordfjord rdfs:label "Nordfjord";
+  tb:part-of dbp:Sogn_og_Fjordane.
+dbp:Sunnfjord rdfs:label "Sunnfjord";
+  tb:part-of dbp:Sogn_og_Fjordane.
+<http://dbpedia.org/resource/Sunnm%C3%B8re> rdfs:label "Sunnmøre";
+  tb:part-of <http://dbpedia.org/resource/M%C3%B8re_og_Romsdal>.
+<http://dbpedia.org/resource/Nordm%C3%B8re> rdfs:label "Nordmøre";
+  tb:part-of <http://dbpedia.org/resource/M%C3%B8re_og_Romsdal>.
+<http://dbpedia.org/resource/Tr%C3%B8ndelag> rdfs:label "Trøndelag";
+  tb:part-of dbp:Norway.
+dbp:Hardanger rdfs:label "Hardanger";
+  tb:part-of dbp:Hordaland.
+dbp:Voss rdfs:label "Voss";
+  tb:part-of dbp:Hordaland.
+dbp:Valdres rdfs:label "Valdres";
+  tb:part-of dbp:Oppland.
+<http://dbpedia.org/resource/Stj%C3%B8rdalen> rdfs:label "Stjørdalen";
+  tb:part-of <http://dbpedia.org/resource/Nord-Tr%C3%B8ndelag>.
+<http://dbpedia.org/resource/Inntr%C3%B8ndelag> rdfs:label "Inntrøndelag";
+  tb:part-of <http://dbpedia.org/resource/Nord-Tr%C3%B8ndelag>.
+dbp:Hallingdal rdfs:label "Hallingdal";
+  tb:part-of dbp:Buskerud.
+dbp:Romsdal rdfs:label "Romsdal";
+  tb:part-of <http://dbpedia.org/resource/M%C3%B8re_og_Romsdal>.
+dbp:Hornindal rdfs:label "Hornindal";
+  tb:part-of dbp:Nordfjord.
+
+dbp:Akershus a dbp:Province;
+  rdfs:label "Akershus";
+  tb:part-of dbp:Norway.
+dbp:Hordaland a dbp:Province;
+  rdfs:label "Hordaland";
+  tb:part-of dbp:Norway.
+dbp:Telemark a dbp:Province;
+  rdfs:label "Telemark";
+  tb:part-of dbp:Norway.
+dbp:Aust-Agder a dbp:Province;
+  rdfs:label "Aust-Agder";
+  tb:part-of dbp:Norway.
+dbp:Vest-Agder a dbp:Province;
+  rdfs:label "Vest-Agder";
+  tb:part-of dbp:Norway.
+dbp:Rogaland a dbp:Province;
+  rdfs:label "Rogaland";
+  tb:part-of dbp:Norway.
+<http://dbpedia.org/resource/%C3%98stfold> a dbp:Province;
+  rdfs:label "Østfold";
+  tb:part-of dbp:Norway.
+dbp:Sogn_og_Fjordane a dbp:Province;
+  rdfs:label "Sogn og Fjordane";
+  tb:part-of dbp:Norway.
+<http://dbpedia.org/resource/M%C3%B8re_og_Romsdal> a dbp:Province;
+  rdfs:label "Møre og Romsdal";
+  tb:part-of dbp:Norway.
+<http://dbpedia.org/resource/S%C3%B8r-Tr%C3%B8ndelag> a dbp:Province;
+  rdfs:label "Sør-Trøndelag";
+  tb:part-of <http://dbpedia.org/resource/Tr%C3%B8ndelag>.
+<http://dbpedia.org/resource/Nord-Tr%C3%B8ndelag> a dbp:Province;
+  rdfs:label "Nord-Trøndelag";
+  tb:part-of <http://dbpedia.org/resource/Tr%C3%B8ndelag>.
+dbp:Oppland a dbp:Province;
+  rdfs:label "Oppland";
+  tb:part-of dbp:Norway.
+dbp:Buskerud a dbp:Province;
+  rdfs:label "Buskerud";
+  tb:part-of dbp:Norway.
+dbp:Hedmark a dbp:Province;
+  rdfs:label "Hedmark";
+  tb:part-of dbp:Norway.
+dbp:Nordland a dbp:Province;
+  rdfs:label "Nordland";
+  tb:part-of dbp:Norway.
+dbp:Finnskogen rdfs:label "Finnskogen";
+  tb:part-of dbp:Hedmark.
+dbp:Finnmark a dbp:Province;
+  rdfs:label "Finnmark";
+  tb:part-of dbp:Norway.
+dbp:Troms a dbp:Province;
+  rdfs:label "Troms";
+  tb:part-of dbp:Norway.
+dbp:Vestfold a dbp:Province;
+  rdfs:label "Vestfold";
+  tb:part-of dbp:Norway.
+
+# FOREIGN REGIONS
+
+dbp:Gotland rdfs:label "Gotland";
+  tb:part-of dbp:Sweden.
+dbp:Chuvashia rdfs:label "Chuvashia";
+  tb:part-of dbp:Russia.

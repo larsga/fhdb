@@ -164,7 +164,7 @@ malt:oven-shelf a tb:MaltDryingMethod;
 
 malt:smoke-oven-shelf a tb:MaltDryingMethod;
   rdfs:label "Smoke oven shelf";
-  dc:description """Røykovn with stone shelf above.""";
+  dc:description """Røykovn with stone/wood shelf above.""";
   rdfs:seeAlso <https://no.wikipedia.org/wiki/R%C3%B8ykovn>;
   neg:variant-of malt:Warm.
 

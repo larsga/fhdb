@@ -1,0 +1,72 @@
+
+# Various minor defined terms
+
+@prefix tb: <http://www.garshol.priv.no/2014/trad-beer/> .
+@prefix neg: <http://www.garshol.priv.no/2014/neg/> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# ===== SCHEMA STUFF
+
+<http://psi.garshol.priv.no/2015/rdfsearch/Resource> a rdfs:Class.
+tb:Account a rdfs:Class.
+
+# ===== GENDER
+
+neg:male a tb:Gender;
+  rdfs:label "Male".
+
+neg:female a tb:Gender;
+  rdfs:label "Female".
+
+neg:both a tb:Gender; a neg:YeastHarvestPlace;
+  rdfs:label "Both".
+
+# ===== STRAINER MATERIALS
+
+neg:hay a neg:Thing.
+neg:straw a neg:Thing.
+neg:oat-straw a neg:Thing.
+neg:rye-straw a neg:Thing.
+neg:barley-straw a neg:Thing.
+neg:pea-stalks a neg:Thing.
+neg:branches a neg:Thing.
+neg:ash-branches a neg:Thing.
+neg:alder-branches a neg:Thing.
+neg:alder-splinters a neg:Thing. # is this getting too detailed?
+neg:birch-branches a neg:Thing.
+neg:pine-branches a neg:Thing.
+neg:pine-sticks a neg:Thing. # is this used correctly?
+neg:juniper a neg:Thing.
+neg:juniper-sticks a neg:Thing. # it's not the same ...
+
+neg:spruce-branches a neg:Thing.
+neg:spruce-sticks a neg:Thing.
+
+neg:cloth a neg:Thing.
+neg:sieve a neg:Thing.
+neg:hair-sieve a neg:Thing.
+neg:horse-hair-sieve a neg:Thing.
+
+neg:stones a neg:Thing. # this is not consistently captured
+neg:ceramics a neg:Thing. # ???
+neg:wooden-sieve a neg:Thing. # ???
+neg:wooden-frame a neg:Thing. # ???
+neg:bricks a neg:Thing. # ???
+
+neg:carraway a neg:Thing. # I guess?
+neg:perikum a neg:Thing. # I guess?
+
+# ===== HARVESTING LOCATION
+
+neg:bottom a neg:YeastHarvestPlace.
+neg:top a neg:YeastHarvestPlace.
+neg:cask-bottom a neg:YeastHarvestPlace.
+
+# ===== WHERE HOPS COMES FROM
+# FIXME: this needs to be refactored
+
+neg:bought a neg:Thing.        # KEEP
+neg:gathered-wild a neg:Thing. # KEEP
+
+neg:locally-grown a neg:Thing. # REMOVE

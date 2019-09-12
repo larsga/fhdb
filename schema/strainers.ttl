@@ -1,0 +1,22 @@
+
+# Classification of strainers
+
+@prefix strainer: <http://www.garshol.priv.no/2018/trad-beer/strainer/> .
+@prefix tb: <http://www.garshol.priv.no/2014/trad-beer/> .
+@prefix neg: <http://www.garshol.priv.no/2014/neg/> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# ===== STRAINER TYPES
+
+strainer:S a tb:StrainerType;
+  rdfs:label "S";
+  dc:description "Hole in the side with a tap.".
+
+strainer:B a tb:StrainerType;
+  rdfs:label "B";
+  dc:description "Hole in the bottom with a long rod.".
+
+strainer:SB a tb:StrainerType;
+  rdfs:label "SB";
+  dc:description "Shaped like B, but with a tap in the hole, not a long rod.".

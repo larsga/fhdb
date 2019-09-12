@@ -1,0 +1,27 @@
+
+# Adjuncts
+
+@prefix tb: <http://www.garshol.priv.no/2014/trad-beer/> .
+@prefix neg: <http://www.garshol.priv.no/2014/neg/> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# ===== ADJUNCTS
+
+neg:brown-sugar a tb:Adjunct;
+  rdfs:label "Brown sugar".
+
+neg:potato a tb:Adjunct;
+  rdfs:label "Potatoes".
+
+neg:rock-candy a tb:Adjunct;
+  rdfs:label "Rock candy".
+
+neg:rye-flour a tb:Adjunct;
+  rdfs:label "Rye flour".
+
+neg:sugar a tb:Adjunct;
+  rdfs:label "Sugar".
+
+neg:syrup a tb:Adjunct;
+  rdfs:label "Syrup".
