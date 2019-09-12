@@ -12,6 +12,10 @@ clean:juniper-infusion a tb:CleaningAgent;
   rdfs:label "Juniper infusion";
   dc:description """Hot juniper infusion for cleaning the vessels.""".
 
+clean:wormwood-infusion a tb:CleaningAgent;
+  rdfs:label "Wormwood infusion";
+  dc:description """Hot wormwood infusion for cleaning the vessels.""".
+
 clean:sulphur-smoke a tb:CleaningAgent;
   rdfs:label "Sulphur smoke";
   dc:description """Sulphur smoking the vessels.""".

@@ -34,6 +34,9 @@ neg:mosetre a neg:WoodType;
   rdfs:seeAlso <http://ordnet.dk/ods/ordbog?query=Mosetr%C3%A6>;
   dc:description """Wood that's been lying in a turf-bog.""".
 
+neg:oak a neg:WoodType;
+  rdfs:label "Oak".
+
 # should we change the class to fuel-type?
 neg:peat a neg:WoodType;
   rdfs:label "Peat".

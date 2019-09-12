@@ -418,7 +418,7 @@ neu:informant rdfs:domain tb:Account; # also on uff:Response
   rdfs:range rdfs:Literal.
 
 neu:response-to rdfs:domain neu:Item;
-  rdfs:range tb:Reference.
+  rdfs:range rdf:Resource. # easier than tb:Reference.
 
 neu:includes rdfs:domain neu:Item;
   rdfs:range rdfs:Literal.

@@ -11,8 +11,17 @@
 neg:brown-sugar a tb:Adjunct;
   rdfs:label "Brown sugar".
 
+neg:carrots a tb:Adjunct;
+  rdfs:label "Carrots".
+
+neg:oats a tb:Adjunct;
+  rdfs:label "Oats".
+
 neg:potato a tb:Adjunct;
   rdfs:label "Potatoes".
+
+neg:raisins a tb:Adjunct;
+  rdfs:label "Raisins".
 
 neg:rock-candy a tb:Adjunct;
   rdfs:label "Rock candy".
@@ -25,3 +34,6 @@ neg:sugar a tb:Adjunct;
 
 neg:syrup a tb:Adjunct;
   rdfs:label "Syrup".
+
+neg:wheat-bran a tb:Adjunct;
+  rdfs:label "Wheat bran".

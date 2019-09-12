@@ -142,7 +142,7 @@ malt:oven-rack-smoke a tb:MaltDryingMethod;
   custom-built kiln.""";
   neg:variant-of malt:SmokyHot.
 
-malt:chimey-rack a tb:MaltDryingMethod;
+malt:chimney-rack a tb:MaltDryingMethod;
   rdfs:label "Rack in the chimney";
   dc:description """A rack with perforated bottom in the house chimney.""";
   neg:variant-of malt:SmokyHot.
