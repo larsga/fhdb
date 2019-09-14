@@ -47,7 +47,7 @@ tb:references rdfs:domain tb:Account;
   rdfs:comment "Lists what sources the account references.".
 
 tb:same-informant-as rdfs:domain tb:Account;
-  rdfs:range tb:Account;
+  rdfs:range rdf:Resource; # should really be tb:Account
   rdfs:comment """Refers to another account to make it clear that both derive
   from the same informant.""".
 
@@ -532,10 +532,10 @@ eu:town rdfs:domain eu:Response;
   rdfs:range rdfs:Literal.
 
 eu:contained-in rdfs:domain eu:PseudoResponse;
-  rdfs:range eu:Response.
+  rdfs:range rdf:Resource. # easier than eu:Response.
 
 eu:informant rdfs:domain eu:Response;
-  rdfs:range eu:Response.
+  rdfs:range rdfs:Literal.
 
 # ===== Recipe-specific
 

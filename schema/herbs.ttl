@@ -176,6 +176,12 @@ neg:dandelion a neg:Herb;
 neg:salt a neg:Herb; # pretty clear this should be spice, not herbs
   rdfs:label "Salt".
 
+neg:spruce a neg:Herb;
+  rdfs:label "Spruce".
+
+neg:walnut-leaves a neg:Herb;
+  rdfs:label "Walnut leaves".
+
 # ===== UNCERTAIN
 
 neg:bryggergras a neg:Herb;

@@ -41,5 +41,8 @@ neg:oak a neg:WoodType;
 neg:peat a neg:WoodType;
   rdfs:label "Peat".
 
+neg:spruce a neg:WoodType;
+  rdfs:label "Spruce".
+
 neg:willow a neg:WoodType;
   rdfs:label "Willow".

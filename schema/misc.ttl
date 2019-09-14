@@ -6,11 +6,13 @@
 @prefix dc: <http://purl.org/dc/terms/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix neu: <http://www.garshol.priv.no/2015/neu/> .
+@prefix eu: <http://www.garshol.priv.no/2017/eu/> .
 
 # ===== SCHEMA STUFF
 
 <http://psi.garshol.priv.no/2015/rdfsearch/Resource> a rdfs:Class.
 tb:Account a rdfs:Class.
+eu:Response a rdfs:Class.
 
 # ===== GENDER
 
@@ -46,7 +48,10 @@ neg:juniper a neg:Thing.
 neg:juniper-sticks a neg:Thing. # it's not the same ...
 neg:hatle-sticks a neg:Thing. # dunno what this is
 neg:hazel-sticks a neg:Thing.
+neg:hazel-branches a neg:Thing.
+neg:rowan-branches a neg:Thing.
 
+neg:spruce a neg:Thing.
 neg:spruce-branches a neg:Thing.
 neg:spruce-sticks a neg:Thing.
 
@@ -59,17 +64,29 @@ neg:stones a neg:Thing. # this is not consistently captured
 neg:ceramics a neg:Thing. # ???
 neg:wooden-sieve a neg:Thing. # ???
 neg:wooden-frame a neg:Thing. # ???
+neg:lattice a neg:Thing.
 neg:bricks a neg:Thing. # ???
 
 neg:carraway a neg:Thing. # I guess?
 neg:perikum a neg:Thing. # I guess?
-neg:hops a neg:Thing. # I guess?
+neg:hops a neg:Thing;
+  rdfs:label "Hops";
+  dc:description "Refers to the hop cones".
+neg:hop-stems a neg:Thing.
 
 # ===== HARVESTING LOCATION
 
-neg:bottom a neg:YeastHarvestPlace.
-neg:top a neg:YeastHarvestPlace.
-neg:cask-bottom a neg:YeastHarvestPlace.
+neg:bottom a neg:YeastHarvestPlace;
+  rdfs:label "Bottom".
+neg:top a neg:YeastHarvestPlace;
+  rdfs:label "Top".
+neg:cask-bottom a neg:YeastHarvestPlace;
+  rdfs:label "Cask bottom";
+  dc:description """Harvesting the yeast from the bottom of the beer cask
+  after the cask is empty.""".
+neg:either a neg:YeastHarvestPlace;
+  rdfs:label "Either";
+  dc:description "Harvesting sometimes from the top, sometimes from the bottom".
 
 # ===== WHERE HOPS COMES FROM
 # FIXME: this needs to be refactored
@@ -83,3 +100,8 @@ neg:locally-grown a neg:Thing. # REMOVE
 
 neu:notes a neu:ItemType.
 neu:response a neu:ItemType.
+
+# ===== "JUNIPER PREFERENCE"
+# FIXME: not good enough
+
+neg:with-berries a neg:Thing.
