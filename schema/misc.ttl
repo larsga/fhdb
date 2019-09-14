@@ -34,10 +34,12 @@ neg:wheat-straw a neg:Thing.
 neg:pea-stalks a neg:Thing.
 neg:branches a neg:Thing.
 neg:ash-branches a neg:Thing.
+neg:beech-branches a neg:Thing.
 neg:beech-sticks a neg:Thing.
 neg:alder-branches a neg:Thing.
 neg:alder-splinters a neg:Thing. # is this getting too detailed?
 neg:birch-branches a neg:Thing.
+neg:oak-branches a neg:Thing.
 neg:pine-branches a neg:Thing.
 neg:pine-sticks a neg:Thing. # is this used correctly?
 neg:juniper a neg:Thing.

@@ -16,3 +16,6 @@ neg:oats a tb:GrainType;
 
 neg:rye a tb:GrainType;
   rdfs:label "Oats".
+
+neg:wheat a tb:GrainType;
+  rdfs:label "Wheat".

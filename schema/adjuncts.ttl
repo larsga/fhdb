@@ -8,11 +8,17 @@
 
 # ===== ADJUNCTS
 
+neg:beetroots a tb:Adjunct;
+  rdfs:label "Beetroots".
+
 neg:brown-sugar a tb:Adjunct;
   rdfs:label "Brown sugar".
 
 neg:carrots a tb:Adjunct;
   rdfs:label "Carrots".
+
+neg:honey a tb:Adjunct;
+  rdfs:label "Honey".
 
 neg:oats a tb:Adjunct;
   rdfs:label "Oats".
@@ -23,8 +29,15 @@ neg:potato a tb:Adjunct;
 neg:raisins a tb:Adjunct;
   rdfs:label "Raisins".
 
+neg:red-beets a tb:Adjunct;
+  rdfs:label "Red beets";
+  dc:description "This is a cultivar variety of beetroot.".
+
 neg:rock-candy a tb:Adjunct;
   rdfs:label "Rock candy".
+
+neg:rye-bran a tb:Adjunct;
+  rdfs:label "Rye bran".
 
 neg:rye-flour a tb:Adjunct;
   rdfs:label "Rye flour".
@@ -32,8 +45,14 @@ neg:rye-flour a tb:Adjunct;
 neg:sugar a tb:Adjunct;
   rdfs:label "Sugar".
 
+neg:sugar-beets a tb:Adjunct;
+  rdfs:label "Sugar beets".
+
 neg:syrup a tb:Adjunct;
   rdfs:label "Syrup".
 
 neg:wheat-bran a tb:Adjunct;
   rdfs:label "Wheat bran".
+
+neg:wheat-flour a tb:Adjunct;
+  rdfs:label "Wheat flour".

@@ -5,6 +5,10 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#>.
 @prefix top: <http://www.garshol.priv.no/2014/trad-beer/topic/> .
 
+neg:none a neg:Herb;
+  rdfs:label "None";
+  dc:description "Used to record when it's clear that no spice was used.".
+
 neg:juniper a neg:Herb;
   rdfs:label "Einer", "Juniper"@en.
 
@@ -166,9 +170,18 @@ neg:tyrirot a neg:Herb;
 neg:alder-bark a neg:Herb;
   rdfs:label "Alder bark".
 
+neg:dandelion a neg:Herb;
+  rdfs:label "Dandelion"@en, "Løvetann".
+
+neg:salt a neg:Herb; # pretty clear this should be spice, not herbs
+  rdfs:label "Salt".
+
+# ===== UNCERTAIN
+
 neg:bryggergras a neg:Herb;
   rdfs:label "Bryggergras";
   dc:description "Not sure what this is.".
 
-neg:dandelion a neg:Herb;
-  rdfs:label "Dandelion"@en, "Løvetann".
+neg:skallergras a neg:Herb;
+  rdfs:label "Skallergras";
+  dc:description "Not sure what this is.".

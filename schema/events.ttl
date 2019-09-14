@@ -60,6 +60,10 @@ event:pentecost a tb:Event;
   rdfs:label "Pentecost";
   dc:description """Pinse in Norwegian.""".
 
+event:suitsepuhad a tb:Event;
+  rdfs:label "Suitsepühad";
+  dc:description """7th Sunday after Easter. Surely that is pentecost?""".
+
 event:spring-work a tb:Event;
   rdfs:label "Våronn";
   dc:description """Ploughing and sowing.""".

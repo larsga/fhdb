@@ -20,3 +20,7 @@ strainer:B a tb:StrainerType;
 strainer:SB a tb:StrainerType;
   rdfs:label "SB";
   dc:description "Shaped like B, but with a tap in the hole, not a long rod.".
+
+strainer:K a tb:StrainerType;
+  rdfs:label "K";
+  dc:description "Hollowed-out log or canoe-shaped tun with hole at end.".

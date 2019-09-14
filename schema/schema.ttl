@@ -458,10 +458,10 @@ km:informant rdfs:domain km:Account;
   rdfs:range rdfs:Literal.
 
 km:response-to rdfs:domain km:Account;
-  rdfs:range tb:Reference.
+  rdfs:range rdf:Resource. # easier than tb:Reference.
 
 km:place rdfs:domain km:Account;
-  rdfs:range tb:Reference.
+  rdfs:range rdfs:Literal.
 
 # ===== SLS-specific
 
@@ -524,7 +524,7 @@ eu:harad rdfs:domain eu:Response;
   rdfs:range rdfs:Literal.
 
 tb:found-in rdfs:domain tb:Account;
-  rdfs:range tb:Reference;
+  rdfs:range rdf:Resource; # easier than tb:Reference;
   rdfs:comment """For accounts found in published sources, refers to the
   source it was found in.""".
 
