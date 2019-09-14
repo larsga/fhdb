@@ -203,6 +203,9 @@ neg:fennel a neg:Herb;
 neg:furze a neg:Herb;
   rdfs:label "Furze".
 
+neg:pea-straw a neg:Herb;
+  rdfs:label "Pea straw".
+
 # ===== UNCERTAIN
 
 neg:bryggergras a neg:Herb;

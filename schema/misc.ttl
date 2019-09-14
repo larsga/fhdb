@@ -85,6 +85,7 @@ neg:furze a neg:Thing.
 neg:artemisia-vulgaris a neg:Thing.
 neg:heather a neg:Thing.
 neg:clover a neg:Thing.
+neg:pea-straw a neg:Thing.
 
 # ===== HARVESTING LOCATION
 
