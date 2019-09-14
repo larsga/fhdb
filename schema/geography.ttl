@@ -3,6 +3,13 @@
 @prefix dbp: <http://dbpedia.org/resource/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix tb: <http://www.garshol.priv.no/2014/trad-beer/> .
+@prefix dbo: <http://dbpedia.org/ontology/> .
+
+# ONTOLOGY
+
+dbp:Country rdfs:subClassOf dbo:Place.
+dbp:Region rdfs:subClassOf dbo:Place.
+dbp:Province rdfs:subClassOf dbp:Region.
 
 # COUNTRIES
 
@@ -25,46 +32,49 @@ dbp:Norway rdfs:label "Norway"; a dbp:Country.
 dbp:Russia rdfs:label "Russia"; a dbp:Country.
 dbp:Sweden rdfs:label "Sweden"; a dbp:Country.
 dbp:United_Kingdom rdfs:label "United Kingdom"; a dbp:Country.
-  dbp:England rdfs:label "England";
+  dbp:England a dbp:Region; rdfs:label "England";
     tb:part-of dbp:United_Kingdom.
-  dbp:Scotland rdfs:label "Scotland";
+  dbp:Scotland a dbp:Region; rdfs:label "Scotland";
     tb:part-of dbp:United_Kingdom.
-  dbp:Wales rdfs:label "Wales";
+  dbp:Wales a dbp:Region; rdfs:label "Wales";
     tb:part-of dbp:United_Kingdom.
 
 # NORWEGIAN REGIONS
 
-dbp:Setesdal rdfs:label "Setesdal";
+dbp:Setesdal a dbp:Region; rdfs:label "Setesdal";
   tb:part-of dbp:Aust-Agder.
-dbp:Gudbrandsdalen rdfs:label "Gudbrandsdalen";
+dbp:Gudbrandsdalen a dbp:Region; rdfs:label "Gudbrandsdalen";
   tb:part-of dbp:Oppland.
-dbp:Sogn rdfs:label "Sogn";
+dbp:Sogn a dbp:Region; rdfs:label "Sogn";
   tb:part-of dbp:Sogn_og_Fjordane.
-dbp:Nordfjord rdfs:label "Nordfjord";
+dbp:Nordfjord a dbp:Region; rdfs:label "Nordfjord";
   tb:part-of dbp:Sogn_og_Fjordane.
-dbp:Sunnfjord rdfs:label "Sunnfjord";
+dbp:Sunnfjord a dbp:Region; rdfs:label "Sunnfjord";
   tb:part-of dbp:Sogn_og_Fjordane.
-<http://dbpedia.org/resource/Sunnm%C3%B8re> rdfs:label "Sunnmøre";
+<http://dbpedia.org/resource/Sunnm%C3%B8re> a dbp:Region; rdfs:label "Sunnmøre";
   tb:part-of <http://dbpedia.org/resource/M%C3%B8re_og_Romsdal>.
-<http://dbpedia.org/resource/Nordm%C3%B8re> rdfs:label "Nordmøre";
+<http://dbpedia.org/resource/Nordm%C3%B8re> a dbp:Region; rdfs:label "Nordmøre";
   tb:part-of <http://dbpedia.org/resource/M%C3%B8re_og_Romsdal>.
-<http://dbpedia.org/resource/Tr%C3%B8ndelag> rdfs:label "Trøndelag";
+<http://dbpedia.org/resource/Tr%C3%B8ndelag> a dbp:Region;
+  rdfs:label "Trøndelag";
   tb:part-of dbp:Norway.
-dbp:Hardanger rdfs:label "Hardanger";
+dbp:Hardanger a dbp:Region; rdfs:label "Hardanger";
   tb:part-of dbp:Hordaland.
-dbp:Voss rdfs:label "Voss";
+dbp:Voss a dbp:Region; rdfs:label "Voss";
   tb:part-of dbp:Hordaland.
-dbp:Valdres rdfs:label "Valdres";
+dbp:Valdres a dbp:Region; rdfs:label "Valdres";
   tb:part-of dbp:Oppland.
-<http://dbpedia.org/resource/Stj%C3%B8rdalen> rdfs:label "Stjørdalen";
+<http://dbpedia.org/resource/Stj%C3%B8rdalen> a dbp:Region;
+  rdfs:label "Stjørdalen";
   tb:part-of <http://dbpedia.org/resource/Nord-Tr%C3%B8ndelag>.
-<http://dbpedia.org/resource/Inntr%C3%B8ndelag> rdfs:label "Inntrøndelag";
+<http://dbpedia.org/resource/Inntr%C3%B8ndelag> a dbp:Region;
+  rdfs:label "Inntrøndelag";
   tb:part-of <http://dbpedia.org/resource/Nord-Tr%C3%B8ndelag>.
-dbp:Hallingdal rdfs:label "Hallingdal";
+dbp:Hallingdal a dbp:Region; rdfs:label "Hallingdal";
   tb:part-of dbp:Buskerud.
-dbp:Romsdal rdfs:label "Romsdal";
+dbp:Romsdal a dbp:Region; rdfs:label "Romsdal";
   tb:part-of <http://dbpedia.org/resource/M%C3%B8re_og_Romsdal>.
-dbp:Hornindal rdfs:label "Hornindal";
+dbp:Hornindal a dbp:Region; rdfs:label "Hornindal";
   tb:part-of dbp:Nordfjord.
 
 dbp:Akershus a dbp:Province;
@@ -126,7 +136,7 @@ dbp:Vestfold a dbp:Province;
 
 # FOREIGN REGIONS
 
-dbp:Gotland rdfs:label "Gotland";
+dbp:Gotland a dbp:Region; rdfs:label "Gotland";
   tb:part-of dbp:Sweden.
-dbp:Chuvashia rdfs:label "Chuvashia";
+dbp:Chuvashia a dbp:Region; rdfs:label "Chuvashia";
   tb:part-of dbp:Russia.

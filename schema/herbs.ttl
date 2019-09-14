@@ -167,6 +167,9 @@ neg:pepper a neg:Herb;
 neg:tyrirot a neg:Herb;
   rdfs:label "Tyrirot".
 
+neg:alder a neg:Herb;
+  rdfs:label "Alder".
+
 neg:alder-bark a neg:Herb;
   rdfs:label "Alder bark".
 
@@ -181,6 +184,24 @@ neg:spruce a neg:Herb;
 
 neg:walnut-leaves a neg:Herb;
   rdfs:label "Walnut leaves".
+
+neg:clover a neg:Herb;
+  rdfs:label "Clover".
+
+neg:lime-tree-bark a neg:Herb;
+  rdfs:label "Lime tree bark".
+
+neg:heather a neg:Herb;
+  rdfs:label "Heather".
+
+neg:blackcurrant-leaves a neg:Herb;
+  rdfs:label "Blackcurrant leaves".
+
+neg:fennel a neg:Herb;
+  rdfs:label "Fennel".
+
+neg:furze a neg:Herb;
+  rdfs:label "Furze".
 
 # ===== UNCERTAIN
 

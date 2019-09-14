@@ -40,6 +40,7 @@ neg:beech-branches a neg:Thing.
 neg:beech-sticks a neg:Thing.
 neg:alder-branches a neg:Thing.
 neg:alder-splinters a neg:Thing. # is this getting too detailed?
+neg:alder-sticks a neg:Thing.
 neg:birch-branches a neg:Thing.
 neg:oak-branches a neg:Thing.
 neg:pine-branches a neg:Thing.
@@ -50,6 +51,11 @@ neg:hatle-sticks a neg:Thing. # dunno what this is
 neg:hazel-sticks a neg:Thing.
 neg:hazel-branches a neg:Thing.
 neg:rowan-branches a neg:Thing.
+neg:linden-sticks a neg:Thing.
+neg:linden-branches a neg:Thing.
+neg:oak-sticks a neg:Thing.
+neg:aspen-branches a neg:Thing.
+neg:sticks a neg:Thing. # unspecified wood
 
 neg:spruce a neg:Thing.
 neg:spruce-branches a neg:Thing.
@@ -73,6 +79,12 @@ neg:hops a neg:Thing;
   rdfs:label "Hops";
   dc:description "Refers to the hop cones".
 neg:hop-stems a neg:Thing.
+neg:raspberry-canes a neg:Thing.
+neg:pea-leaves a neg:Thing.
+neg:furze a neg:Thing.
+neg:artemisia-vulgaris a neg:Thing.
+neg:heather a neg:Thing.
+neg:clover a neg:Thing.
 
 # ===== HARVESTING LOCATION
 

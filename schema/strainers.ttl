@@ -24,3 +24,13 @@ strainer:SB a tb:StrainerType;
 strainer:K a tb:StrainerType;
   rdfs:label "K";
   dc:description "Hollowed-out log or canoe-shaped tun with hole at end.".
+
+strainer:KA a tb:StrainerType;
+  rdfs:label "KA";
+  dc:description """Korchaga: metal/ceramic container for the oven with a
+  hole for lautering in front near bottom.""".
+
+strainer:KB a tb:StrainerType;
+  rdfs:label "KB";
+  dc:description """Kuurna with a hole in the middle and a stick for opening
+  and closing.""".

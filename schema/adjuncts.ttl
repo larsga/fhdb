@@ -8,9 +8,16 @@
 
 # ===== ADJUNCTS
 
+neg:apples a tb:Adjunct;
+  rdfs:label "Apples".
+
 neg:beetroots a tb:Adjunct;
   rdfs:label "Beetroots";
   dc:description "A cultivar of Beta vulgaris".
+
+neg:berries a tb:Adjunct;
+  rdfs:label "Berries";
+  dc:description "Use when species not specified".
 
 neg:beta-vulgaris a tb:Adjunct;
   rdfs:label "Beta vulgaris".
@@ -33,6 +40,9 @@ neg:honey a tb:Adjunct;
 
 neg:oats a tb:Adjunct;
   rdfs:label "Oats".
+
+neg:peas a tb:Adjunct;
+  rdfs:label "Peas".
 
 neg:potato a tb:Adjunct;
   rdfs:label "Potatoes".
@@ -68,6 +78,10 @@ neg:sugar-beets a tb:Adjunct;
 
 neg:syrup a tb:Adjunct;
   rdfs:label "Syrup".
+
+neg:treak a tb:Adjunct;
+  rdfs:label "Treak";
+  dc:description "A kind of treacle made from juniper".
 
 neg:wheat-bran a tb:Adjunct;
   rdfs:label "Wheat bran".

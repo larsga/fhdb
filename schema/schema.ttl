@@ -52,7 +52,7 @@ tb:same-informant-as rdfs:domain tb:Account;
   from the same informant.""".
 
 tb:part-of rdfs:domain rdf:Resource;
-  rdfs:range dbp:Country. # used to override data set inference
+  rdfs:range dbo:Place. # used to override data set inference
 
 tb:translation rdfs:domain tb:Account;
   rdfs:range rdf:Resource;
@@ -554,9 +554,6 @@ neg:year rdfs:domain tb:Recipe;
   rdfs:range rdfs:Literal;
   rdfs:comment """The year the account was written, published, or received by
   the institution. Used when the exact date (dc:date) is not known.""".
-
-#tb:part-of rdfs:domain dbo:Place;
-#  rdfs:range dbo:Place.
 
 # ===== DOT-specific
 

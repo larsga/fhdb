@@ -11,6 +11,10 @@
 neg:barley a tb:GrainType;
   rdfs:label "Barley".
 
+neg:brome a tb:GrainType;
+  rdfs:label "Brome";
+  dc:description "Latin Bromus".
+
 neg:oats a tb:GrainType;
   rdfs:label "Oats".
 
