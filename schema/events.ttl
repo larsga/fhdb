@@ -18,6 +18,10 @@ event:easter a tb:Event;
   rdfs:label "Easter";
   dc:description """.""".
 
+event:ee-victory a tb:Event;
+  rdfs:label "Estonian Victory Day";
+  dc:description """Introduced 1934. Victory Day on June 23rd.""".
+
 event:whitsun a tb:Event;
   rdfs:label "Whitsun";
   dc:description """.""".
@@ -26,6 +30,10 @@ event:martinisingen a tb:Event;
   rdfs:label "Martinisingen";
   dc:description """Also known as Mardipäev. November 10. Also known as
   St. Martin's Day.""".
+
+event:michaelmas a tb:Event;
+  rdfs:label "Michaelmas";
+  dc:description """FIXME: check what this is.""".
 
 event:midsummer a tb:Event;
   rdfs:label "Midsummer";
@@ -81,6 +89,9 @@ event:spring-day a tb:Event;
 
 event:spring-fishing a tb:Event;
   rdfs:label "The spring fishery".
+
+event:threshing a tb:Event;
+  rdfs:label "Threshing".
 
 # ----- SINGULAR EVENTS
 

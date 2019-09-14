@@ -69,6 +69,10 @@ neg:rye-flour a tb:Adjunct;
 neg:saccharine a tb:Adjunct;
   rdfs:label "Saccharine".
 
+neg:scorched-rye-flour a tb:Adjunct;
+  rdfs:label "Scorched rye flour";
+  dc:description "Rye flour scorched with hot stones or metal objects".
+
 neg:sugar a tb:Adjunct;
   rdfs:label "Sugar".
 
@@ -82,6 +86,10 @@ neg:syrup a tb:Adjunct;
 neg:treak a tb:Adjunct;
   rdfs:label "Treak";
   dc:description "A kind of treacle made from juniper".
+
+neg:vikis a tb:Adjunct;
+  rdfs:label "Vikis";
+  dc:description "We haven't figured out what this is".
 
 neg:wheat-bran a tb:Adjunct;
   rdfs:label "Wheat bran".

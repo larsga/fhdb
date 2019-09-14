@@ -57,6 +57,7 @@ def insert(endpoint, graph, filename):
         status, reason = insert_string(endpoint, graph, "\n".join(batch))
         print status, reason, "(%s lines)" % count
         if status != 200:
+            print 'Failed to load ' + filename
             sys.exit(1)
 
     write_date(endpoint, graph)
