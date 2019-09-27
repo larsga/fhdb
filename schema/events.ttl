@@ -116,3 +116,7 @@ event:tekkjardona a tb:Event;
 event:auctions a tb:Event;
   rdfs:label "Auctions";
   dc:descriptions "Should be self-evident. See sources.".
+
+event:barsel a tb:Event;
+  rdfs:label "Barsel";
+  dc:descriptions "Celebratio of a child being born.".

@@ -42,6 +42,7 @@ neg:alder-branches a neg:Thing.
 neg:alder-splinters a neg:Thing. # is this getting too detailed?
 neg:alder-sticks a neg:Thing.
 neg:birch-branches a neg:Thing.
+neg:birch-wood a neg:Thing.
 neg:oak-branches a neg:Thing.
 neg:pine-branches a neg:Thing.
 neg:pine-sticks a neg:Thing. # is this used correctly?
