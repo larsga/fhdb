@@ -2,7 +2,7 @@
 General, reusable Google Maps library.
 '''
 
-import codecs, sys, os
+import codecs, sys, os, json
 
 # ===== MAP
 
@@ -126,6 +126,9 @@ class Marker:
     def get_description(self):
         return self._desc
 
+    def get_data(self):
+        return self._data
+
 # ===== RENDERING
 
 def render(themap, filename, width = '100%', height = '100%', bottom = ''):
@@ -216,12 +219,13 @@ function add_marker(theid, lat, lng, title, symbol, data) {
         symbol.render_to(outf)
 
     for marker in themap.get_markers():
-        outf.write(u"add_marker('%s', %s, %s, '%s', %s);\n" %
+        outf.write(u"add_marker('%s', %s, %s, '%s', %s, %s);\n" %
                    (marker.get_id(),
                     marker.get_latitude(),
                     marker.get_longitude(),
                     marker.get_title().replace("'", "\\'"),
-                    marker.get_symbol().get_id()))
+                    marker.get_symbol().get_id(),
+                    json.dumps(marker.get_data())))
 
     outf.write(u'</script>\n\n\n')
 
