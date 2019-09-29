@@ -119,4 +119,8 @@ event:auctions a tb:Event;
 
 event:barsel a tb:Event;
   rdfs:label "Barsel";
-  dc:descriptions "Celebratio of a child being born.".
+  dc:descriptions "Celebration of a child being born.".
+
+event:confirmation a tb:Event;
+  rdfs:label "Confirmation";
+  dc:descriptions "Christian confirmation, at 14-15 years of age.".
