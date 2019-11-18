@@ -102,7 +102,11 @@ tb:mead rdfs:domain tb:Account;
   rdfs:comment "Did they make mead or not.".
 
 tb:oppskake rdfs:domain tb:Account;
-  rdfs:range neg:Boolean;
+  rdfs:range neg:Boolean; # DEPRECRATED! will stop using
+  rdfs:comment """Any kind of celebration when the beer was racked?""".
+
+tb:oppskake2 rdfs:domain tb:Account;
+  rdfs:range tb:OppskakeType;
   rdfs:comment """Were the neighbours invited to a party when the beer was
   racked? Should be redone to be more detailed.""".
 

@@ -115,6 +115,15 @@ neg:locally-grown a neg:Thing. # REMOVE
 neu:notes a neu:ItemType.
 neu:response a neu:ItemType.
 
+# ===== OPPSKÅKE CELEBRATION
+
+neg:party a tb:OppskakeType;
+  rdfs:label "Proper oppskåke party in brewhouse".
+neg:skokubolle a tb:OppskakeType;
+  rdfs:label "Someone sent to neighbours with beer".
+neg:none a tb:OppskakeType;
+  rdfs:label "Nothing".
+
 # ===== "JUNIPER PREFERENCE"
 # FIXME: not good enough
 
