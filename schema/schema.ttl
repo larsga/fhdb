@@ -297,6 +297,11 @@ tb:small-beer-batch-size rdfs:domain tb:Account;
   rdfs:range xsd:decimal;
   rdfs:comment "The normal batch size for the small beer, in liters.".
 
+tb:beers-pr-batch  rdfs:domain tb:Account;
+  rdfs:range xsd:decimal;
+  rdfs:comment """How many beers at different strengths were usually brewed
+  from a single batch of malt.""".
+
 tb:hop-wort-ratio rdfs:domain tb:Account;
   rdfs:range xsd:decimal;
   rdfs:comment "Grams of hops per liter of beer.".
