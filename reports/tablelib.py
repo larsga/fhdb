@@ -48,12 +48,17 @@ def intersect(list1, list2):
 
 class CountryTable:
 
-    def __init__(self, min_accounts, sort_columns = None):
+    def __init__(self, min_accounts, sort_columns = None, sort_rows = None, row_label = 'Country'):
         self._min_accounts = min_accounts
         self._country = {} # account uri -> country
         self._values = {} # account uri -> values
         self._sort_columns = sort_columns or self.sort_columns
+        self._sort_rows = sort_rows or self.get_countries
         self._other_values = [] # values hidden in 'Other' column
+        self._row_label = row_label
+
+    def get_row_label(self):
+        return self._row_label
 
     def add_account(self, value, country, uri):
         self._country[uri] = country
@@ -61,6 +66,9 @@ class CountryTable:
 
     def get_countries(self):
         'Return countries ordered by number of accounts (decreasing).'
+        return self._sort_rows()
+
+    def sort_countries(self):
         values = count_by_key(self._country.values())
         values.sort(key = lambda i: -i[1])
         return [c for (c, count) in values]
@@ -142,7 +150,7 @@ shorthands = {'United_Kingdom' : 'UK'}
 def write_table(writer, table, get_column_label):
     writer.start_table()
     writer.new_row()
-    writer.header('Country')
+    writer.header(table.get_row_label())
 
     columns = table.get_columns()
     for col in columns:

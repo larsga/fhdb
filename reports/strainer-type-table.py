@@ -1,5 +1,4 @@
 
-import sparqllib
 import tablelib
 
 format = tablelib.get_format()
