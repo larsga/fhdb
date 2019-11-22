@@ -119,6 +119,8 @@ neu:response a neu:ItemType.
 
 neg:party a tb:OppskakeType;
   rdfs:label "Proper oppskåke party in brewhouse".
+neg:house-party a tb:OppskakeType;
+  rdfs:label "Party, but only for the household".
 neg:skokubolle a tb:OppskakeType;
   rdfs:label "Someone sent to neighbours with beer".
 neg:none a tb:OppskakeType;
