@@ -53,7 +53,7 @@ class CountryTable:
         self._country = {} # account uri -> country
         self._values = {} # account uri -> values
         self._sort_columns = sort_columns or self.sort_columns
-        self._sort_rows = sort_rows or self.get_countries
+        self._sort_rows = sort_rows or self.sort_countries
         self._other_values = [] # values hidden in 'Other' column
         self._row_label = row_label
 
