@@ -43,6 +43,7 @@ neg:alder-splinters a neg:Thing. # is this getting too detailed?
 neg:alder-sticks a neg:Thing.
 neg:birch-branches a neg:Thing.
 neg:birch-wood a neg:Thing.
+neg:goat-willow-branches a neg:Thing.
 neg:oak-branches a neg:Thing.
 neg:pine-branches a neg:Thing.
 neg:pine-sticks a neg:Thing. # is this used correctly?
@@ -132,3 +133,7 @@ neg:none a tb:OppskakeType;
 # FIXME: not good enough
 
 neg:with-berries a neg:Thing.
+
+# ===== DRINK TYPES
+
+neg:small-beer a tb:DrinkType.
