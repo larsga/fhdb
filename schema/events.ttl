@@ -93,6 +93,10 @@ event:spring-fishing a tb:Event;
 event:threshing a tb:Event;
   rdfs:label "Threshing".
 
+event:martensgille a tb:Event;
+  rdfs:label "Mårtensgille";
+  dc:description "Not really clear what it is.".
+
 # ----- SINGULAR EVENTS
 
 event:dugnad a tb:Event;
