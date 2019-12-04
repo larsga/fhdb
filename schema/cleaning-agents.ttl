@@ -49,3 +49,6 @@ clean:sulphuric-acid a tb:CleaningAgent;
 
 clean:calcium-permanganate a tb:CleaningAgent;
   rdfs:label "Calcium permanganate".
+
+clean:stone-baking a tb:CleaningAgent;
+  rdfs:label "Stone-baking", "Steinbaka".
