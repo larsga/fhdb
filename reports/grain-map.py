@@ -66,17 +66,17 @@ mapping = {
     }
 
 symbols = {
-    'barley' : themap.add_symbol('barley', '#00FF00', '#000000'),
-    'barley_oats_wheat' : themap.add_symbol('barley_oats_wheat', '#FF55FF', '#000000'),
-    'barley_wheat' : themap.add_symbol('barley_wheat', '#FF99FF', '#000000'),
-    'all_four' : themap.add_symbol('all_four', '#FF9900', '#000000'),
-    'mixed_oats' : themap.add_symbol('mixed_oats', '#FFFF00', '#000000'),
-    'oats' : themap.add_symbol('oats', '#FF0000', '#000000'),
-    'mixed_rye_oats' : themap.add_symbol('mixed_rye_oats', '#FFFFFF', '#000000'),
-    'mixed_rye_wheat' : themap.add_symbol('mixed_rye_wheat', '#BAFFBA', '#000000'),
-    'mixed_rye' : themap.add_symbol('mixed_rye', '#00FFFF', '#000000'),
-    'rye' : themap.add_symbol('rye', '#0000FF', '#000000'),
-    'bizarre' : themap.add_symbol('bizarre', '#000000', '#000000'),
+    'barley' : themap.add_symbol('barley', '#00FF00', '#000000', 1),
+    'barley_oats_wheat' : themap.add_symbol('barley_oats_wheat', '#FF55FF', '#000000', 1),
+    'barley_wheat' : themap.add_symbol('barley_wheat', '#FF99FF', '#000000', 1),
+    'all_four' : themap.add_symbol('all_four', '#FF9900', '#000000', 1),
+    'mixed_oats' : themap.add_symbol('mixed_oats', '#FFFF00', '#000000', 1),
+    'oats' : themap.add_symbol('oats', '#FF0000', '#000000', 1),
+    'mixed_rye_oats' : themap.add_symbol('mixed_rye_oats', '#FFFFFF', '#000000', 1),
+    'mixed_rye_wheat' : themap.add_symbol('mixed_rye_wheat', '#BAFFBA', '#000000', 1),
+    'mixed_rye' : themap.add_symbol('mixed_rye', '#00FFFF', '#000000', 1),
+    'rye' : themap.add_symbol('rye', '#0000FF', '#000000', 1),
+    'bizarre' : themap.add_symbol('bizarre', '#000000', '#000000', 1),
     }
 
 mapping = {key : symbols[v] for (key, v) in mapping.items()}
