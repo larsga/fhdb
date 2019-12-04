@@ -21,6 +21,7 @@
 @prefix dbp: <http://dbpedia.org/resource/> .
 @prefix sm: <http://www.garshol.priv.no/2018/sm/> .
 @prefix erm: <http://www.garshol.priv.no/2019/erm/> .
+@prefix ulma: <http://www.garshol.priv.no/2018/ulma/> .
 
 # ===== META
 
@@ -97,10 +98,6 @@ tb:hops rdfs:domain tb:Account;
   rdfs:range neg:Thing;
   rdfs:comment "Were the hops locally grown or bought? Needs revision.".
 
-tb:mead rdfs:domain tb:Account;
-  rdfs:range neg:Boolean;
-  rdfs:comment "Did they make mead or not.".
-
 tb:oppskake rdfs:domain tb:Account;
   rdfs:range neg:Boolean; # DEPRECRATED! will stop using
   rdfs:comment """Any kind of celebration when the beer was racked?""".
@@ -109,6 +106,10 @@ tb:oppskake2 rdfs:domain tb:Account;
   rdfs:range tb:OppskakeType;
   rdfs:comment """Were the neighbours invited to a party when the beer was
   racked? Should be redone to be more detailed.""".
+
+tb:daily-drink rdfs:domain tb:Account;
+  rdfs:range tb:DrinkType;
+  rdfs:comment """What was used as the daily drink against thirst?""".
 
 tb:own-yeast rdfs:domain tb:Account;
   rdfs:range neg:Boolean;
@@ -158,6 +159,10 @@ tb:juniper-preference rdfs:domain tb:Account;
 tb:beer-name rdfs:domain tb:Account;
   rdfs:range rdfs:Literal;
   rdfs:comment "What did people call the good farmhouse ale?".
+
+tb:small-beer-name rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal;
+  rdfs:comment "What did people call the small beer?".
 
 tb:yeast-term rdfs:domain tb:Account;
   rdfs:range rdfs:Literal.
@@ -335,6 +340,39 @@ tb:yeast-keeping rdfs:domain tb:Account;
 tb:secondary-yeast-keeping rdfs:domain tb:Account;
   rdfs:range tb:YeastKeepingMethod;
   rdfs:comment """All other yeast keeping methods that are mentioned.""".
+
+# beers
+
+tb:strong-beer rdfs:domain tb:Account;
+  rdfs:range neg:Boolean;
+  rdfs:comment "Did they make strong beer or not.".
+
+tb:small-beer rdfs:domain tb:Account;
+  rdfs:range neg:Boolean;
+  rdfs:comment "Did they make small beer or not. Defined as second runnings.".
+
+tb:third-beer rdfs:domain tb:Account;
+  rdfs:range neg:Boolean;
+  rdfs:comment """Did they make a beer even weaker than the small beer, and
+  consider it beer?""".
+
+# other drinks
+
+tb:kvass rdfs:domain tb:Account;
+  rdfs:range neg:Boolean;
+  rdfs:comment "Did they make kvass or not.". # what's the definition?
+
+tb:sugar-beer rdfs:domain tb:Account;
+  rdfs:range neg:Boolean;
+  rdfs:comment "Did they make sugar-based 'beer' or not.".
+
+tb:mead rdfs:domain tb:Account;
+  rdfs:range neg:Boolean;
+  rdfs:comment "Did they make mead or not.".
+
+tb:juniper-berry-beer rdfs:domain tb:Account;
+  rdfs:range neg:Boolean;
+  rdfs:comment "Beer where juniper berries are the main fermentable.".
 
 # ===== DUBIOUS
 
@@ -593,3 +631,21 @@ erm:kirjeldand rdfs:domain erm:Account;
 erm:contained-in rdfs:domain erm:PseudoAccount;
   rdfs:label "Contained in";
   rdfs:range erm:Account.
+
+# ===== ULMA-specific
+
+ulma:info-from rdfs:domain ulma:Account;
+  rdfs:label "Informant";
+  rdfs:range rdfs:Literal.
+
+ulma:landskap rdfs:domain ulma:Account;
+  rdfs:label "Landskap";
+  rdfs:range rdfs:Literal.
+
+ulma:something rdfs:domain ulma:Account;
+  rdfs:label "Place";
+  rdfs:range rdfs:Literal.
+
+tb:online-copy rdfs:domain ulma:Account;
+  rdfs:label "Place";
+  rdfs:range rdf:Resource.
