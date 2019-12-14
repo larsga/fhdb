@@ -137,3 +137,5 @@ neg:with-berries a neg:Thing.
 # ===== DRINK TYPES
 
 neg:small-beer a tb:DrinkType.
+neg:blande a tb:DrinkType.
+neg:milk a tb:DrinkType.
