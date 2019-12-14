@@ -185,6 +185,9 @@ neg:spruce a neg:Herb;
 neg:walnut-leaves a neg:Herb;
   rdfs:label "Walnut leaves".
 
+neg:walnuts a neg:Herb;
+  rdfs:label "Walnuts".
+
 neg:clover a neg:Herb;
   rdfs:label "Clover".
 
