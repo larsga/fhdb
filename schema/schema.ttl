@@ -374,6 +374,10 @@ tb:juniper-berry-beer rdfs:domain tb:Account;
   rdfs:range neg:Boolean;
   rdfs:comment "Beer where juniper berries are the main fermentable.".
 
+tb:rostdrikke rdfs:domain tb:Account;
+  rdfs:range neg:Boolean;
+  rdfs:comment "Sour drink made by letting the spent grain sour over night.".
+
 # ===== DUBIOUS
 
 neg:mash-time rdfs:domain tb:Account;
