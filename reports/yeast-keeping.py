@@ -32,6 +32,8 @@ symbols = {
     'Straw ring'                  : brown,
     'Dried on straw (not a ring)' : brown,
     'Dried in a jar'              : brown,
+    'Dried in a cup'              : brown,
+    'Dried in fermentor'          : brown,
     'Dried on wooden boards'      : brown,
     'Dried on wooden boards with hops' : brown,
     'Dried next to oven'          : brown,
