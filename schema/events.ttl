@@ -8,7 +8,7 @@
 
 # ===== DETAILED EVENT CLASSIFICATION
 
-# ----- REPEATING EVENTS
+# ----- ANNUAL EVENTS
 
 event:xmas a tb:Event;
   rdfs:label "Christmas";
@@ -81,7 +81,7 @@ event:new-years-eve a tb:Event;
 
 event:candlemas a tb:Event;
   rdfs:label "Candlemas";
-  dc:description """Not sure when this is.""".
+  dc:description """Kyndelsmesse in Norwegian, February 2.""".
 
 event:spring-day a tb:Event;
   rdfs:label "Spring day (May 1st)";
@@ -96,6 +96,11 @@ event:threshing a tb:Event;
 event:martensgille a tb:Event;
   rdfs:label "Mårtensgille";
   dc:description "Not really clear what it is.".
+
+# ----- OTHER REPEATING
+
+event:husforhor a tb:Event;
+  rdfs:label "Husförhör".
 
 # ----- SINGULAR EVENTS
 
