@@ -6,28 +6,12 @@ import codecs, sys, os, json
 
 # ===== MAP
 
-class Map:
+class AbstractMap:
 
-    def __init__(self, center_lat, center_lng, zoom):
-        self._id = 'map'
+    def __init__(self):
         self._markers = []
         self._symbols = []
-        self._center_lat = center_lat
-        self._center_lng = center_lng
-        self._zoom = zoom
         self._legend = False
-
-    def get_id(self):
-        return self._id
-
-    def get_center_longitude(self):
-        return self._center_lng
-
-    def get_center_latitude(self):
-        return self._center_lat
-
-    def get_zoom_level(self):
-        return self._zoom
 
     def get_markers(self):
         return self._markers
@@ -56,11 +40,33 @@ class Map:
     def has_legend(self):
         return self._legend
 
+class GoogleMap(AbstractMap):
+
+    def __init__(self, center_lat, center_lng, zoom):
+        AbstractMap.__init__(self)
+        self._id = 'map'
+        self._center_lat = center_lat
+        self._center_lng = center_lng
+        self._zoom = zoom
+
+    def get_id(self):
+        return self._id
+
+    def get_center_longitude(self):
+        return self._center_lng
+
+    def get_center_latitude(self):
+        return self._center_lat
+
+    def get_zoom_level(self):
+        return self._zoom
+
     def render_to(self, filename, width = '100%', height = '100%', bottom = ''):
         render(self, filename, width, height, bottom)
 
         if len(sys.argv) > 1:
             os.system('open ' + filename)
+
 
 # ===== SYMBOL
 
@@ -80,6 +86,12 @@ class Symbol:
 
     def get_color(self):
         return self._color
+
+    def get_stroke_color(self):
+        return self._strokecolor
+
+    def get_scale(self):
+        return self._scale
 
     def get_title(self):
         return self._title
