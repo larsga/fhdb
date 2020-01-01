@@ -32,16 +32,18 @@ WHERE {
 lat = 61.8
 lng = 9.45
 
-def make_term_map(termprop, symbols, filename):
+def make_term_map(termprop, symbols, filename, usemap = None, scale = None):
     global lat, lng
     # symbols: [(regex, color, name), ...]
 
-    themap = maplib.Map(lat, lng, 6)
-    symbols = [(regex, themap.add_symbol(random_id(), color, '#000000', strokeweight = 1, title = name))
+    stroke = '#000000'
+
+    themap = usemap or maplib.GoogleMap(lat, lng, 6)
+    symbols = [(regex, themap.add_symbol(random_id(), color, stroke, strokeweight = 1, title = name, scale = scale))
                for (regex, color, name) in symbols]
 
-    OTHER = themap.add_symbol('black', '#000000', '#000000', strokeweight = 1,
-                              title = 'Other')
+    OTHER = themap.add_symbol('black', '#000000', stroke, strokeweight = 1,
+                              title = 'Other', scale = scale)
 
     for (title, lat, lng, term) in sparqllib.query_for_rows(query % termprop):
         symbol = OTHER
