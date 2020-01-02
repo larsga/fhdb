@@ -7,7 +7,7 @@ import sparqllib
 lat = 61.8
 lng = 9.45
 
-themap = maplib.Map(lat, lng, 6)
+themap = maplib.GoogleMap(lat, lng, 6)
 
 black = themap.add_symbol('black', '#000000', '#000000', strokeweight = 1,
                           title = 'Other')
