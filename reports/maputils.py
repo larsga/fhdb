@@ -63,7 +63,7 @@ def make_thing_map(query, symbols, filename, legend = False):
     global lat, lng
     # symbols: [(uri, color, name), ...]
 
-    themap = maplib.Map(lat, lng, 6)
+    themap = maplib.GoogleMap(lat, lng, 6)
     symbols = {
         uri : (themap.add_symbol(random_id(), color, '#000000', 1, title = name), name)
         for (uri, color, name) in symbols
