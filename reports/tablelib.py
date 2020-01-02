@@ -1,5 +1,5 @@
 
-import sys, string
+import sys, string, os
 import sparqllib
 
 def get_format():
@@ -143,6 +143,9 @@ def make_table(filename, query, get_column_label, label, caption,
         assert False, 'Unknown format %s' % format
 
     write_table(writer, table, get_column_label)
+
+    if len(sys.argv) > 1:
+        os.system('open %s' % filename)
 
 shorthands = {'United_Kingdom' : 'UK'}
 
