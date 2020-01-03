@@ -25,9 +25,9 @@ class MapnikMap(maplib.AbstractMap):
 # ===== SETUP
 
 water_color = '#88CCFF'
-#water_color = '#BBBBBB'
+#water_color = '#CCCCCC'
 
-def make_simple_map(shapefile = '/Users/larsga/Desktop/ne_10m_admin_0_countries/ne_10m_admin_0_countries.shp', west = -5, south = 55, east = 35, north = 67, width = 2000, height = 1200):
+def make_simple_map(shapefile = '/Users/larsga/Desktop/ne_10m_admin_0_countries/ne_10m_admin_0_countries.shp', west = -5, south = 55, east = 35, north = 67, width = 2000, height = 1200, elevation = True):
     m = mapnik.Map(width, height)
     m.srs = '+proj=merc +ellps=WGS84 +datum=WGS84 +no_defs'
     m.background = mapnik.Color(water_color)
@@ -59,9 +59,10 @@ def make_simple_map(shapefile = '/Users/larsga/Desktop/ne_10m_admin_0_countries/
     m.layers.append(layer)
 
     _add_lakes(m)
-    _add_glaciers(m)
     _add_rivers(m)
-#    _add_elevation(m)
+    if elevation:
+        _add_elevation(m)
+    _add_glaciers(m)
 
     # the box is defined in degrees when passed in to us, but now that
     # the projection is Mercator, the bounding box must be specified
@@ -132,27 +133,69 @@ def _add_glaciers(m):
     layer.styles.append('GlacierStyle')
     m.layers.append(layer)
 
-# def _add_elevation(m):
-#     s = mapnik.Style()
-#     r = mapnik.Rule()
-#     sym = mapnik.RasterSymbolizer()
-#     sym.opacity = 1
-#     sym.scaling = 'bilinear'
-#     sym.mode = 'normal'
-#     r.symbols.append(sym)
-#     s.rules.append(r)
+def _add_elevation(m):
+    s = mapnik.Style()
+    r = mapnik.Rule()
+    # rs = mapnik.RasterSymbolizer()
+    # rs.opacity = 1.0
+    # rs.scaling = 'bilinear'
+    # rs.comp_op = 'multiply'
 
-#     m.append_style('HillShade', s)
+    rs = mapnik.RasterSymbolizer()
 
-#     ds = mapnik.Gdal(
-#         base = '/Users/larsga/Desktop/DEM_geotiff',
-#         file = 'alwdgg.tif',
-#     )
-#     layer = mapnik.Layer('Elevation')
-#     layer.datasource = ds
-#     layer.srs = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
-#     layer.styles.append('HillShade')
-#     m.layers.append(layer)
+    # COLORIZER_DISCRETE is a binned/classified renderer. Other options are COLORIZER_LINEAR (stretched) and
+    # COLORIZER_EXACT (unique)
+    rs.colorizer = mapnik.RasterColorizer(
+        mapnik.COLORIZER_DISCRETE, mapnik.Color(0, 0, 0, 0)
+    )
+    #rs.colorizer.add_stop(0, mapnik.Color(217, 217, 229))
+    rs.colorizer.add_stop(250, mapnik.Color(58, 130, 72))
+    rs.colorizer.add_stop(500, mapnik.Color(37, 117, 69))
+    rs.colorizer.add_stop(1000, mapnik.Color(22, 70, 41))
+    # rs.colorizer.add_stop(234, mapnik.Color(255, 0, 0))
+    # rs.colorizer.add_stop(461, mapnik.Color(0, 0, 255))
+    # rs.colorizer.add_stop(719, mapnik.Color(0, 255, 0))
+
+    r.symbols.append(rs)
+    s.rules.append(r)
+
+    m.append_style('HillShade', s)
+
+    # old ETOPO5 data from 1988 with poor resolution
+    # https://www.eea.europa.eu/data-and-maps/data/world-digital-elevation-model-etopo5
+    # ds = mapnik.Gdal(
+    #     base = '/Users/larsga/Desktop/DEM_geotiff',
+    #     file = 'alwdgg.tif',
+    #     band = 1,
+    # )
+    # srs = '+proj=longlat +ellps=clrk66 +no_defs'
+
+    # new, huge EU-EDM v1.0
+    # https://land.copernicus.eu/imagery-in-situ/eu-dem/eu-dem-v1-0-and-derived-products
+    # The x,y-coordinates in the tiles are based on the EPSG:3035
+    # (ETRS89-LAEA) projection. ->
+    # ds = mapnik.Gdal(
+    #     base = '/Users/larsga/Desktop/EUDEM1',
+    #     file = 'EUD_CP-DEMS_4500045000-AA.tif',
+    #     band = 1,
+    # )
+    # srs = '+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +units=m +no_defs'
+
+    # ETOPO1
+    # https://www.ngdc.noaa.gov/mgg/global/
+    ds = mapnik.Gdal(
+        base = '/Users/larsga/Desktop/ETOPO1',
+        file = 'ETOPO1_Ice_c_geotiff.tif',
+        band = 1,
+    )
+    srs = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
+
+    layer = mapnik.Layer('Elevation')
+    layer.datasource = ds
+    layer.srs = srs
+
+    layer.styles.append('HillShade')
+    m.layers.append(layer)
 
 def _add_rivers(m):
     s = mapnik.Style()
