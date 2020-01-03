@@ -6,6 +6,17 @@ import json, sys, os
 import mapnik
 import maplib
 
+SHAPEDIR = os.environ.get('SHAPEDIR') # shapefiles must be located here
+
+# download from http://www.naturalearthdata.com/downloads/
+#  - ne_10m_admin_0_countries
+#  - ne_10m_lakes
+#  - ne_10m_glaciated_areas
+#  - ne_10m_rivers_lake_centerlines
+
+if not SHAPEDIR.endswith('/'):
+    SHAPEDIR += '/'
+
 # ===== MAP
 
 class MapnikMap(maplib.AbstractMap):
@@ -27,7 +38,7 @@ class MapnikMap(maplib.AbstractMap):
 water_color = '#88CCFF'
 #water_color = '#CCCCCC'
 
-def make_simple_map(shapefile = '/Users/larsga/Desktop/ne_10m_admin_0_countries/ne_10m_admin_0_countries.shp', west = -5, south = 55, east = 35, north = 67, width = 2000, height = 1200, elevation = True):
+def make_simple_map(shapefile = None, west = -5, south = 55, east = 35, north = 67, width = 2000, height = 1200, elevation = False):
     m = mapnik.Map(width, height)
     m.srs = '+proj=merc +ellps=WGS84 +datum=WGS84 +no_defs'
     m.background = mapnik.Color(water_color)
@@ -49,6 +60,7 @@ def make_simple_map(shapefile = '/Users/larsga/Desktop/ne_10m_admin_0_countries/
 
     m.append_style('My Style',s)
 
+    shapefile = shapefile or (SHAPEDIR + 'ne_10m_admin_0_countries/ne_10m_admin_0_countries.shp')
     ds = mapnik.Shapefile(file = shapefile)
     layer = mapnik.Layer('world')
 
@@ -91,7 +103,7 @@ def _add_lakes(m):
 
     m.append_style('LakeStyle', s)
 
-    ds = mapnik.Shapefile(file = 'ne_10m_lakes/ne_10m_lakes.shp')
+    ds = mapnik.Shapefile(file = SHAPEDIR + 'ne_10m_lakes/ne_10m_lakes.shp')
     # ds = mapnik.PostGIS(
     #     host = 'localhost',
     #     dbname = 'larsga',
@@ -126,7 +138,7 @@ def _add_glaciers(m):
 
     m.append_style('GlacierStyle', s)
 
-    ds = mapnik.Shapefile(file = 'ne_10m_glaciated_areas/ne_10m_glaciated_areas.shp')
+    ds = mapnik.Shapefile(file = SHAPEDIR + 'ne_10m_glaciated_areas/ne_10m_glaciated_areas.shp')
     layer = mapnik.Layer('glaciers')
     layer.datasource = ds
     layer.srs = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
@@ -184,7 +196,7 @@ def _add_elevation(m):
     # ETOPO1
     # https://www.ngdc.noaa.gov/mgg/global/
     ds = mapnik.Gdal(
-        base = '/Users/larsga/Desktop/ETOPO1',
+        base = SHAPEDIR + '/ETOPO1',
         file = 'ETOPO1_Ice_c_geotiff.tif',
         band = 1,
     )
@@ -208,7 +220,7 @@ def _add_rivers(m):
     s.rules.append(r)
     m.append_style('RiverStyle', s)
 
-    ds = mapnik.Shapefile(file = '/Users/larsga/Desktop/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines.shp')
+    ds = mapnik.Shapefile(file = SHAPEDIR + 'ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines.shp')
     layer = mapnik.Layer('rivers')
     layer.datasource = ds
     layer.srs = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
