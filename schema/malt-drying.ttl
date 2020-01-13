@@ -179,6 +179,11 @@ malt:pot a tb:MaltDryingMethod;
 
 malt:riihi a tb:MaltDryingMethod;
   rdfs:label "Riihi/ria";
+  dc:description """Dried on the riihi beams.""";
+  neg:variant-of malt:SmokyHot.
+
+malt:riihi-floor a tb:MaltDryingMethod;
+  rdfs:label "Riihi/ria floor";
   dc:description """Dried on the riihi floor.""";
   neg:variant-of malt:Warm.
 
