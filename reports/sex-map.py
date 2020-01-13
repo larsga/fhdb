@@ -5,7 +5,7 @@ import sparqllib
 lat = 61.8
 lng = 9.45
 
-themap = maplib.Map(lat, lng, 6)
+themap = maplib.GoogleMap(lat, lng, 6)
 
 red = themap.add_symbol('red',   '#FF0000', '#000000', strokeweight = 1)
 pink = themap.add_symbol('pink', '#FF00FF', '#000000', strokeweight = 1)
