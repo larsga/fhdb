@@ -34,6 +34,12 @@ class AbstractMap:
     def get_symbols(self):
         return self._symbols
 
+    def is_symbol_used(self, symbol):
+        for m in self._markers:
+            if m.get_symbol() == symbol:
+                return True
+        return False
+
     def set_legend(self, legend):
         self._legend = legend
 
