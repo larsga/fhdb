@@ -40,3 +40,9 @@ def make_norway_map():
         east = 6, west = 12, south = 57.9, north = 63.9,
         width = 1200, height = 1250
     ))
+
+def make_estonian_map():
+    return mapniklib.MapnikMap(mapniklib.make_simple_map(
+        east = 24, west = 26, south = 57, north = 59.7,
+        width = 1600, height = 1000
+    ))
