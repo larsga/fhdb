@@ -306,8 +306,10 @@ def _add_legend(filename, themap):
     r = 12
     font = ImageFont.truetype('Arial.ttf', r * 2)
 
+    used_symbols = [s for s in themap.get_symbols() if themap.is_symbol_used(s)]
+
     widest = 0
-    for symbol in themap.get_symbols():
+    for symbol in used_symbols:
         width = font.getsize(symbol.get_title())[0]
         widest = max(widest, width)
 
@@ -316,7 +318,7 @@ def _add_legend(filename, themap):
     x1 = 10
     y1 = 10
     x2 = 10 + r * 2 + offset * 3 + widest
-    y2 = 10 + displace * len(themap.get_symbols()) + offset
+    y2 = 10 + displace * len(used_symbols) + offset
     draw = ImageDraw.Draw(im)
     draw.rectangle(
         [(x1, y1), (x2, y2)],
@@ -325,10 +327,10 @@ def _add_legend(filename, themap):
         width = 2,
     )
 
-    for ix in range(len(themap.get_symbols())):
+    for ix in range(len(used_symbols)):
         displacement = displace * ix
 
-        symbol = themap.get_symbols()[ix]
+        symbol = used_symbols[ix]
         draw.ellipse(
             [(x1 + offset, y1 + offset + displacement), (x1 + offset + (r * 2), y1 + offset + (r * 2) + displacement)],
             outline = (0, 0, 0),
