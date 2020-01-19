@@ -29,6 +29,8 @@ class MapnikMap(maplib.AbstractMap):
         return self._base_map
 
     def render_to(self, filename, width = None, height = None, bottom = None):
+        if not filename.endswith('.png'):
+            filename += '.png'
         _render(self, filename)
         if len(sys.argv) > 1:
             os.system('open ' + filename)

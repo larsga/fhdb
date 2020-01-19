@@ -68,6 +68,9 @@ class GoogleMap(AbstractMap):
         return self._zoom
 
     def render_to(self, filename, width = '100%', height = '100%', bottom = ''):
+        if not filename.endswith('.html'):
+            filename += '.html'
+
         render(self, filename, width, height, bottom)
 
         if len(sys.argv) > 1:
