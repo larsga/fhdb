@@ -18,10 +18,13 @@ lng = 9.45
 
 themap = maplib.GoogleMap(lat, lng, 6)
 
-symbol_count = 33
-white = themap.add_symbol('white',   '#FFFFFF', '#000000', strokeweight = 1)
-black = themap.add_symbol('black', '#000000', '#000000', strokeweight = 1)
-gray = themap.add_symbol('gray', '#BBBBBB', '#000000', strokeweight = 1)
+scale = 5
+white = themap.add_symbol('white', '#FFFFFF', '#000000', strokeweight = 1,
+                          title = 'Infusion', scale = scale)
+black = themap.add_symbol('black', '#000000', '#000000', strokeweight = 1,
+                          title = 'No juniper', scale = scale)
+gray = themap.add_symbol('gray', '#BBBBBB', '#000000', strokeweight = 1,
+                         title = 'Filter only', scale = scale)
 symbols = {1 : white, 0 : black, 0.5 : gray}
 
 query = '''
@@ -66,4 +69,5 @@ for (s, title, lat, lng, herbs) in sparqllib.query_for_rows(query):
 for (title, lat, lng, juniper) in accounts.values():
     themap.add_marker(lat, lng, title, symbols[juniper])
 
-themap.render_to('juniper-map.html')
+themap.set_legend(True)
+themap.render_to('juniper-map')
