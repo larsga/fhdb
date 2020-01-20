@@ -16,7 +16,7 @@ def number(boolean):
 lat = 61.8
 lng = 9.45
 
-themap = maplib.Map(lat, lng, 6)
+themap = maplib.GoogleMap(lat, lng, 6)
 
 symbol_count = 33
 white = themap.add_symbol('white',   '#FFFFFF', '#000000', strokeweight = 1)
