@@ -378,6 +378,10 @@ tb:rostdrikke rdfs:domain tb:Account;
   rdfs:range neg:Boolean;
   rdfs:comment "Sour drink made by letting the spent grain sour over night.".
 
+tb:birch-sap-beer rdfs:domain tb:Account;
+  rdfs:range neg:Boolean;
+  rdfs:comment "Drink from birch sap, not really a beer.".
+
 # ===== DUBIOUS
 
 neg:mash-time rdfs:domain tb:Account;
