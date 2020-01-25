@@ -14,11 +14,15 @@ def rgb(hue, saturation, vrightness):
     (r, g, b) = colorsys.hsv_to_rgb(hue, saturation, vrightness)
     return chex(r) + chex(g) + chex(b)
 
-def color(value, symbols):
+def color(index, symbols):
     import colormaps
     # ratio = math.log(value + 1) / math.log(symbols)
     # return chex(ratio) + chex(ratio) + chex(ratio)
-    (r, g, b) = colormaps._magma_data[value]
+
+    inc = len(colormaps._magma_data) / float(symbols)
+    ix = int(round(inc * index))
+
+    (r, g, b) = colormaps._magma_data[ix]
     return chex(r) + chex(g) + chex(b)
 
 # these are essentially parameters

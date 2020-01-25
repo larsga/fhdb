@@ -99,7 +99,7 @@ symbols = [themap.add_symbol('id%s' % ix,
                              '#' + mapgenlib.color(ix, symbol_count),
                              '#000000',
                              strokeweight = 1,
-                             scale = 8
+                             scale = 10
            )
            for ix in range(symbol_count)]
 
