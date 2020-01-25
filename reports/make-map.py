@@ -4,6 +4,7 @@ to have a latitude and longitude, and to be of a type that is rdfs:subClassOf
 tb:Account.
 '''
 
+import sys
 import maplib
 import sparqllib
 
@@ -12,10 +13,16 @@ def extract_number(uri):
     pos2 = uri.rfind('.')
     return uri[pos + 1 : pos2]
 
-themap = maplib.Map(62, 15, 5)
+if len(sys.argv) > 1 and sys.argv[1] == 'png':
+    import config
+    themap = config.make_europe_all_map()
+    scale = 8
+else:
+    themap = maplib.GoogleMap(62, 15, 5)
+    scale = 5
 
 def symbol(id, color):
-    return themap.add_symbol(id, color, '#000000', WEIGHT)
+    return themap.add_symbol(id, color, '#000000', WEIGHT, scale = scale)
 
 WEIGHT = 1
 
@@ -61,4 +68,4 @@ for (s, lat, lng, title, t) in sparqllib.query_for_rows(query):
 
 # ===== RENDER
 
-themap.render_to('map.html')
+themap.render_to('map')
