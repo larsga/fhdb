@@ -40,7 +40,6 @@ symbols = {
     PREFIX + '2018/sm/Account' : symbol('paleblue', '#AAAAFF'),
     PREFIX + '2016/km/Account' : symbol('orange', '#FFAA00'),
     PREFIX + '2016/voko/Manuskript' : symbol('pink', '#FF00FF'),
-    PREFIX + '2017/eu/HopResponse' : symbol('pink', '#FF00FF'),
     PREFIX + '2015/luf/Response' : symbol('white', '#FFFFFF'),
     PREFIX + '2019/erm/Account' : symbol('paleblue2', '#AFEEEE'),
     PREFIX + '2019/erm/PseudoAccount' : symbol('paleblue2', '#AFEEEE'),
