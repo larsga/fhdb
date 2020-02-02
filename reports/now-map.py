@@ -5,7 +5,7 @@ Shows where brewing is currently alive.
 import maplib
 import sparqllib
 
-themap = maplib.Map(61.405343, 9.637301, 6)
+themap = maplib.GoogleMap(61.405343, 9.637301, 6)
 
 alive = themap.add_symbol('green', '#00FF00', '#000000')
 
