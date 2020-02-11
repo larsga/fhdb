@@ -26,4 +26,4 @@ symbols = [
     (PREFIX + 'KA', '#FFFF00', 'KA'),
     (PREFIX + 'KB', '#FF00FF', 'KB'),
 ]
-maputils.make_thing_map(query, symbols, 'strainer-type-map.html', legend = True)
+maputils.make_thing_map(query, symbols, 'strainer-type-map', legend = True)

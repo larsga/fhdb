@@ -17,6 +17,8 @@ SHAPEDIR = os.environ.get('SHAPEDIR') # shapefiles must be located here
 if not SHAPEDIR.endswith('/'):
     SHAPEDIR += '/'
 
+ELEVATION_DEFAULT = True
+
 # ===== MAP
 
 class MapnikMap(maplib.AbstractMap):
@@ -40,7 +42,7 @@ class MapnikMap(maplib.AbstractMap):
 water_color = '#88CCFF'
 #water_color = '#CCCCCC'
 
-def make_simple_map(shapefile = None, west = -5, south = 55, east = 35, north = 67, width = 2000, height = 1200, elevation = False):
+def make_simple_map(shapefile = None, west = -5, south = 55, east = 35, north = 67, width = 2000, height = 1200, elevation = ELEVATION_DEFAULT):
     m = mapnik.Map(width, height)
     m.srs = '+proj=merc +ellps=WGS84 +datum=WGS84 +no_defs'
     m.background = mapnik.Color(water_color)
