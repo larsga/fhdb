@@ -162,6 +162,12 @@ malt:oven-shelf a tb:MaltDryingMethod;
   dc:description """The small shelf next to the fireplace.""";
   neg:variant-of malt:Warm.
 
+malt:perforated-oven-shelf a tb:MaltDryingMethod;
+  rdfs:label "Oven shelf";
+  dc:description """The small shelf next to the fireplace, with perforated
+  bottom.""";
+  neg:variant-of malt:VerySmokyHot.
+
 malt:smoke-oven-shelf a tb:MaltDryingMethod;
   rdfs:label "Smoke oven shelf";
   dc:description """Røykovn with stone/wood shelf above.""";

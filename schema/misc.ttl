@@ -139,4 +139,5 @@ neg:with-berries a neg:Thing.
 neg:small-beer a tb:DrinkType.
 neg:blande a tb:DrinkType.
 neg:milk a tb:DrinkType.
+neg:sour-milk a tb:DrinkType.
 neg:juniper-beer a tb:DrinkType.

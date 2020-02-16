@@ -32,8 +32,14 @@ neg:bran a tb:Adjunct;
 neg:brown-sugar a tb:Adjunct;
   rdfs:label "Brown sugar".
 
+neg:caramel a tb:Adjunct;
+  rdfs:label "Caramel candy".
+
 neg:carrots a tb:Adjunct;
   rdfs:label "Carrots".
+
+neg:flour a tb:Adjunct;
+  rdfs:label "Flour, unspecified grain".
 
 neg:honey a tb:Adjunct;
   rdfs:label "Honey".
