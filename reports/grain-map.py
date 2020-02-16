@@ -46,7 +46,7 @@ GEO = 'http://www.w3.org/2003/01/geo/wgs84_pos#'
 lat = 61.8
 lng = 9.45
 
-themap = maplib.Map(lat, lng, 6)
+themap = maplib.GoogleMap(lat, lng, 6)
 
 mapping = {
     ('barley',)                                  : 'barley',
