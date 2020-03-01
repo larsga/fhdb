@@ -6,9 +6,9 @@ format = tablelib.get_format()
 
 MIN_ACCOUNTS = 3
 
-# used to merge herbs in the statistics without having to merge them
-# in the source data. used for synonyms I have decided to accept, but
-# means I can change my mind
+# merge herbs in the statistics without having to merge them in the
+# source data. used for synonyms I have decided to accept, but means I
+# can change my mind
 NEG = 'http://www.garshol.priv.no/2014/neg/'
 TRANSLATIONS = {
     NEG + 'grobone' : NEG + 'artemisia-vulgaris'
