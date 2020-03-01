@@ -323,6 +323,7 @@ class HtmlWriter(TableWriter):
 
     def end_table(self):
         self.out.write('</table>\n')
+        self.out.close()
 
 class LatexWriter(TableWriter):
 
