@@ -46,3 +46,9 @@ def make_estonian_map():
         east = 24, west = 25.7, south = 57.5, north = 59.7,
         width = 1600, height = 1000
     ))
+
+def make_georgian_map():
+    return mapniklib.MapnikMap(mapniklib.make_simple_map(
+        east = 40, west = 50, south = 40, north = 50,
+        width = 1600, height = 1600
+    ))
