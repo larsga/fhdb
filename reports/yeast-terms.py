@@ -8,7 +8,7 @@ GANG = re.compile(u'g(a|å|o|aa|ø)ng')
 GJAR = re.compile(u'(øl)?(gj|j|g)(æ|ä)r')
 JAL = re.compile(u'g?j(a|æ|ä)la?')
 GJEST = re.compile(u'(g|j|gj)(æ|ä|e|ei)st?(e?r)?')
-BERM = re.compile(u'b(e|æ|a)rm')
+BERM = re.compile(u'b(e|æ|a|ä)rm(a)?')
 
 symbols = [
     (KVEIK, '#FFFFFF', 'Kveik'),
