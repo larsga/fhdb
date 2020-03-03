@@ -235,6 +235,12 @@ malt:a-chimney a tb:MaltDryingMethod;
   on each side. Chimney from the oven.""";
   neg:variant-of malt:Warm.
 
+malt:shelf a tb:MaltDryingMethod;
+  rdfs:label "Shelf";
+  dc:description """Dried on a shelf up under the ceiling in a normal
+  room, not a custom-built kiln house.""";
+  neg:variant-of malt:Warm.
+
 malt:undried a tb:MaltDryingMethod;
   rdfs:label "Undried";
   dc:description """The malts are not dried at all.""";
