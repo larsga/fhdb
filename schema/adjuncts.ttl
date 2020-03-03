@@ -102,3 +102,5 @@ neg:wheat-bran a tb:Adjunct;
 
 neg:wheat-flour a tb:Adjunct;
   rdfs:label "Wheat flour".
+
+neg:none a tb:Adjunct.
