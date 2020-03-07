@@ -1,5 +1,16 @@
 
+import sys
 import maplib, mapniklib
+
+def make_map_from_cli_args():
+    if len(sys.argv) == 2:
+        spec = sys.argv[1]
+        if spec == 'europe':
+            return make_europe_map()
+        elif spec == 'nordic':
+            return make_nordic_map()
+
+    return maplib.GoogleMap(61.8, 9.45, 6)
 
 def make_nordic_map():
     return mapniklib.MapnikMap(mapniklib.make_simple_map(

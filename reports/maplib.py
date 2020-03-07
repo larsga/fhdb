@@ -8,10 +8,11 @@ import codecs, sys, os, json
 
 class AbstractMap:
 
-    def __init__(self):
+    def __init__(self, default_scale = 5):
         self._markers = []
         self._symbols = []
         self._legend = False
+        self._default_scale = default_scale
 
     def get_markers(self):
         return self._markers
@@ -27,7 +28,7 @@ class AbstractMap:
     def add_symbol(self, id, color, strokecolor = None, strokeweight = None,
                    title = None, scale = None):
         s = Symbol(id, color, strokecolor, strokeweight, title = title,
-                   scale = scale)
+                   scale = scale or self._default_scale)
         self._symbols.append(s)
         return s
 

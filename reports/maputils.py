@@ -3,6 +3,7 @@
 import random, string
 import maplib
 import sparqllib
+import config
 
 def random_id():
     return ''.join([random.choice(string.letters) for ix in range(10)])
@@ -29,16 +30,13 @@ WHERE {
     %s ?term.
 }'''
 
-lat = 61.8
-lng = 9.45
-
 def make_term_map(termprop, symbols, filename, usemap = None, scale = None):
     global lat, lng
     # symbols: [(regex, color, name), ...]
 
     stroke = '#000000'
 
-    themap = usemap or maplib.GoogleMap(lat, lng, 6)
+    themap = usemap or config.make_map_from_cli_args()
     symbols = [(regex, themap.add_symbol(random_id(), color, stroke, strokeweight = 1, title = name, scale = scale))
                for (regex, color, name) in symbols]
 
@@ -63,7 +61,7 @@ def make_thing_map(query, symbols, filename, legend = False):
     global lat, lng
     # symbols: [(uri, color, name), ...]
 
-    themap = maplib.GoogleMap(lat, lng, 6)
+    themap = config.make_map_from_cli_args()
     symbols = {
         uri : (themap.add_symbol(random_id(), color, '#000000', 1, title = name), name)
         for (uri, color, name) in symbols

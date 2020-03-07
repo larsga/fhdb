@@ -17,14 +17,14 @@ SHAPEDIR = os.environ.get('SHAPEDIR') # shapefiles must be located here
 if not SHAPEDIR.endswith('/'):
     SHAPEDIR += '/'
 
-ELEVATION_DEFAULT = True
+ELEVATION_DEFAULT = False
 
 # ===== MAP
 
 class MapnikMap(maplib.AbstractMap):
 
     def __init__(self, base_map):
-        maplib.AbstractMap.__init__(self)
+        maplib.AbstractMap.__init__(self, default_scale = 8)
         self._base_map = base_map
 
     def get_base_map(self):
