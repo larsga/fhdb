@@ -253,19 +253,66 @@ def _generate_svg(filename, symbol):
         size = symbol.get_scale() * 2
         mid = symbol.get_scale()
 
-        f.write('''
-            <svg viewBox="0 0 %s %s" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="%s" cy="%s" r="%s" stroke="%s" fill="%s"/>
-            </svg>
-        ''' % (
-            size,
-            size,
-            mid,
-            mid,
-            mid,
-            symbol.get_stroke_color(),
-            symbol.get_color()
-        ))
+        if symbol.get_shape() == maplib.CIRCLE:
+            f.write('''
+                <svg viewBox="0 0 %s %s" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="%s" cy="%s" r="%s" stroke="%s" fill="%s"/>
+                </svg>
+            ''' % (
+                size,
+                size,
+                mid,
+                mid,
+                mid,
+                symbol.get_stroke_color(),
+                symbol.get_color()
+            ))
+
+        elif symbol.get_shape() == maplib.SQUARE:
+            f.write('''
+                <svg viewBox="0 0 %s %s" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="%s" height="%s" stroke="%s" fill="%s"/>
+                </svg>
+            ''' % (
+                size,
+                size,
+                size,
+                size,
+                symbol.get_stroke_color(),
+                symbol.get_color()
+            ))
+
+        elif symbol.get_shape() == maplib.TRIANGLE:
+            topx = size / 2.0
+            topy = 0
+
+            botleftx = 0
+            botlefty = size
+
+            botrightx = size
+            botrighty = size
+
+            f.write('''
+                <svg viewBox="0 0 %s %s" xmlns="http://www.w3.org/2000/svg">
+                  <polygon points="%s,%s %s,%s %s,%s"
+                           stroke="%s" fill="%s" />
+                </svg>
+            ''' % (
+                size,
+                size,
+                topx,
+                topy,
+                botleftx,
+                botlefty,
+                botrightx,
+                botrighty,
+                symbol.get_stroke_color(),
+                symbol.get_color()
+            ))
+
+        else:
+            assert False, 'Unknown shape: %s' % symbol.get_shape()
+
 
 def _render(themap, filename):
     m = themap.get_base_map()
@@ -350,11 +397,29 @@ def _add_legend(filename, themap):
         displacement = displace * ix
 
         symbol = used_symbols[ix]
-        draw.ellipse(
-            [(x1 + offset, y1 + offset + displacement), (x1 + offset + (r * 2), y1 + offset + (r * 2) + displacement)],
-            outline = (0, 0, 0),
-            fill = _parse_color(symbol.get_color())
-        )
+        if symbol.get_shape() == maplib.CIRCLE:
+            draw.ellipse(
+                [
+                    (x1 + offset, y1 + offset + displacement),
+                    (x1 + offset + (r * 2), y1 + offset + (r * 2) + displacement)
+                ],
+                outline = (0, 0, 0),
+                fill = _parse_color(symbol.get_color())
+            )
+
+        elif symbol.get_shape() == maplib.TRIANGLE:
+            draw.polygon(
+                [
+                    (x1 + offset + r, y1 + offset + displacement),
+                    (x1 + offset, y1 + offset + r*2 + displacement),
+                    (x1 + offset + r*2, y1 + offset + r*2 + displacement)
+                ],
+                outline = (0, 0, 0),
+                fill = _parse_color(symbol.get_color())
+            )
+
+        else:
+            assert False, 'Unsupported shape: %s' % symbol.get_shape()
 
         draw.text(
             (x1 + 20 + (r * 2), y1 + 10 + displacement),

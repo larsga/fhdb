@@ -4,6 +4,12 @@ General, reusable Google Maps library.
 
 import codecs, sys, os, json
 
+# ===== SHAPES
+
+CIRCLE = 0
+SQUARE = 1
+TRIANGLE = 2
+
 # ===== MAP
 
 class AbstractMap:
@@ -25,10 +31,10 @@ class AbstractMap:
     def get_symbols(self):
         return self._symbols
 
-    def add_symbol(self, id, color, strokecolor = None, strokeweight = None,
-                   title = None, scale = None):
+    def add_symbol(self, id, color, strokecolor = '#000000', strokeweight = None,
+                   title = None, scale = None, shape = CIRCLE):
         s = Symbol(id, color, strokecolor, strokeweight, title = title,
-                   scale = scale or self._default_scale)
+                   scale = scale or self._default_scale, shape = shape)
         self._symbols.append(s)
         return s
 
@@ -83,13 +89,14 @@ class GoogleMap(AbstractMap):
 class Symbol:
 
     def __init__(self, id, color, strokecolor = None, strokeweight = None,
-                 title = None, scale = None):
+                 title = None, scale = None, shape = None):
         self._id = id
         self._color = color
         self._strokecolor = strokecolor or color
         self._strokeweight = strokeweight or 2
         self._title = title
         self._scale = scale or 5
+        self._shape = shape
 
     def get_id(self):
         return self._id
@@ -105,6 +112,9 @@ class Symbol:
 
     def get_title(self):
         return self._title
+
+    def get_shape(self):
+        return self._shape
 
     def render_to(self, outf):
         outf.write('''
