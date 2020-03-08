@@ -39,20 +39,35 @@ class MapnikMap(maplib.AbstractMap):
 
 # ===== SETUP
 
-water_color = '#88CCFF'
-#water_color = '#CCCCCC'
+class Colors:
+    def __init__(self, **entries):
+        self.__dict__.update(entries)
 
-def make_simple_map(shapefile = None, west = -5, south = 55, east = 35, north = 67, width = 2000, height = 1200, elevation = ELEVATION_DEFAULT):
+default_colors = Colors(
+    water_color = '#88CCFF',
+    land_color = '#409050'
+)
+black_and_white = Colors(
+    water_color = '#F6F6F6',
+    land_color = '#BBBBBB',
+)
+
+def make_simple_map(shapefile = None, west = -5, south = 55, east = 35, north = 67, width = 2000, height = 1200, elevation = ELEVATION_DEFAULT, color = True):
+    if color:
+        colors = default_colors
+    else:
+        colors = black_and_white
+
     m = mapnik.Map(width, height)
     m.srs = '+proj=merc +ellps=WGS84 +datum=WGS84 +no_defs'
-    m.background = mapnik.Color(water_color)
+    m.background = mapnik.Color(colors.water_color)
 
     s = mapnik.Style() # style object to hold rules
 
     r = mapnik.Rule() # rule object to hold symbolizers
     # to fill a polygon we create a PolygonSymbolizer
     polygon_symbolizer = mapnik.PolygonSymbolizer()
-    polygon_symbolizer.fill = mapnik.Color('#409050') # #999999
+    polygon_symbolizer.fill = mapnik.Color(colors.land_color)
     r.symbols.append(polygon_symbolizer) # add the symbolizer to the rule object
 
     # to add outlines to a polygon we create a LineSymbolizer
@@ -74,8 +89,8 @@ def make_simple_map(shapefile = None, west = -5, south = 55, east = 35, north = 
 
     m.layers.append(layer)
 
-    _add_lakes(m)
-    _add_rivers(m)
+    _add_lakes(m, colors)
+    _add_rivers(m, colors)
     if elevation:
         _add_elevation(m)
     _add_glaciers(m)
@@ -97,11 +112,11 @@ def _make_transform(source, target):
     trans = mapnik.ProjTransform(source, target)
     return trans
 
-def _add_lakes(m):
+def _add_lakes(m, colors):
     s = mapnik.Style()
     r = mapnik.Rule()
     polygon_symbolizer = mapnik.PolygonSymbolizer()
-    polygon_symbolizer.fill = mapnik.Color(water_color)
+    polygon_symbolizer.fill = mapnik.Color(colors.water_color)
     r.symbols.append(polygon_symbolizer)
     s.rules.append(r)
 
@@ -213,12 +228,12 @@ def _add_elevation(m):
     layer.styles.append('HillShade')
     m.layers.append(layer)
 
-def _add_rivers(m):
+def _add_rivers(m, colors):
     s = mapnik.Style()
     r = mapnik.Rule()
     r.filter = mapnik.Filter("[name] = 'Volga' or [name] = 'Dnipro' or [name] = 'Don' or [name] = 'Kama'")
     line_symbolizer = mapnik.LineSymbolizer()
-    line_symbolizer.stroke = mapnik.Color(water_color)
+    line_symbolizer.stroke = mapnik.Color(colors.water_color)
     line_symbolizer.stroke_width = 0.4
     r.symbols.append(line_symbolizer)
     s.rules.append(r)
