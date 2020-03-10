@@ -11,6 +11,8 @@ def make_map_from_cli_args():
             return make_nordic_map()
         elif spec == 'estonia':
             return make_estonian_map()
+        elif spec == 'georgia':
+            return make_georgian_map()
 
     return maplib.GoogleMap(61.8, 9.45, 6)
 
@@ -63,6 +65,6 @@ def make_estonian_map(color = True):
 
 def make_georgian_map():
     return mapniklib.MapnikMap(mapniklib.make_simple_map(
-        east = 40, west = 50, south = 40, north = 50,
-        width = 1600, height = 1600
+        east = 41, west = 49, south = 40, north = 45,
+        width = 1600, height = 800
     ))

@@ -5,6 +5,7 @@ tb:Account.
 '''
 
 import sys
+import config
 import maplib
 import sparqllib
 
@@ -13,16 +14,10 @@ def extract_number(uri):
     pos2 = uri.rfind('.')
     return uri[pos + 1 : pos2]
 
-if len(sys.argv) > 1 and sys.argv[1] == 'png':
-    import config
-    themap = config.make_europe_all_map()
-    scale = 8
-else:
-    themap = maplib.GoogleMap(62, 15, 5)
-    scale = 5
+themap = config.make_map_from_cli_args()
 
 def symbol(id, color):
-    return themap.add_symbol(id, color, '#000000', WEIGHT, scale = scale)
+    return themap.add_symbol(id, color, '#000000', WEIGHT)
 
 WEIGHT = 1
 
