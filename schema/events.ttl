@@ -97,6 +97,10 @@ event:martensgille a tb:Event;
   rdfs:label "Mårtensgille";
   dc:description "Not really clear what it is.".
 
+event:valborgsmassa a tb:Event;
+  rdfs:label "Valborgsmässa";
+  dc:description "April 30 or May 1.".
+
 # ----- OTHER REPEATING
 
 event:husforhor a tb:Event;
