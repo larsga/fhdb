@@ -1,4 +1,5 @@
 
+import sys
 import tablelib, sparqllib
 import pitch
 
@@ -32,4 +33,5 @@ for (s, lat, lng, t, c) in sparqllib.query_for_rows(pitch.query):
         table.add_account(bracket, c, s)
 
 out = tablelib.HtmlWriter(open('pitch-temperature-table.html', 'w'))
+#out = tablelib.TabWriter(sys.stdout, 'w')
 tablelib.write_table(out, table, column_label)

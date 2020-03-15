@@ -65,7 +65,7 @@ def get_temp(t):
     # if m:
     #     return TALLOWTEMP
 
-    print repr(t), type(t)
+    #print repr(t), type(t)
 
 def get_category(t):
     t = t.lower()

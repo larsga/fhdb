@@ -269,15 +269,30 @@ def write_simple_table(out, rows):
 
 class TableWriter:
 
-    def header_row(self, *cells):
-        self.new_row()
-        for cell in cells:
-            self.header(cell)
+    def start_table(self):
+        pass
 
-    def row(self, *cells):
-        self.new_row()
-        for cell in cells:
-            self.cell(cell)
+    def new_row(self):
+        pass
+
+    def header(self, content, klass = None, breaking = False):
+        pass
+
+    def cell(self, content, klass = None, breaking = True):
+        pass
+
+    def end_table(self):
+        pass
+
+    # def header_row(self, *cells):
+    #     self.new_row()
+    #     for cell in cells:
+    #         self.header(cell)
+
+    # def row(self, *cells):
+    #     self.new_row()
+    #     for cell in cells:
+    #         self.cell(cell)
 
 class HtmlWriter(TableWriter):
 
@@ -402,3 +417,33 @@ class ConsoleWriter(TableWriter):
         for row in self.rows:
             line = [string.ljust(row[ix], col_widths[ix]) for ix in range(len(row))]
             print '  '.join(line)
+
+class TabWriter(TableWriter):
+    '''Just writes the table as a tab-separated file. Good for copying and
+    pasting into spreadsheets and word processor tables.'''
+
+    def __init__(self, out, label = None, caption = None, columns = None):
+        self.out = out
+        self._first_row = True
+        self._first_cell = True
+
+    def new_row(self):
+        if self._first_row:
+            self._first_row = False
+        else:
+            self.out.write('\n')
+
+        self._first_cell = True
+
+    def header(self, content, klass = None, breaking = False):
+        self.cell(content)
+
+    def cell(self, content, klass = None, breaking = True):
+        if not self._first_cell:
+            self.out.write('\t')
+
+        self.out.write(unicode(content))
+        self._first_cell = False
+
+    def end_table(self):
+        self.out.write('\n')
