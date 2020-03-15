@@ -25,6 +25,10 @@ def color(index, symbols):
     (r, g, b) = colormaps._magma_data[ix]
     return chex(r) + chex(g) + chex(b)
 
+def bwcolor(index, symbols):
+    brightness = (index / float(symbols))
+    return chex(brightness) + chex(brightness) + chex(brightness)
+
 # these are essentially parameters
 zoom = 6
 center_lat = 61.8
