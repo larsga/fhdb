@@ -18,4 +18,4 @@ symbols = [
     (GJEST, '#FF00FF', 'Gjest(er)'),
     (BERM, '#FF0000', 'Berm'),
 ]
-maputils.make_term_map('tb:yeast-term', symbols, 'yeast-terms.html')
+maputils.make_term_map('tb:yeast-term', symbols, 'yeast-terms')
