@@ -13,6 +13,8 @@ def make_map_from_cli_args():
             return make_estonian_map()
         elif spec == 'georgia':
             return make_georgian_map()
+        elif spec == 'norway':
+            return make_norway_map()
 
     return maplib.GoogleMap(61.8, 9.45, 6)
 
