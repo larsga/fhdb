@@ -272,6 +272,16 @@ class TableWriter:
     def start_table(self):
         pass
 
+    def header_row(self, *cells):
+        self.new_row()
+        for cell in cells:
+            self.header(cell)
+
+    def row(self, *cells):
+        self.new_row()
+        for cell in cells:
+            self.cell(cell)
+
     def new_row(self):
         pass
 
