@@ -81,6 +81,12 @@ malt:badstu-like-soinn a tb:MaltDryingMethod;
   bottom. Fireplace underneath.""";
   neg:variant-of malt:SmokyHot.
 
+malt:latvian-sauna a tb:MaltDryingMethod;
+  rdfs:label "Latvian-style sauna";
+  dc:description """Small house with stone oven (no chimney) on ground floor,
+  with an opening up to the floor above where the malts are dried.""";
+  neg:variant-of malt:SmokyHot.
+
 malt:heated-floor a tb:MaltDryingMethod;
   rdfs:label "Heated floor";
   dc:description """On a floor that is heated by a heat channel underneath
