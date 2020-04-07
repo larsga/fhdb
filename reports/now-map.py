@@ -2,12 +2,13 @@
 Shows where brewing is currently alive.
 '''
 
+import config
 import maplib
 import sparqllib
 
-themap = maplib.GoogleMap(61.405343, 9.637301, 6)
+themap = config.make_map_from_cli_args()
 
-alive = themap.add_symbol('green', '#00FF00', '#000000')
+alive = themap.add_symbol('yellow', '#FFFF00', '#000000')
 
 query = '''
 prefix tb: <http://www.garshol.priv.no/2014/trad-beer/>
@@ -31,4 +32,4 @@ for (title, place, lat, lng) in sparqllib.query_for_rows(query):
 
 # ===== RENDER
 
-themap.render_to('now-map.html')
+themap.render_to('now-map')
