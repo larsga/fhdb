@@ -7,6 +7,8 @@ def make_map_from_cli_args():
         spec = sys.argv[1]
         if spec == 'europe':
             return make_europe_map()
+        elif spec == 'europe-all':
+            return make_europe_all_map()
         elif spec == 'nordic':
             return make_nordic_map()
         elif spec == 'estonia':
