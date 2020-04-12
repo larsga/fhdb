@@ -101,6 +101,12 @@ event:valborgsmassa a tb:Event;
   rdfs:label "Valborgsmässa";
   dc:description "April 30 or May 1.".
 
+event:husforhor a tb:Event;
+  rdfs:label "Husförhör";
+  dc:description """Annual event where the priest questioned the members of the
+  household to verify their knowledge of the bible and cathechism.""";
+  rdfs:seeAlso <https://sv.wikipedia.org/wiki/Husf%C3%B6rh%C3%B6r>.
+
 # ----- OTHER REPEATING
 
 event:husforhor a tb:Event;
