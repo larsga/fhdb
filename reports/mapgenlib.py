@@ -2,6 +2,7 @@
 Utilities for generating specific kinds of maps.
 '''
 
+import config
 import colorsys
 import maplib
 import sparqllib
@@ -41,7 +42,7 @@ def value_mapper(v):
     return math.log(v)
 
 def color_scale_map(query, outfile, max_value = 1000000):
-    themap = maplib.Map(center_lat, center_lng, zoom)
+    themap = config.make_map_from_cli_args()
 
     symbols = [themap.add_symbol('id%s' % ix,
                                  '#' + color(ix, symbol_count),
