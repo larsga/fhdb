@@ -22,5 +22,6 @@ symbols = [
     (PREFIX + 'small-beer',  '#00FF00', 'Small beer'),
     (PREFIX + 'blande',      '#FF0000', 'Blande'),
     (PREFIX + 'milk',        '#FFFFFF', 'Milk'),
+    (PREFIX + 'sour-milk',   '#0000FF', 'Sour milk'),
 ]
 maputils.make_thing_map(query, symbols, 'daily-drink-map', legend = True)
