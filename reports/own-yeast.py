@@ -7,7 +7,7 @@ import sparqllib
 
 themap = config.make_map_from_cli_args()
 
-symbols = {'true' : themap.add_symbol('white', '#FFFFFF', '#000000'),
+symbols = {'true' : themap.add_symbol('white', '#FFFF00', '#000000'),
            'false' : themap.add_symbol('black', '#000000', '#000000'),
            'http://www.garshol.priv.no/2014/neg/borderline' :
            themap.add_symbol('gray', '#999999', '#000000', strokeweight = 1)}
