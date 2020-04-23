@@ -5,7 +5,7 @@ import maputils
 
 LETT = re.compile(u'lettøl')
 TYNN = re.compile(u't(o|y|u)n(n|t)(øl|dricka)')
-SPISS = re.compile(u'sp(i|y)s(s)?(ö|ø|e)l')
+SPISS = re.compile(u'sp(i|y|ø)s(s)?(ö|ø|e)l')
 SVAGDRICKA = re.compile(u'svagdricka')
 
 symbols = [
