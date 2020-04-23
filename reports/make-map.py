@@ -24,6 +24,7 @@ WEIGHT = 1
 PREFIX = 'http://www.garshol.priv.no/'
 symbols = {
     PREFIX + '2014/neg/Response' : symbol('green', '#00FF00'),
+    PREFIX + '2014/neg/DrinkResponse' : symbol('palegreen', '#CCFFCC'),
     PREFIX + '2015/neu/Item' : symbol('blue', '#5555FF'),
     PREFIX + '2014/trad-beer/Recipe' : symbol('black', '#000000'),
     PREFIX + '2016/dot/DataPoint' : symbol('gray', '#AAAAAA'),
