@@ -1,5 +1,5 @@
 
-import sparqllib, maplib
+import sparqllib, maplib, config
 
 def get_last_part(uri):
     pos = uri.rfind('/')
@@ -61,7 +61,7 @@ for (s, lat, lng, title, ended) in sparqllib.query_for_rows(query):
 
 WEIGHT = 1
 
-themap = maplib.Map(62, 15, 5)
+themap = config.make_map_from_cli_args()
 
 alive = themap.add_symbol('green', '#00FF00', '#000000', WEIGHT)
 dead  = themap.add_symbol('black', '#000000', '#000000', WEIGHT)
