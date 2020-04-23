@@ -17,6 +17,7 @@ names = {
     'http://www.garshol.priv.no/2018/sm/Account' : 'SM',
     'http://www.garshol.priv.no/2018/ulma/Account' : 'ULMA',
     'http://www.garshol.priv.no/2019/erm/Account' : 'ERM',
+    'http://www.garshol.priv.no/2014/neg/DrinkResponse' : 'NEG 28',
 }
 
 # triples by type
