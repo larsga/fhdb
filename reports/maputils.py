@@ -43,6 +43,7 @@ def make_term_map(termprop, symbols, filename, usemap = None, scale = None):
     OTHER = themap.add_symbol('black', '#000000', stroke, strokeweight = 1,
                               title = 'Other', scale = scale)
 
+    unmatched = []
     for (title, lat, lng, term) in sparqllib.query_for_rows(query % termprop):
         symbol = OTHER
         for (regex, s) in symbols:
@@ -52,10 +53,14 @@ def make_term_map(termprop, symbols, filename, usemap = None, scale = None):
 
         themap.add_marker(lat, lng, title + ': ' + term, symbol)
         if symbol == OTHER:
-            print term
+            unmatched.append(term)
 
     themap.set_legend(True)
     themap.render_to(filename)
+
+    unmatched.sort()
+    for term in unmatched:
+        print term
 
 def make_thing_map(query, symbols, filename, legend = False):
     global lat, lng
