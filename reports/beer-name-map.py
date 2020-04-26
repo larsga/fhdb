@@ -6,7 +6,7 @@ import maputils
 KORNOL = re.compile(u'k((orn)|(ønnj))øl')
 HEIMABRYGG = re.compile('heim(a|e)br(y|u)gg')
 MALTOL = re.compile(u'malt(ø|ö)l')
-DRICKA = re.compile(u'dr(i|e)(c|k)k(a|e)?')
+DRICKA = re.compile(u'dr(i|e)(c|k)?k(a|e)?')
 
 symbols = [
     (KORNOL,     '#FFFFFF', u'Kornøl'),
