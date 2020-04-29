@@ -20,8 +20,8 @@ select ?s ?title ?drink ?lat ?lng where {
 PREFIX = 'http://www.garshol.priv.no/2014/neg/'
 symbols = [
     (PREFIX + 'small-beer',  '#00FF00', 'Small beer'),
-    (PREFIX + 'blande',      '#FF0000', 'Blande'),
+    (PREFIX + 'blande',      '#FFBBBB', 'Blande'),
     (PREFIX + 'milk',        '#FFFFFF', 'Milk'),
-    (PREFIX + 'sour-milk',   '#0000FF', 'Sour milk'),
+    (PREFIX + 'sour-milk',   '#BBBBFF', 'Sour milk'),
 ]
 maputils.make_thing_map(query, symbols, 'daily-drink-map', legend = True)
