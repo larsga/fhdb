@@ -1,4 +1,5 @@
 
+import config
 import colorsys
 import maplib
 import sparqllib
@@ -16,7 +17,7 @@ def number(boolean):
 lat = 61.8
 lng = 9.45
 
-themap = maplib.GoogleMap(lat, lng, 6)
+themap = config.make_map_from_cli_args()
 
 scale = 5
 white = themap.add_symbol('white', '#FFFFFF', '#000000', strokeweight = 1,

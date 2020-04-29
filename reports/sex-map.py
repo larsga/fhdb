@@ -1,11 +1,12 @@
 
+import config
 import maplib
 import sparqllib
 
 lat = 61.8
 lng = 9.45
 
-themap = maplib.GoogleMap(lat, lng, 6)
+themap = config.make_map_from_cli_args()
 
 red = themap.add_symbol('red',   '#FF0000', '#000000', strokeweight = 1)
 pink = themap.add_symbol('pink', '#FF00FF', '#000000', strokeweight = 1)
