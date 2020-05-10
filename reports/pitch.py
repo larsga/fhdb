@@ -26,13 +26,13 @@ WHERE {
 
 BINS = 10
 
-SINGLE = re.compile('(^| |\\()([0-9]?[0-9](\\.[0-9])?)(C| (G|g)rader|$)')
+SINGLE = re.compile('(^| |\\()([0-9]?[0-9](\\.[0-9])?)(c|C| (G|g)rader|$)')
 RANGE = re.compile('([0-9]?[0-9])-([0-9]?[0-9])(C|c| grader| degrees)?')
 
 MILK = re.compile(u'(mjølk|mælk|milk|mjölk|melk|spen(|e|a)varm(t)?)|mjelk')
 MILKTEMP = 36
 
-BODY = re.compile(u'(h(å|a)ndvarm(t|e)|body temperature|kropp?sv(a|ä)rme|blodvarmt|krop(p)?stemperatur|blood heat|blood temperature)')
+BODY = re.compile(u'(h(å|a)ndvarm(t|e)|body temperature|kropp?sv(a|ä)rme|blodvarmt|krop(p)?stemperatur|blood heat|blood temperature|human skin)')
 BODYTEMP = 37
 
 # this is not actually enabled
@@ -67,16 +67,20 @@ def get_temp(t):
 
     #print repr(t), type(t)
 
-def get_category(t):
+def get_category(t, quiet = True):
     t = t.lower()
 
-    if SINGLE.search(t) or RANGE.search(t):
-        return 'numeric'
+    if SINGLE.search(t):
+        return 'single'
+    elif RANGE.search(t):
+        return 'range'
     elif MILK.search(t):
         return 'milkwarm'
     elif BODY.search(t):
         return 'body'
     else:
+        if not quiet:
+            print 'OTHER:', t
         return 'none'
 
 def get_name(url):
