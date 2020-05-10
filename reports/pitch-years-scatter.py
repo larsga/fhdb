@@ -33,9 +33,22 @@ for (s, lat, lng, t, c, year) in sparqllib.query_for_rows(query):
     temps.append(temp)
     years.append(int(year))
 
+# first, count the number of times each combination appears
+counts = {}
+for key in zip(temps, years):
+    counts[key] = counts.get(key, 0) + 1
+for (key, count) in counts.items():
+    if count > 1:
+        print key, count
+
+# then, produce the size array
+sizes = []
+for key in zip(temps, years):
+    sizes.append(counts[key] * 10)
+
 from matplotlib import pyplot as plt
 
-plt.scatter(years, temps)
+plt.scatter(years, temps, s = sizes)
 plt.title('Publication year vs pitch temperature')
 plt.xlabel('Publication year')
 plt.ylabel('Pitch temperature')
