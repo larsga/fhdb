@@ -26,11 +26,16 @@ columns = [
 ]
 
 table = tablelib.CountryTable(1, sort_columns = sort_columns)
+count = 0
 for (s, lat, lng, t, c) in sparqllib.query_for_rows(pitch.query):
     temp = pitch.get_temp(t)
     if temp:
+        count += 1
         bracket = to_pair(temp)
         table.add_account(bracket, c, s)
+
+print 'INTERPRETABLE', count
+print 'table._values', len(table._values)
 
 out = tablelib.HtmlWriter(open('pitch-temperature-table.html', 'w'))
 #out = tablelib.TabWriter(sys.stdout, 'w')

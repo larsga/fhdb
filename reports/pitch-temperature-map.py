@@ -7,7 +7,7 @@ import pitch
 
 # ===== ALL IN ONE DATA SET
 
-color = False
+color = True
 
 themap = mapniklib.MapnikMap(mapniklib.make_simple_map(
         east = -4, west = 28, south = 52.5, north = 63.5,
