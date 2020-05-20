@@ -2,23 +2,24 @@
 import sys
 import maplib, mapniklib
 
+class MapSpecification:
+    def __init__(self):
+        pass
+
+def parse_spec(spec):
+    parts = spec.split(':')
+
+    spec = MapSpecification()
+    spec.area = parts[0]
+    spec.elevation = 'el' in parts
+    spec.color = 'bw' not in parts
+    return spec
+
 def make_map_from_cli_args():
     if len(sys.argv) == 2:
-        spec = sys.argv[1]
-        if spec == 'europe':
-            return make_europe_map()
-        elif spec == 'europe-all':
-            return make_europe_all_map()
-        elif spec == 'nordic':
-            return make_nordic_map()
-        elif spec == 'estonia':
-            return make_estonian_map()
-        elif spec == 'georgia':
-            return make_georgian_map()
-        elif spec == 'norway':
-            return make_norway_map()
-        elif spec == 'denmark':
-            return make_denmark_map()
+        spec = parse_spec(sys.argv[1])
+        if spec.area in locations:
+            return locations[spec.area](spec)
 
     return maplib.GoogleMap(61.8, 9.45, 6)
 
@@ -56,10 +57,28 @@ def make_baltic_map():
         width = 1600, height = 1200
     ))
 
-def make_norway_map():
+def make_norway_map(spec):
     return mapniklib.MapnikMap(mapniklib.make_simple_map(
         east = 6, west = 12, south = 57.9, north = 63.9,
-        width = 1200, height = 1250
+        width = 1200, height = 1250,
+        elevation = spec.elevation,
+        color = spec.color
+    ))
+
+def make_mid_norway_map(spec):
+    return mapniklib.MapnikMap(mapniklib.make_simple_map(
+        east = 7.5, west = 10, south = 59, north = 63,
+        width = 1400, height = 1200,
+        elevation = spec.elevation,
+        color = spec.color
+    ))
+
+def make_norway_sweden_map(spec):
+    return mapniklib.MapnikMap(mapniklib.make_simple_map(
+        east = 6, west = 18, south = 57.9, north = 63.9,
+        width = 1800, height = 1200,
+        elevation = spec.elevation,
+        color = spec.color
     ))
 
 def make_denmark_map():
@@ -80,3 +99,15 @@ def make_georgian_map():
         east = 41, west = 49, south = 40, north = 45,
         width = 1600, height = 800
     ))
+
+locations = {
+    'europe': make_europe_map,
+    'europe-all' : make_europe_all_map,
+    'nordic' : make_nordic_map,
+    'estonia' : make_estonian_map,
+    'georgia' : make_georgian_map,
+    'norway' : make_norway_map,
+    'mid-norway' : make_mid_norway_map,
+    'norway-sweden' : make_norway_sweden_map,
+    'denmark' : make_denmark_map,
+}
