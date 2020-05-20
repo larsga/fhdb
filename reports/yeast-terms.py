@@ -15,7 +15,7 @@ symbols = [
     (GANG, '#00FFFF', 'Gong'),
     (GJAR, '#FFFF00', u'Gjær'),
     (JAL, '#FFBB66', u'Jäl'),
-    (GJEST, '#FF00FF', 'Gjest(er)'),
+    (GJEST, '#4455FF', 'Gjest(er)'),
     (BERM, '#FF0000', 'Berm'),
 ]
 maputils.make_term_map('tb:yeast-term', symbols, 'yeast-terms')
