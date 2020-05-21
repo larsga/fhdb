@@ -1,5 +1,6 @@
 
 import sparqllib, maplib
+import config
 
 # ----- STEP 1: COLLECT THE DATA
 
@@ -46,7 +47,7 @@ GEO = 'http://www.w3.org/2003/01/geo/wgs84_pos#'
 lat = 61.8
 lng = 9.45
 
-themap = maplib.GoogleMap(lat, lng, 6)
+themap = config.make_map_from_cli_args()
 
 mapping = {
     ('barley',)                                  : 'barley',
@@ -90,7 +91,8 @@ for (s, (title, lat, lng, grain)) in data.items():
 
     themap.add_marker(lat, lng, t, mapping[grain])
 
-themap.render_to('grain-map.html')
+#themap.set_legend(True)
+themap.render_to('grain-map')
 
 # ----- STEP 3: DRAW THE OATS BELT
 
