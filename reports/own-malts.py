@@ -1,12 +1,12 @@
 
 import colorsys
-import maplib
+import config
 import sparqllib
 
 lat = 61.8
 lng = 9.45
 
-themap = maplib.Map(lat, lng, 6)
+themap = config.make_map_from_cli_args()
 
 symbols = {'true' : themap.add_symbol('white', '#FFFFFF', '#000000'),
            'false' : themap.add_symbol('black', '#000000', '#000000'),
@@ -33,4 +33,4 @@ for (s, lat, lng, title, yeast) in sparqllib.query_for_rows(query):
     symbol = symbols[yeast]
     themap.add_marker(lat, lng, title, symbol)
 
-themap.render_to('own-malts.html')
+themap.render_to('own-malts')
