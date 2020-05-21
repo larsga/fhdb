@@ -81,10 +81,12 @@ def make_norway_sweden_map(spec):
         color = spec.color
     ))
 
-def make_denmark_map():
+def make_denmark_map(spec):
     return mapniklib.MapnikMap(mapniklib.make_simple_map(
         east = 15.3, west = 7.8, south = 54.5, north = 57.9,
-        width = 1400, height = 1200
+        width = 1400, height = 1200,
+        elevation = spec.elevation,
+        color = spec.color
     ))
 
 def make_estonian_map(color = True):
