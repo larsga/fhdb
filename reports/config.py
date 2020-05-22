@@ -16,7 +16,7 @@ def parse_spec(spec):
     return spec
 
 def make_map_from_cli_args():
-    if len(sys.argv) == 2:
+    if len(sys.argv) > 1:
         spec = parse_spec(sys.argv[1])
         if spec.area in locations:
             return locations[spec.area](spec)
