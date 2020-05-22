@@ -74,11 +74,12 @@ def get_herb_name(h):
 
 CAPTION = '''Herbs used in farmhouse brewing. Columns are not exclusive. Every herb mentioned in the source is included, even if the source says only 'I have heard' or 'I think it was used'.'''
 
-tablelib.make_table('herbs.html', query, get_herb_name,
-                    label = 'herbs',
-                    caption = CAPTION,
-                    min_accounts = MIN_ACCOUNTS,
-                    format = format)
+if __name__ == '__main__':
+    tablelib.make_table('herbs.html', query, get_herb_name,
+                        label = 'herbs',
+                        caption = CAPTION,
+                        min_accounts = MIN_ACCOUNTS,
+                        format = format)
 
 # # ===== HERBS BY PROVINCE
 
