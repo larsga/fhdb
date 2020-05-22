@@ -3,9 +3,6 @@ import colorsys
 import config
 import sparqllib
 
-lat = 61.8
-lng = 9.45
-
 themap = config.make_map_from_cli_args()
 
 symbols = {'true' : themap.add_symbol('white', '#FFFFFF', '#000000'),
