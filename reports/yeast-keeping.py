@@ -1,13 +1,10 @@
 # encoding=utf-8
 
 import colorsys
-import maplib
+import config
 import sparqllib
 
-lat = 61.8
-lng = 9.45
-
-themap = maplib.GoogleMap(lat, lng, 6)
+themap = config.make_map_from_cli_args()
 
 black = themap.add_symbol('black', '#000000', '#000000', strokeweight = 1,
                           title = 'Other')
@@ -91,4 +88,4 @@ for (s, lat, lng, proc, procname, title) in sparqllib.query_for_rows(query):
     themap.add_marker(lat, lng, title, symbol, procname)
 
 themap.set_legend(True)
-themap.render_to('yeast-keeping.html')
+themap.render_to('yeast-keeping')
