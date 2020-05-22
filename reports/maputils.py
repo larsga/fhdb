@@ -71,12 +71,15 @@ def make_thing_map(query, symbols, filename, legend = False):
         uri : (themap.add_symbol(random_id(), color, '#000000', 1, title = name), name)
         for (uri, color, name) in symbols
     }
+    other = themap.add_symbol(random_id(), '#000000', '#000000', 1, title = 'Other')
 
     for (s, title, thing, lat, lng) in sparqllib.query_for_rows(query):
         try:
             (symbol, name) = symbols[thing]
         except KeyError:
-            raise Exception('No symbol for %s on %s' % (thing, s))
+            print 'Unclassified:', thing
+            symbol = other
+            name = thing
 
         themap.add_marker(lat, lng, title + ': ' + name, symbol)
 
