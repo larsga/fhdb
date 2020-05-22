@@ -4,7 +4,7 @@ import sparqllib
 
 def get_format():
     format = 'html'
-    if len(sys.argv) == 2:
+    if len(sys.argv) > 1:
         format = sys.argv[1]
     return format
 
