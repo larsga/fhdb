@@ -24,7 +24,7 @@ symbols = {
     ('http://www.garshol.priv.no/2014/neg/alder',   '#FF0000', 'alder'),
     ('http://www.garshol.priv.no/2014/neg/birch',   '#FFFFFF', 'birch'),
     ('http://www.garshol.priv.no/2014/neg/beech',   '#88CC88', 'beech'),
-    ('http://www.garshol.priv.no/2014/neg/peat',    '#D2691E', 'peat'),
+    ('http://www.garshol.priv.no/2014/neg/peat',    '#eb9a49', 'peat'),
     # ('http://www.garshol.priv.no/2014/neg/ash',     '#000000', 'ash'),
     # ('http://www.garshol.priv.no/2014/neg/willow',  '#000000', 'willow'),
     # ('http://www.garshol.priv.no/2014/neg/mosetre', '#000000', 'mosetre'),
