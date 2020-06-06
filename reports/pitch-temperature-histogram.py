@@ -50,6 +50,8 @@ print '  Body', bodies
 print '  Other', other
 
 from matplotlib import pyplot
+
+#pyplot.style.use('grayscale')
 (n, bins, patches) = pyplot.hist(temperatures, BINS, alpha=0.5,
                                  label = 'Pitch temperatures')
 pyplot.title('Pitch temperatures')
