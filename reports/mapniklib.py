@@ -52,7 +52,7 @@ black_and_white = Colors(
     land_color = '#BBBBBB',
 )
 
-def make_simple_map(shapefile = None, west = -5, south = 55, east = 35, north = 67, width = 2000, height = 1200, elevation = ELEVATION_DEFAULT, color = True):
+def make_simple_map(shapefile = None, west = -5, south = 55, east = 35, north = 67, width = 2000, height = 1200, elevation = ELEVATION_DEFAULT, color = True, speciesfile = None):
     if color:
         colors = default_colors
     else:
@@ -89,6 +89,9 @@ def make_simple_map(shapefile = None, west = -5, south = 55, east = 35, north = 
 
     m.layers.append(layer)
 
+    if speciesfile:
+        _add_species(m, speciesfile)
+
     _add_lakes(m, colors)
     _add_rivers(m, colors)
     if elevation:
@@ -105,6 +108,35 @@ def make_simple_map(shapefile = None, west = -5, south = 55, east = 35, north = 
     thebox = mapnik.Box2d(west, south, east, north)
     m.zoom_to_box(trans.forward(thebox))
     return m
+
+def _add_species(m, speciesfile):
+    'speciesfile = shapefile with species distribution'
+
+    s = mapnik.Style() # style object to hold rules
+    r = mapnik.Rule() # rule object to hold symbolizers
+    # to fill a polygon we create a PolygonSymbolizer
+    polygon_symbolizer = mapnik.PolygonSymbolizer()
+    polygon_symbolizer.fill = mapnik.Color('rgb(0,0,0)')
+    polygon_symbolizer.fill_opacity = 0.2
+    r.symbols.append(polygon_symbolizer) # add the symbolizer to the rule object
+
+    # to add outlines to a polygon we create a LineSymbolizer
+    line_symbolizer = mapnik.LineSymbolizer()
+    line_symbolizer.stroke = mapnik.Color('rgb(0%,0%,0%)')
+    line_symbolizer.stroke_width = 0.5
+    r.symbols.append(line_symbolizer) # add the symbolizer to the rule object
+    s.rules.append(r) # now add the rule to the style
+
+    m.append_style('Chorology',s)
+
+    ds = mapnik.Shapefile(file = speciesfile)
+    layer = mapnik.Layer('shrub')
+
+    layer.datasource = ds
+    layer.srs = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
+    layer.styles.append('Chorology')
+
+    m.layers.append(layer)
 
 def _make_transform(source, target):
     source = mapnik.Projection(source)
