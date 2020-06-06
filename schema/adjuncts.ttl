@@ -44,6 +44,9 @@ neg:flour a tb:Adjunct;
 neg:honey a tb:Adjunct;
   rdfs:label "Honey".
 
+neg:molasses a tb:Adjunct;
+  rdfs:label "Molasses".
+
 neg:oats a tb:Adjunct;
   rdfs:label "Oats".
 
