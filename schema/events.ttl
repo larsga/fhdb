@@ -37,7 +37,8 @@ event:michaelmas a tb:Event;
 
 event:midsummer a tb:Event;
   rdfs:label "Midsummer";
-  dc:description """The midsummer celebration.""".
+  dc:description """The midsummer celebration. Jonsok & St Hans are the same
+  thing. June 23/24. Latvian Jani again same.""".
 
 event:summer a tb:Event;
   rdfs:label "Summer";
