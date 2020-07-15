@@ -35,6 +35,10 @@ MILKTEMP = 36
 BODY = re.compile(u'(h(å|a)ndvarm(t|e)|body temperature|kropp?sv(a|ä)rme|blodvarmt|krop(p)?stemperatur|blood heat|blood temperature|human skin)')
 BODYTEMP = 37
 
+# https://jamanetwork.com/journals/jama/article-abstract/1155856
+SKIN = re.compile(u'human skin')
+SKINTEMP = 35.2
+
 # this is not actually enabled
 TALLOW = re.compile('(tallow|talg|fra lys)')
 TALLOWTEMP = 33
@@ -57,6 +61,10 @@ def get_temp(t):
     if m:
         return MILKTEMP
 
+    m = SKIN.search(t)
+    if m:
+        return SKINTEMP
+
     m = BODY.search(t)
     if m:
         return BODYTEMP
@@ -76,6 +84,8 @@ def get_category(t, quiet = True):
         return 'range'
     elif MILK.search(t):
         return 'milkwarm'
+    elif SKIN.search(t):
+        return 'skin'
     elif BODY.search(t):
         return 'body'
     else:
