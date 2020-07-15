@@ -350,6 +350,14 @@ class HtmlWriter(TableWriter):
         self.out.write('</table>\n')
         self.out.close()
 
+colormap = {
+    'above75' : '\cellcolor{Red}',
+    'above50' : '\cellcolor{YellowOrange}',
+    'above10' : '\cellcolor{Yellow}',
+    'above5' : '\cellcolor{YellowGreen}',
+    'above0' : '\cellcolor[gray]{0.9}',
+}
+
 class LatexWriter(TableWriter):
 
     def __init__(self, out, label, caption, columns):
@@ -387,6 +395,10 @@ class LatexWriter(TableWriter):
         if not self._first_cell:
             self.out.write(' & ')
         self._first_cell = False
+
+        if klass in colormap:
+            self.out.write(colormap[klass])
+
         self.out.write(escape(unicode(content)))
 
     def end_table(self):
