@@ -89,7 +89,8 @@ event:spring-day a tb:Event;
   dc:description """In Estonia.""".
 
 event:spring-fishing a tb:Event;
-  rdfs:label "The spring fishery".
+  rdfs:label "The spring fishery";
+  dc:description "February-April".
 
 event:threshing a tb:Event;
   rdfs:label "Threshing".
