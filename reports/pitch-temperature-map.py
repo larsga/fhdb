@@ -2,18 +2,13 @@
 #encoding=utf-8
 
 import re, codecs, sys
-import maplib, mapniklib, sparqllib, mapgenlib
+import maplib, mapniklib, sparqllib, mapgenlib, config
 import pitch
 
 # ===== ALL IN ONE DATA SET
 
 color = True
-
-themap = mapniklib.MapnikMap(mapniklib.make_simple_map(
-        east = -4, west = 28, south = 52.5, north = 63.5,
-        width = 2000, height = 1600,
-        color = color
-))
+themap = config.make_map_from_cli_args()
 
 symbol_count = 10
 smallest = 0
@@ -40,7 +35,7 @@ for (s, lat, lng, t, c) in sparqllib.query_for_rows(pitch.query):
         index = (int((temp - smallest) / increment))
         symbol = symbols[min(index, symbol_count - 1)]
         print temp, min(index, symbol_count - 1), symbol.get_color()
-        themap.add_marker(lat, lng, 'No title', symbol)
+        themap.add_marker(lat, lng, '%s' % t, symbol)
 
 themap.set_legend(True)
 themap.render_to('pitch-temperature-map')
