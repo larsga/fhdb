@@ -4,7 +4,8 @@ import maplib, mapniklib
 
 class MapSpecification:
     def __init__(self):
-        pass
+        self.elevation = False
+        self.color = True
 
 def parse_spec(spec):
     parts = spec.split(':')
@@ -31,10 +32,12 @@ def make_nordic_map(spec):
         color = spec.color
     ))
 
-def make_west_nordic_map():
+def make_west_nordic_map(spec):
     return mapniklib.MapnikMap(mapniklib.make_simple_map(
         east = -4, west = 25, south = 52.5, north = 63.5,
-        width = 1800, height = 1400
+        width = 1800, height = 1400,
+        elevation = spec.elevation,
+        color = spec.color
     ))
 
 def make_europe_map(spec):
@@ -44,21 +47,35 @@ def make_europe_map(spec):
         color = spec.color
     ))
 
-def make_europe_all_map():
+def make_europe_all_map(spec):
     return mapniklib.MapnikMap(mapniklib.make_simple_map(
         east = -7, west = 57, south = 47.5, north = 62.5,
-        width = 2000, height = 1400
+        width = 2000, height = 1400,
+        elevation = spec.elevation,
+        color = spec.color
+    ))
+
+def make_west_europe_map(spec):
+    return mapniklib.MapnikMap(mapniklib.make_simple_map(
+        east = -4, west = 28, south = 52.5, north = 63.5,
+        width = 2000, height = 1600,
+        elevation = spec.elevation,
+        color = spec.color
     ))
 
 def make_finland_map(spec):
     return mapniklib.MapnikMap(mapniklib.make_simple_map(
-        east = 23, west = 27, south = 59, north = 64
+        east = 23, west = 27, south = 59, north = 64,
+        elevation = spec.elevation,
+        color = spec.color
     ))
 
-def make_baltic_map():
+def make_baltic_map(spec):
     return mapniklib.MapnikMap(mapniklib.make_simple_map(
         east = 24, west = 26, south = 53.5, north = 59.7,
-        width = 1600, height = 1200
+        width = 1600, height = 1200,
+        elevation = spec.elevation,
+        color = spec.color
     ))
 
 def make_norway_map(spec):
@@ -119,6 +136,7 @@ def make_baltic_map(spec):
 
 locations = {
     'europe': make_europe_map,
+    'west-europe': make_west_europe_map,
     'europe-all' : make_europe_all_map,
     'nordic' : make_nordic_map,
     'baltic' : make_baltic_map,
