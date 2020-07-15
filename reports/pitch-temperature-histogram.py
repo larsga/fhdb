@@ -10,8 +10,8 @@ def average(numbers):
 
 # ===== ALL IN ONE DATA SET
 
-singles = 0
-ranges = 0
+singles = []
+ranges = []
 milks = 0
 bodies = 0
 other = 0
@@ -20,14 +20,15 @@ unreadable = 0
 temperatures = []
 for (s, lat, lng, t, c) in sparqllib.query_for_rows(pitch.query):
     temp = pitch.get_temp(t)
+
     if temp:
+        cat = pitch.get_category(t)
         temperatures.append(temp)
 
-        cat = pitch.get_category(t)
         if cat == 'single':
-            singles +=1
+            singles.append(temp)
         elif cat == 'range':
-            ranges +=1
+            ranges.append(temp)
         elif cat == 'milkwarm':
             milks +=1
         elif cat == 'body':
@@ -38,13 +39,15 @@ for (s, lat, lng, t, c) in sparqllib.query_for_rows(pitch.query):
         # print 'UNINTERPRETABLE', t
         unreadable += 1
 
+import numpy
+
 temperatures.sort()
 print temperatures
 print 'Interpreted temperatures', len(temperatures)
 print 'Unreadable', unreadable
 print 'Average', average(temperatures)
-print '  Single', singles
-print '  Range', ranges
+print '  Single', len(singles), average(singles), numpy.std(singles)
+print '  Range', len(ranges), average(ranges), numpy.std(ranges)
 print '  Milk', milks
 print '  Body', bodies
 print '  Other', other
