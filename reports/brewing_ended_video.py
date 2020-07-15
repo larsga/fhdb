@@ -38,7 +38,7 @@ def convert(year_none_false):
 
 def render_year(year, rows, filename, mapfactory):
     print year
-    themap = mapfactory()
+    themap = mapfactory(config.MapSpecification())
     alive = themap.add_symbol('alive', '#FFFF00', '#000000', scale = 8,
                               title = 'Ongoing')
     dead = themap.add_symbol('dead', '#000000', '#000000', scale = 8,
