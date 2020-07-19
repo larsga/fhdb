@@ -341,6 +341,14 @@ tb:secondary-yeast-keeping rdfs:domain tb:Account;
   rdfs:range tb:YeastKeepingMethod;
   rdfs:comment """All other yeast keeping methods that are mentioned.""".
 
+tb:fermentor-wrap rdfs:domain tb:Account;
+  rdfs:range tb:FermentorWrapping;
+  rdfs:comment """What, if anything, the fermentor was wrapped in.""".
+
+tb:fermentor-place rdfs:domain tb:Account;
+  rdfs:range tb:FermentorLocation;
+  rdfs:comment """Where the fermentor was placed.""".
+
 # beers
 
 tb:strong-beer rdfs:domain tb:Account;

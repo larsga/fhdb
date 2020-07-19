@@ -1,0 +1,70 @@
+
+@prefix neg: <http://www.garshol.priv.no/2014/neg/> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix tb: <http://www.garshol.priv.no/2014/trad-beer/> .
+
+# ===== DETAILS ON FERMENTOR
+
+# --- fermentor wrappings
+
+neg:aakle a tb:FermentorWrapping;
+  rdfs:label "Åkle";
+  dc:description "Rough, woven bed cover, of thickness like a carpet.";
+  rdfs:seeAlso <https://no.wikipedia.org/wiki/%C3%85kle>.
+
+neg:blankets a tb:FermentorWrapping;
+  rdfs:label "Blankets";
+  dc:description "Any kind of blanket.".
+
+neg:cloth a tb:FermentorWrapping;
+  rdfs:label "Cloth";
+  dc:description "Any kind of cloth.".
+
+neg:duvet a tb:FermentorWrapping;
+  rdfs:label "Duvet";
+  dc:description "A cloth bag filled with bird down.".
+
+neg:none a tb:FermentorWrapping;
+  rdfs:label "None";
+  dc:description "The fermentor was not covered with anything.".
+
+neg:pelt a tb:FermentorWrapping;
+  rdfs:label "Pelt";
+  dc:description "Animal skin with fur.".
+
+neg:skynke a tb:FermentorWrapping;
+  rdfs:label "Skynke (sv)";
+  dc:description "A relatively thin cloth.".
+
+neg:straw-and-cloth a tb:FermentorWrapping;
+  rdfs:label "Straw and cloth";
+  dc:description "Straw round the vessel, then cloth around that.".
+
+neg:unspecified-insulation a tb:FermentorWrapping;
+  rdfs:label "Unspecified insulation";
+  dc:description "It's covered with something, but not clear what.".
+
+neg:woolen-blanket a tb:FermentorWrapping;
+  rdfs:label "Woolen blanket".
+
+# --- fermentor location
+
+neg:stueloft a tb:FermentorLocation;
+  rdfs:label "Stueloft";
+  dc:description "Loft room above the main living room.".
+
+neg:living-room a tb:FermentorLocation;
+  rdfs:label "Living room";
+  dc:description "The main living room.".
+
+neg:warm-room a tb:FermentorLocation;
+  rdfs:label "Warm room";
+  dc:description "Some heated room described as 'warm'.".
+
+neg:near-fire a tb:FermentorLocation;
+  rdfs:label "Near the fire/oven".
+
+neg:brewhouse a tb:FermentorLocation;
+  rdfs:label "Brewhouse";
+  dc:description "This assumes the brewhouse was not heated.".

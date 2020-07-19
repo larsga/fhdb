@@ -18,7 +18,6 @@ WHERE {
     tb:batch-size ?t.
 }'''
 
-
 sizes = [float(t) for (s, title, t) in sparqllib.query_for_rows(query)]
 
 from matplotlib import pyplot

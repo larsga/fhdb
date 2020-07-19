@@ -212,12 +212,10 @@ def _add_elevation(m):
         mapnik.COLORIZER_DISCRETE, mapnik.Color(0, 0, 0, 0)
     )
     #rs.colorizer.add_stop(0, mapnik.Color(217, 217, 229))
+
     rs.colorizer.add_stop(250, mapnik.Color(58, 130, 72))
     rs.colorizer.add_stop(500, mapnik.Color(37, 117, 69))
     rs.colorizer.add_stop(1000, mapnik.Color(27, 75, 46))
-    # rs.colorizer.add_stop(234, mapnik.Color(255, 0, 0))
-    # rs.colorizer.add_stop(461, mapnik.Color(0, 0, 255))
-    # rs.colorizer.add_stop(719, mapnik.Color(0, 255, 0))
 
     r.symbols.append(rs)
     s.rules.append(r)
