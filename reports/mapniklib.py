@@ -62,40 +62,18 @@ def make_simple_map(shapefile = None, west = -5, south = 55, east = 35, north = 
     m.srs = '+proj=merc +ellps=WGS84 +datum=WGS84 +no_defs'
     m.background = mapnik.Color(colors.water_color)
 
-    s = mapnik.Style() # style object to hold rules
-
-    r = mapnik.Rule() # rule object to hold symbolizers
-    # to fill a polygon we create a PolygonSymbolizer
-    polygon_symbolizer = mapnik.PolygonSymbolizer()
-    polygon_symbolizer.fill = mapnik.Color(colors.land_color)
-    r.symbols.append(polygon_symbolizer) # add the symbolizer to the rule object
-
-    # to add outlines to a polygon we create a LineSymbolizer
-    line_symbolizer = mapnik.LineSymbolizer()
-    line_symbolizer.stroke = mapnik.Color('rgb(10%,10%,10%)')
-    line_symbolizer.stroke_width = 0.5
-    r.symbols.append(line_symbolizer) # add the symbolizer to the rule object
-    s.rules.append(r) # now add the rule to the style
-
-    m.append_style('My Style',s)
-
     shapefile = shapefile or (SHAPEDIR + 'ne_10m_admin_0_countries/ne_10m_admin_0_countries.shp')
-    ds = mapnik.Shapefile(file = shapefile)
-    layer = mapnik.Layer('world')
 
-    layer.datasource = ds
-    layer.srs = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
-    layer.styles.append('My Style')
-
-    m.layers.append(layer)
+    _add_green_land(m, shapefile, colors)
+    if elevation:
+        _add_elevation(m)
+    _add_borders(m, shapefile, colors)
 
     if speciesfile:
         _add_species(m, speciesfile)
 
     _add_lakes(m, colors)
     _add_rivers(m, colors)
-    if elevation:
-        _add_elevation(m)
     _add_glaciers(m)
 
     # the box is defined in degrees when passed in to us, but now that
@@ -108,6 +86,50 @@ def make_simple_map(shapefile = None, west = -5, south = 55, east = 35, north = 
     thebox = mapnik.Box2d(west, south, east, north)
     m.zoom_to_box(trans.forward(thebox))
     return m
+
+def _add_green_land(m, shapefile, colors):
+    s = mapnik.Style() # style object to hold rules
+
+    r = mapnik.Rule() # rule object to hold symbolizers
+    # to fill a polygon we create a PolygonSymbolizer
+    polygon_symbolizer = mapnik.PolygonSymbolizer()
+    polygon_symbolizer.fill = mapnik.Color(colors.land_color)
+    r.symbols.append(polygon_symbolizer) # add the symbolizer to the rule object
+    s.rules.append(r) # now add the rule to the style
+
+    m.append_style('My Style',s)
+
+    ds = mapnik.Shapefile(file = shapefile)
+    layer = mapnik.Layer('world')
+
+    layer.datasource = ds
+    layer.srs = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
+    layer.styles.append('My Style')
+
+    m.layers.append(layer)
+
+def _add_borders(m, shapefile, colors):
+    s = mapnik.Style() # style object to hold rules
+
+    r = mapnik.Rule() # rule object to hold symbolizers
+
+    # to add outlines to a polygon we create a LineSymbolizer
+    line_symbolizer = mapnik.LineSymbolizer()
+    line_symbolizer.stroke = mapnik.Color('rgb(10%,10%,10%)')
+    line_symbolizer.stroke_width = 0.5
+    r.symbols.append(line_symbolizer) # add the symbolizer to the rule object
+    s.rules.append(r) # now add the rule to the style
+
+    m.append_style('My Style2',s)
+
+    ds = mapnik.Shapefile(file = shapefile)
+    layer = mapnik.Layer('world2')
+
+    layer.datasource = ds
+    layer.srs = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
+    layer.styles.append('My Style2')
+
+    m.layers.append(layer)
 
 def _add_species(m, speciesfile):
     'speciesfile = shapefile with species distribution'
