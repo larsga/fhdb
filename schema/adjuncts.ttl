@@ -50,6 +50,9 @@ neg:molasses a tb:Adjunct;
 neg:oats a tb:Adjunct;
   rdfs:label "Oats".
 
+neg:oat-flour a tb:Adjunct;
+  rdfs:label "Oat flour".
+
 neg:peas a tb:Adjunct;
   rdfs:label "Peas".
 

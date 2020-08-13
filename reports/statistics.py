@@ -13,11 +13,14 @@ names = {
     'http://www.garshol.priv.no/2016/km/Account' : 'KM',
     'http://www.garshol.priv.no/2016/dot/DataPoint' : 'DOTS',
     'http://www.garshol.priv.no/2017/eu/Response': 'EU',
+    'http://www.garshol.priv.no/2017/eu/PseudoResponse': None,
     'http://www.garshol.priv.no/2017/eu/HopResponse' : 'EU SP98',
     'http://www.garshol.priv.no/2018/sm/Account' : 'SM',
     'http://www.garshol.priv.no/2018/ulma/Account' : 'ULMA',
     'http://www.garshol.priv.no/2019/erm/Account' : 'ERM',
+    'http://www.garshol.priv.no/2019/erm/PseudoAccount': None,
     'http://www.garshol.priv.no/2014/neg/DrinkResponse' : 'NEG 28',
+    'http://www.garshol.priv.no/2014/neg/SaunaResponse' : 'NEG 60',
 }
 
 # triples by type
@@ -30,7 +33,7 @@ select count(*) where {
 '''
 triples = {
   typeurl : sparqllib.query_for_value(query % typeurl)
-    for (typeurl, name) in names.items()
+    for (typeurl, name) in names.items() if name
 }
 
 
@@ -47,7 +50,7 @@ pages = {url : pages for (url, pages) in sparqllib.query_for_rows(query)}
 query = '''
 prefix tb: <http://www.garshol.priv.no/2014/trad-beer/>
 select ?t count(?s) where {
-  ?t rdfs:subClassOf tb:Account.
+  ?t rdfs:subClassOf* tb:Account.
   ?s a ?t.
 } group by ?t
 '''
@@ -57,7 +60,7 @@ ptotal = 0
 ttotal = 0
 rows = list(sparqllib.query_for_rows(query))
 
-biggest = reduce(max, [len(name) for name in names.values()])
+biggest = reduce(max, [len(name) for name in names.values() if name])
 
 import tablelib
 
@@ -69,6 +72,8 @@ writer.header_row('Dataset', 'Accts', 'Pages', 'Triples')
 
 for (t, c) in rows:
     name = names[t]
+    if not name:
+        continue
     name = name + (' ' * (biggest + 2 - len(name)))
 
     writer.row(name, c, pages.get(t, ''), triples.get(t, ''))

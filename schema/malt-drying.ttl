@@ -81,6 +81,12 @@ malt:badstu-like-soinn a tb:MaltDryingMethod;
   bottom. Fireplace underneath.""";
   neg:variant-of malt:SmokyHot.
 
+malt:badstu-stone-shelf a tb:MaltDryingMethod;
+  rdfs:label "Badstu stone shelf";
+  dc:description """Stone shelf above the oven. Like the other shelves, but
+  with a stone bottom.""";
+  neg:variant-of malt:SmokyHot.
+
 malt:latvian-sauna a tb:MaltDryingMethod;
   rdfs:label "Latvian-style sauna";
   dc:description """Small house with stone oven (no chimney) on ground floor,

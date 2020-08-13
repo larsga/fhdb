@@ -58,6 +58,10 @@ neg:living-room a tb:FermentorLocation;
   rdfs:label "Living room";
   dc:description "The main living room.".
 
+neg:kitchen a tb:FermentorLocation;
+  rdfs:label "Kitchen";
+  dc:description "In the kitchen in the main house. Not outside rough kitchen.".
+
 neg:warm-room a tb:FermentorLocation;
   rdfs:label "Warm room";
   dc:description "Some heated room described as 'warm'.".
@@ -68,3 +72,8 @@ neg:near-fire a tb:FermentorLocation;
 neg:brewhouse a tb:FermentorLocation;
   rdfs:label "Brewhouse";
   dc:description "This assumes the brewhouse was not heated.".
+
+neg:brewroom-next-to-folkestue a tb:FermentorLocation;
+  rdfs:label "Brewroom next to folkestue";
+  dc:description """The brewhouse was in a larger building, next to the
+  folkestue, where the farm workers sat. The folkestue was heated in winter.""".

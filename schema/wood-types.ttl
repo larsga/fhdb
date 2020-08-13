@@ -37,6 +37,9 @@ neg:mosetre a neg:WoodType;
 neg:oak a neg:WoodType;
   rdfs:label "Oak".
 
+neg:pine a neg:WoodType;
+  rdfs:label "Pine".
+
 # should we change the class to fuel-type?
 neg:peat a neg:WoodType;
   rdfs:label "Peat".
