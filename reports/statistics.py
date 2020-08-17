@@ -50,8 +50,10 @@ pages = {url : pages for (url, pages) in sparqllib.query_for_rows(query)}
 query = '''
 prefix tb: <http://www.garshol.priv.no/2014/trad-beer/>
 select ?t count(?s) where {
-  ?t rdfs:subClassOf* tb:Account.
-  ?s a ?t.
+  select distinct ?t ?s where {
+    ?t rdfs:subClassOf* tb:Account.
+    ?s a ?t.
+  }
 } group by ?t
 '''
 
