@@ -6,7 +6,7 @@ names = {
     'http://www.garshol.priv.no/2014/trad-beer/Recipe' : 'Own collection',
     'http://www.garshol.priv.no/2015/luf/Response' : 'LUF',
     'http://www.garshol.priv.no/2015/sls/Response' : 'SLS',
-    'http://www.garshol.priv.no/2014/neg/Response' : 'NEG',
+    'http://www.garshol.priv.no/2014/neg/Response' : 'NEG 35',
     'http://www.garshol.priv.no/2015/uff/Communication' : 'AFD',
     'http://www.garshol.priv.no/2016/voko/Manuskript' : 'VOKO',
     'http://www.garshol.priv.no/2015/neu/Item' : 'NEU',
@@ -44,7 +44,7 @@ select ?t sum(?p) where {
   ?s tb:page-count ?p; a ?t
 } group by ?t
 '''
-pages = {url : pages for (url, pages) in sparqllib.query_for_rows(query)}
+pages = {url : pcount for (url, pcount) in sparqllib.query_for_rows(query)}
 
 # accounts by type
 query = '''
@@ -64,6 +64,11 @@ rows = list(sparqllib.query_for_rows(query))
 
 biggest = reduce(max, [len(name) for name in names.values() if name])
 
+rows = [(names[t], c, pages.get(t, ''), triples.get(t, ''))
+    for (t, c) in rows if names[t]
+]
+rows.sort()
+
 import tablelib
 
 writer = tablelib.ConsoleWriter(sys.stdout)
@@ -72,16 +77,12 @@ writer.start_table()
 
 writer.header_row('Dataset', 'Accts', 'Pages', 'Triples')
 
-for (t, c) in rows:
-    name = names[t]
-    if not name:
-        continue
+for (name, count, pages, triples) in rows:
     name = name + (' ' * (biggest + 2 - len(name)))
-
-    writer.row(name, c, pages.get(t, ''), triples.get(t, ''))
-    total += int(c)
-    ptotal += int(pages.get(t, 0))
-    ttotal += int(triples.get(t, 0))
+    writer.row(name, count, pages, triples)
+    total += int(count)
+    ptotal += int(pages or 0)
+    ttotal += int(triples or 0)
 
 writer.row('TOTAL', total, ptotal, ttotal)
 writer.end_table()
