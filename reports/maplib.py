@@ -20,6 +20,9 @@ class AbstractMap:
         self._legend = False
         self._default_scale = default_scale
 
+    def get_color(self):
+        return True
+
     def get_markers(self):
         return self._markers
 

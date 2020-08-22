@@ -30,7 +30,7 @@ def make_nordic_map(spec):
         width = 1800, height = 1400,
         elevation = spec.elevation,
         color = spec.color
-    ))
+    ), color = spec.color)
 
 def make_west_nordic_map(spec):
     return mapniklib.MapnikMap(mapniklib.make_simple_map(
@@ -38,14 +38,14 @@ def make_west_nordic_map(spec):
         width = 1800, height = 1400,
         elevation = spec.elevation,
         color = spec.color
-    ))
+    ), color = spec.color)
 
 def make_europe_map(spec):
     return mapniklib.MapnikMap(mapniklib.make_simple_map(
         east = 4, west = 50, south = 50, north = 65,
         elevation = spec.elevation,
         color = spec.color
-    ))
+    ), color = spec.color)
 
 def make_europe_all_map(spec):
     return mapniklib.MapnikMap(mapniklib.make_simple_map(
@@ -53,7 +53,7 @@ def make_europe_all_map(spec):
         width = 2000, height = 1400,
         elevation = spec.elevation,
         color = spec.color
-    ))
+    ), color = spec.color)
 
 def make_west_europe_map(spec):
     return mapniklib.MapnikMap(mapniklib.make_simple_map(
@@ -61,14 +61,14 @@ def make_west_europe_map(spec):
         width = 2000, height = 1600,
         elevation = spec.elevation,
         color = spec.color
-    ))
+    ), color = spec.color)
 
 def make_finland_map(spec):
     return mapniklib.MapnikMap(mapniklib.make_simple_map(
         east = 23, west = 27, south = 59, north = 64,
         elevation = spec.elevation,
         color = spec.color
-    ))
+    ), color = spec.color)
 
 def make_baltic_map(spec):
     return mapniklib.MapnikMap(mapniklib.make_simple_map(
@@ -76,7 +76,7 @@ def make_baltic_map(spec):
         width = 1600, height = 1200,
         elevation = spec.elevation,
         color = spec.color
-    ))
+    ), color = spec.color)
 
 def make_norway_map(spec):
     return mapniklib.MapnikMap(mapniklib.make_simple_map(
@@ -84,7 +84,7 @@ def make_norway_map(spec):
         width = 1200, height = 1250,
         elevation = spec.elevation,
         color = spec.color
-    ))
+    ), color = spec.color)
 
 def make_mid_norway_map(spec):
     return mapniklib.MapnikMap(mapniklib.make_simple_map(
@@ -92,7 +92,7 @@ def make_mid_norway_map(spec):
         width = 1400, height = 1200,
         elevation = spec.elevation,
         color = spec.color
-    ))
+    ), color = spec.color)
 
 def make_norway_sweden_map(spec):
     return mapniklib.MapnikMap(mapniklib.make_simple_map(
@@ -100,7 +100,7 @@ def make_norway_sweden_map(spec):
         width = 1800, height = 1200,
         elevation = spec.elevation,
         color = spec.color
-    ))
+    ), color = spec.color)
 
 def make_denmark_map(spec):
     return mapniklib.MapnikMap(mapniklib.make_simple_map(
@@ -108,7 +108,7 @@ def make_denmark_map(spec):
         width = 1400, height = 1200,
         elevation = spec.elevation,
         color = spec.color
-    ))
+    ), color = spec.color)
 
 def make_estonian_map(spec):
     return mapniklib.MapnikMap(mapniklib.make_simple_map(
@@ -116,7 +116,7 @@ def make_estonian_map(spec):
         width = 1600, height = 1000,
         elevation = spec.elevation,
         color = spec.color
-    ))
+    ), color = spec.color)
 
 def make_georgian_map(spec):
     return mapniklib.MapnikMap(mapniklib.make_simple_map(
@@ -124,7 +124,7 @@ def make_georgian_map(spec):
         width = 1600, height = 800,
         elevation = spec.elevation,
         color = spec.color
-    ))
+    ), color = spec.color)
 
 def make_baltic_map(spec):
     return mapniklib.MapnikMap(mapniklib.make_simple_map(
@@ -132,7 +132,7 @@ def make_baltic_map(spec):
         width = 1200, height = 1200,
         elevation = spec.elevation,
         color = spec.color
-    ))
+    ), color = spec.color)
 
 locations = {
     'europe': make_europe_map,

@@ -7,7 +7,6 @@ import pitch
 
 # ===== ALL IN ONE DATA SET
 
-color = True
 themap = config.make_map_from_cli_args()
 
 symbol_count = 10
@@ -15,7 +14,7 @@ smallest = 0
 biggest = 40
 increment = (biggest - smallest) / (symbol_count - 1)
 
-if color:
+if themap.get_color():
     colorfunc = mapgenlib.color
 else:
     colorfunc = mapgenlib.bwcolor

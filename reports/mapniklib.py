@@ -23,12 +23,16 @@ ELEVATION_DEFAULT = False
 
 class MapnikMap(maplib.AbstractMap):
 
-    def __init__(self, base_map):
+    def __init__(self, base_map, color = True):
         maplib.AbstractMap.__init__(self, default_scale = 8)
         self._base_map = base_map
+        self._color = color
 
     def get_base_map(self):
         return self._base_map
+
+    def get_color(self):
+        return self._color
 
     def render_to(self, filename, width = None, height = None, bottom = None):
         if not filename.endswith('.png'):
