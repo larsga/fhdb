@@ -4,6 +4,8 @@ General, reusable Google Maps library.
 
 import codecs, sys, os, json
 
+GOOGLE_MAPS_KEY = os.environ['GOOGLE_MAPS_KEY']
+
 # ===== SHAPES
 
 CIRCLE = 0
@@ -170,7 +172,7 @@ def render(themap, filename, width = '100%', height = '100%', bottom = ''):
     outf = codecs.open(filename, 'w', 'utf-8')
     outf.write(u'''
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<script src="http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyBGJl7GqfaXLbzRLYInvzGxwNnEvRykNUw" type="text/javascript"></script>
+<script src="http://maps.googleapis.com/maps/api/js?sensor=false&key=%s" type="text/javascript"></script>
 <style>
 body {
   font-family: Arial, sans-serif;
@@ -242,7 +244,8 @@ function add_marker(theid, lat, lng, title, symbol, data) {
 
   return marker;
 }
-    ''' % (themap.get_id(),
+    ''' % (GOOGLE_MAPS_KEY,
+           themap.get_id(),
            width,
            height,
            themap.get_center_latitude(),
