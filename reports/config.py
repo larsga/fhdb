@@ -55,6 +55,14 @@ def make_europe_all_map(spec):
         color = spec.color
     ), color = spec.color)
 
+def make_europe_all_big_map(spec):
+    return mapniklib.MapnikMap(mapniklib.make_simple_map(
+        east = -15, west = 50, south = 35, north = 60,
+        width = 2000, height = 1400,
+        elevation = spec.elevation,
+        color = spec.color
+    ), color = spec.color)
+
 def make_west_europe_map(spec):
     return mapniklib.MapnikMap(mapniklib.make_simple_map(
         east = -4, west = 28, south = 52.5, north = 63.5,
@@ -138,6 +146,7 @@ locations = {
     'europe': make_europe_map,
     'west-europe': make_west_europe_map,
     'europe-all' : make_europe_all_map,
+    'europe-all-big' : make_europe_all_big_map,
     'nordic' : make_nordic_map,
     'baltic' : make_baltic_map,
     'estonia' : make_estonian_map,

@@ -30,6 +30,7 @@ dbp:Lithuania rdfs:label "Lithuania"; a dbp:Country.
 dbp:Netherlands rdfs:label "Netherlands"; a dbp:Country.
 dbp:Norway rdfs:label "Norway"; a dbp:Country.
 dbp:Russia rdfs:label "Russia"; a dbp:Country.
+dbp:Slovenia rdfs:label "Slovenia"; a dbp:Country.
 dbp:Sweden rdfs:label "Sweden"; a dbp:Country.
 dbp:United_Kingdom rdfs:label "United Kingdom"; a dbp:Country.
   dbp:England a dbp:Region; rdfs:label "England";

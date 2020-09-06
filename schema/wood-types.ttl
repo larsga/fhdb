@@ -16,6 +16,9 @@ neg:beech a neg:WoodType;
 neg:birch a neg:WoodType;
   rdfs:label "Birch".
 
+neg:cherry-wood a neg:WoodType;
+  rdfs:label "Cherry wood".
+
 neg:hatleris a neg:WoodType;
   rdfs:label "Hatleris";
   dc:description "Have not been able to figure out what this is.".
