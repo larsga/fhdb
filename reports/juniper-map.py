@@ -19,13 +19,12 @@ lng = 9.45
 
 themap = config.make_map_from_cli_args()
 
-scale = 5
 white = themap.add_symbol('white', '#FFFFFF', '#000000', strokeweight = 1,
-                          title = 'Infusion', scale = scale)
+                          title = 'Infusion')
 black = themap.add_symbol('black', '#000000', '#000000', strokeweight = 1,
-                          title = 'No juniper', scale = scale)
+                          title = 'No juniper')
 gray = themap.add_symbol('gray', '#BBBBBB', '#000000', strokeweight = 1,
-                         title = 'Filter only', scale = scale)
+                         title = 'Filter only')
 symbols = {1 : white, 0 : black, 0.5 : gray}
 
 query = '''
