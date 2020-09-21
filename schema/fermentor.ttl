@@ -25,6 +25,10 @@ neg:duvet a tb:FermentorWrapping;
   rdfs:label "Duvet";
   dc:description "A cloth bag filled with bird down.".
 
+neg:felt-blankets a tb:FermentorWrapping;
+  rdfs:label "Felt blankets";
+  dc:description "'Feltar' in Swedish.".
+
 neg:none a tb:FermentorWrapping;
   rdfs:label "None";
   dc:description "The fermentor was not covered with anything.".
