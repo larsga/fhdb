@@ -141,3 +141,11 @@ neg:blande a tb:DrinkType.
 neg:milk a tb:DrinkType.
 neg:sour-milk a tb:DrinkType.
 neg:juniper-beer a tb:DrinkType.
+
+# ===== YEAST TYPES
+
+neg:own-yeast a tb:YeastType.
+neg:bakers-yeast a tb:YeastType.
+neg:brewers-yeast a tb:YeastType.
+neg:lager-yeast a tb:YeastType.
+neg:distillers-yeast a tb:YeastType.

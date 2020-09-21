@@ -111,10 +111,6 @@ tb:daily-drink rdfs:domain tb:Account;
   rdfs:range tb:DrinkType;
   rdfs:comment """What was used as the daily drink against thirst?""".
 
-tb:own-yeast rdfs:domain tb:Account;
-  rdfs:range neg:Boolean;
-  rdfs:comment "Did they have their own yeast.".
-
 tb:grain rdfs:domain tb:Account;
   rdfs:range tb:GrainType;
   rdfs:comment "Main types of grain (barley, oats, ...) the malts made from.".
@@ -327,6 +323,15 @@ tb:hops-per-brew rdfs:domain tb:Account;
   rdfs:comment "Grams of hops per batch of beer. For the good beer only.".
 
 # yeast
+
+# deprecated: stop using this
+tb:own-yeast rdfs:domain tb:Account;
+  rdfs:range neg:Boolean;
+  rdfs:comment "Did they have their own yeast.".
+
+tb:yeast-type rdfs:domain tb:Account;
+  rdfs:range tb:YeastType;
+  rdfs:comment "What kind of yeast did they use.".
 
 tb:yeast-harvest rdfs:domain tb:Account;
   rdfs:range neg:YeastHarvestPlace;
