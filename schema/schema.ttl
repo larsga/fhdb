@@ -82,6 +82,12 @@ tb:herbs rdfs:domain tb:Account;
   rdfs:comment """What herbs/spice were used in the beer. Any herb even
   mentioned is listed, even if the informant is uncertain about it.""".
 
+tb:recipe-herbs rdfs:domain tb:Account;
+  rdfs:range neg:Herb;
+  rdfs:comment """Herbs actually commonly used in the beer and given as
+  part of the recipe. Hearsay, what other people did, historical use etc
+  are all ignored.""".
+
 tb:brewing-ended rdfs:domain tb:Account;
   rdfs:range rdfs:Literal;
   rdfs:comment "The year brewing ended in this place. Or false if still alive.".
