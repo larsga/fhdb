@@ -277,6 +277,13 @@ def _add_elevation(m):
     )
     srs = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
 
+    # ds = mapnik.Gdal(
+    #     base = '/Users/larsga/Desktop/DTM50_UTM33_20200904',
+    #     file = 'norge.tif',
+    #     band = 1,
+    # )
+    # srs = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
+
     layer = mapnik.Layer('Elevation')
     layer.datasource = ds
     layer.srs = srs
