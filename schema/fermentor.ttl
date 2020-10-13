@@ -70,6 +70,10 @@ neg:warm-room a tb:FermentorLocation;
   rdfs:label "Warm room";
   dc:description "Some heated room described as 'warm'.".
 
+neg:cool-room a tb:FermentorLocation;
+  rdfs:label "Cool room";
+  dc:description "Some room described as 'not too warm'.".
+
 neg:near-fire a tb:FermentorLocation;
   rdfs:label "Near the fire/oven".
 
