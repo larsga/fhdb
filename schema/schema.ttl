@@ -413,8 +413,7 @@ tb:preferred-colour rdfs:domain tb:Account;
 
 neg:brewing-tradition rdfs:domain tb:Account;
   rdfs:range rdfs:Literal; # FIXME: should be boolean, no?
-  rdfs:comment """Did this place ever have a brewing tradition? If not
-  specified we assume the value is true.""".
+  rdfs:comment """Did this place ever have a brewing tradition?""".
 
 neg:remove-sprout rdfs:domain tb:Account;
   rdfs:range neg:Boolean;
