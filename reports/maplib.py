@@ -172,7 +172,7 @@ def render(themap, filename, width = '100%', height = '100%', bottom = ''):
     outf = codecs.open(filename, 'w', 'utf-8')
     outf.write(u'''
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<script src="http://maps.googleapis.com/maps/api/js?sensor=false&key=%s" type="text/javascript"></script>
+<script src="https://maps.googleapis.com/maps/api/js?sensor=false&key=%s" type="text/javascript"></script>
 <style>
 body {
   font-family: Arial, sans-serif;
