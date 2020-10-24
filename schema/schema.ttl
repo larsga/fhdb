@@ -326,7 +326,12 @@ tb:annual-hops-consumption rdfs:domain tb:Account;
 
 tb:hops-per-brew rdfs:domain tb:Account;
   rdfs:range xsd:decimal;
-  rdfs:comment "Grams of hops per batch of beer. For the good beer only.".
+  rdfs:comment """Grams of hops per batch of beer. For the good beer only.""".
+
+tb:hops-per-brew-imprecise rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal;
+  rdfs:comment """Hops per batch of beer as a number with a unit. For the good
+  beer only.""".
 
 # yeast
 
