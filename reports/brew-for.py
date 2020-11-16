@@ -29,5 +29,5 @@ def get_herb_name(h):
 tablelib.make_table('brew-for.html', query, get_herb_name,
                     label = 'events',
                     caption = 'Brewing for annual events.',
-                    min_accounts = 3,
+                    min_accounts = 4,
                     format = 'html')
