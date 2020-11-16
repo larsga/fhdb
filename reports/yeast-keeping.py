@@ -24,6 +24,7 @@ symbols = {
     'Dried in a trough'           : brown,
     'Dried in a trough with potato flour' : brown,
     'Dried on bricks'             : brown,
+    'Dried on hops'               : brown,
     'Yeast dried on a hair sieve' : brown,
     'Straw ring with hops'        : brown,
     'Straw ring'                  : brown,
