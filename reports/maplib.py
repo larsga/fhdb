@@ -12,6 +12,10 @@ CIRCLE = 0
 SQUARE = 1
 TRIANGLE = 2
 
+# ===== CONSTANTS
+
+DEFAULT_STROKEWEIGHT = 2
+
 # ===== MAP
 
 class AbstractMap:
@@ -98,7 +102,7 @@ class Symbol:
         self._id = id
         self._color = color
         self._strokecolor = strokecolor or color
-        self._strokeweight = strokeweight or 2
+        self._strokeweight = strokeweight or DEFAULT_STROKEWEIGHT
         self._title = title
         self._scale = scale or 5
         self._shape = shape

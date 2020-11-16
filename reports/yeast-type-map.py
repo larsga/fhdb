@@ -5,15 +5,21 @@ import config
 import maplib
 import sparqllib
 
+maplib.DEFAULT_STROKEWEIGHT = 1
 themap = config.make_map_from_cli_args()
 
 NEG = 'http://www.garshol.priv.no/2014/neg/'
 symbols = {
-    NEG + 'own-yeast' : themap.add_symbol('yellow', '#FFFF00', strokeweight = 1),
-    NEG + 'bakers-yeast' : themap.add_symbol('black', '#000000', strokeweight = 1),
-    NEG + 'brewers-yeast' : themap.add_symbol('blue', '#0000FF', strokeweight = 1),
-    NEG + 'lager-yeast' : themap.add_symbol('paleblue', '#CCCCFF', strokeweight = 1),
-    NEG + 'distillers-yeast' : themap.add_symbol('red', '#FF0000', strokeweight = 1),
+    NEG + 'own-yeast' : themap.add_symbol('yellow', '#FFFF00',
+                                          title = 'Own yeast'),
+    NEG + 'bakers-yeast' : themap.add_symbol('black', '#000000',
+                                             title = "Baker's yeast"),
+    NEG + 'brewers-yeast' : themap.add_symbol('blue', '#0000FF',
+                                              title = "Brewer's yeast"),
+    NEG + 'lager-yeast' : themap.add_symbol('paleblue', '#CCCCFF',
+                                            title = 'Lager yeast'),
+    NEG + 'distillers-yeast' : themap.add_symbol('red', '#FF0000',
+                                                 title = "Distiller's yeast"),
 }
 
 query = '''
@@ -38,4 +44,5 @@ for (s, lat, lng, title, yeast) in sparqllib.query_for_rows(query):
     symbol = symbols[yeast]
     themap.add_marker(lat, lng, title, symbol)
 
+themap.set_legend(True)
 themap.render_to('yeast-type-map')
