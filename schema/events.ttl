@@ -33,7 +33,8 @@ event:martinisingen a tb:Event;
 
 event:michaelmas a tb:Event;
   rdfs:label "Michaelmas";
-  dc:description """FIXME: check what this is.""".
+  dc:description """Feast of Saint Michael and All Angels, 29 September.
+  In Swedish known as Mikaelidagen, or Mickelsmäss.""".
 
 event:midsummer a tb:Event;
   rdfs:label "Midsummer";
