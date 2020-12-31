@@ -1,7 +1,6 @@
 
 #encoding=utf-8
 
-import re
 import maputils
 
 query = '''
