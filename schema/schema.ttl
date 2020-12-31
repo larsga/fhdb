@@ -28,6 +28,12 @@
 rdfs:subClassOf rdfs:domain rdfs:Class;
   rdfs:range rdfs:Class.
 
+tb:place-property rdfs:domain rdfs:Class;
+  rdfs:range rdf:Resource.
+
+tb:institution rdfs:domain rdfs:Class;
+  rdfs:range tb:Institution.
+
 # ===== TOO WIDE
 
 geo:lat rdfs:domain rdf:Resource;
@@ -59,6 +65,9 @@ tb:translation rdfs:domain tb:Account;
   rdfs:range rdf:Resource;
   rdfs:comment "English translation".
 
+tb:prefix rdfs:domain tb:Institution;
+  rdfs:range rdfs:Literal.
+
 # ===== FARMHOUSE DOMAIN
 
 tb:year rdfs:domain tb:Account;
@@ -86,7 +95,8 @@ tb:recipe-herbs rdfs:domain tb:Account;
   rdfs:range neg:Herb;
   rdfs:comment """Herbs actually commonly used in the beer and given as
   part of the recipe. Hearsay, what other people did, historical use etc
-  are all ignored.""".
+  are all ignored. It's not enough for the herb to be use 'sometimes' or
+  'by a few people'. It has to be common to the point of being expected.""".
 
 tb:brewing-ended rdfs:domain tb:Account;
   rdfs:range rdfs:Literal;
@@ -367,6 +377,10 @@ tb:fermentor-place rdfs:domain tb:Account;
 
 # beers
 
+tb:brewing-tradition rdfs:domain tb:Account;
+  rdfs:range neg:Boolean;
+  rdfs:comment """Did this place ever have a brewing tradition?""".
+
 tb:strong-beer rdfs:domain tb:Account;
   rdfs:range neg:Boolean;
   rdfs:comment "Did they make strong beer or not.".
@@ -415,10 +429,6 @@ neg:mash-time rdfs:domain tb:Account;
 tb:preferred-colour rdfs:domain tb:Account;
   rdfs:range rdfs:Literal;
   rdfs:comment "What colour should the beer be?".
-
-neg:brewing-tradition rdfs:domain tb:Account;
-  rdfs:range rdfs:Literal; # FIXME: should be boolean, no?
-  rdfs:comment """Did this place ever have a brewing tradition?""".
 
 neg:remove-sprout rdfs:domain tb:Account;
   rdfs:range neg:Boolean;
@@ -621,7 +631,7 @@ dc:title rdfs:domain tb:Account; # also dot
   rdfs:range rdfs:Literal;
   rdfs:comment "A title for the account.".
 
-rdfs:label rdfs:domain dbo:Place;
+rdfs:label rdfs:domain rdf:Resource;
   rdfs:range rdfs:Literal.
 
 tb:place-of-origin rdfs:domain tb:Account; # also dot
@@ -662,6 +672,14 @@ erm:kirjeldand rdfs:domain erm:Account;
 erm:contained-in rdfs:domain erm:PseudoAccount;
   rdfs:label "Contained in";
   rdfs:range erm:Account.
+
+erm:series rdfs:domain erm:Account;
+  rdfs:label "Series";
+  rdfs:range rdfs:Literal.
+
+erm:volume rdfs:domain erm:Account;
+  rdfs:label "Volume";
+  rdfs:range xsd:decimal.
 
 # ===== ULMA-specific
 
