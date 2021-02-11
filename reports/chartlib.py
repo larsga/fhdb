@@ -1,4 +1,4 @@
-k
+
 from PIL import Image
 
 def combine_charts(images, per_row, filename):
