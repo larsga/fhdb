@@ -62,6 +62,9 @@ class AbstractMap:
     def has_legend(self):
         return self._legend
 
+    def has_symbols(self):
+        return bool(self._symbols)
+
 class GoogleMap(AbstractMap):
 
     def __init__(self, center_lat, center_lng, zoom):
