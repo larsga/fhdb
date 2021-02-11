@@ -20,7 +20,9 @@ WHERE {
   ?c a dbp:Country.
 }
 
-''' #   FILTER (?c = dbp:Norway)
+'''
+#   tb:yeast-type neg:own-yeast;
+#   FILTER (?c = dbp:Norway)
 
 def sort_columns(cols):
     cols.sort()
@@ -50,4 +52,8 @@ for (t, c, s) in sparqllib.query_for_rows(query):
 
 out = tablelib.HtmlWriter(open('fermentation-time-table.html', 'w'))
 #out = tablelib.TabWriter(sys.stdout, 'w')
+# out = tablelib.LatexWriter(
+#     open('fermentation-time-table.html', 'w'),
+#     'tab-all-fermentation-times', 'All fermentation times.', 14
+# )
 tablelib.write_table(out, table, column_label)
