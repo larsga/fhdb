@@ -5,7 +5,9 @@ import colorsys
 import maputils
 import sparqllib
 
-themap = config.make_map_from_cli_args()
+fileformat = sys.argv[4] if len(sys.argv) >= 5 else 'png'
+speciesfile = sys.argv[3] if len(sys.argv) >= 4 else None
+themap = config.make_map_from_cli_args(speciesfile = speciesfile)
 herb = sys.argv[2]
 
 white = themap.add_symbol('white', '#FFFFFF', '#000000', strokeweight = 1,
@@ -37,7 +39,8 @@ for (s, (title, lat, lng)) in accounts.items():
         symbol = white
     else:
         symbol = black
-    themap.add_marker(lat, lng, title, symbol)
+
+    #themap.add_marker(lat, lng, title, symbol)
 
 themap.set_legend(True)
-themap.render_to('herb-map')
+themap.render_to('herb-map', format = fileformat)
