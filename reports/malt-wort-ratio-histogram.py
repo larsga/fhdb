@@ -17,7 +17,7 @@ WHERE {
   ?s dc:title ?title;
     tb:malt-wort-ratio ?malts;
     geo:lat ?lat;
-    geo:long ?lng;
+    geo:long ?lng.
 }'''
 
   #   tb:process ?proc.
