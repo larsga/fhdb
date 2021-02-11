@@ -89,4 +89,4 @@ for (s, lat, lng, proc, procname, title) in sparqllib.query_for_rows(query):
     themap.add_marker(lat, lng, title, symbol, procname)
 
 themap.set_legend(True)
-themap.render_to('yeast-keeping')
+themap.render_to('yeast-keeping-map')
