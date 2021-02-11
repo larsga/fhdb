@@ -5,9 +5,9 @@ import maputils
 
 LETT = re.compile(u'lettøl')
 TYNN = re.compile(u't(o|y|u)n(n|t|d)(øl|dr(i|e)(c|k)k(a)?)')
-SPISS = re.compile(u'sp(i|y|ø)s(s)?(ö|ø|e)l')
-SVAGDRICKA = re.compile(u'svagdricka')
-DRICKA = re.compile(u'dr(e|i)(c|k)k(a|e)')
+SPISS = re.compile(u'sp(i|y|ø|e)s(s)?(ö|ø|e|i)l')
+SVAGDRICKA = re.compile(u'svagdri(c|k)k(a|e)')
+DRICKA = re.compile(u'dr(e|i)(c|k)k(a|e)?')
 DAGLIGOL = re.compile(u'dagligøl')
 
 symbols = [
