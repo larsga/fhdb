@@ -7,18 +7,19 @@ class MapSpecification:
         self.elevation = False
         self.color = True
 
-def parse_spec(spec):
+def parse_spec(spec, speciesfile = None):
     parts = spec.split(':')
 
     spec = MapSpecification()
     spec.area = parts[0]
     spec.elevation = 'el' in parts
     spec.color = 'bw' not in parts
+    spec.speciesfile = speciesfile
     return spec
 
-def make_map_from_cli_args():
+def make_map_from_cli_args(speciesfile = None):
     if len(sys.argv) > 1:
-        spec = parse_spec(sys.argv[1])
+        spec = parse_spec(sys.argv[1], speciesfile)
         if spec.area in locations:
             return locations[spec.area](spec)
 
@@ -57,10 +58,11 @@ def make_europe_all_map(spec):
 
 def make_europe_all_big_map(spec):
     return mapniklib.MapnikMap(mapniklib.make_simple_map(
-        east = -15, west = 50, south = 35, north = 60,
+        east = -15, west = 50, south = 36, north = 71,
         width = 2000, height = 1400,
         elevation = spec.elevation,
-        color = spec.color
+        color = spec.color,
+        speciesfile = spec.speciesfile
     ), color = spec.color)
 
 def make_west_europe_map(spec):
