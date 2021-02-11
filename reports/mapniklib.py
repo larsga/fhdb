@@ -34,12 +34,18 @@ class MapnikMap(maplib.AbstractMap):
     def get_color(self):
         return self._color
 
-    def render_to(self, filename, width = None, height = None, bottom = None):
-        if not filename.endswith('.png'):
-            filename += '.png'
-        _render(self, filename)
+    def render_to(self, filename, width = None, height = None, bottom = None,
+                  format = 'png'):
+        filename = make_ending_for(filename, format)
+        _render(self, filename, format)
         if len(sys.argv) > 1:
             os.system('open ' + filename)
+
+def make_ending_for(filename, format):
+    ending = '.' + format
+    if not filename.endswith(ending):
+        filename += ending
+    return filename
 
 # ===== SETUP
 
@@ -73,12 +79,12 @@ def make_simple_map(shapefile = None, west = -5, south = 55, east = 35, north = 
         _add_elevation(m)
     _add_borders(m, shapefile, colors)
 
-    if speciesfile:
-        _add_species(m, speciesfile)
-
     _add_lakes(m, colors)
     _add_rivers(m, colors)
     _add_glaciers(m)
+
+    if speciesfile:
+        _add_species(m, speciesfile)
 
     # the box is defined in degrees when passed in to us, but now that
     # the projection is Mercator, the bounding box must be specified
@@ -143,19 +149,20 @@ def _add_species(m, speciesfile):
     # to fill a polygon we create a PolygonSymbolizer
     polygon_symbolizer = mapnik.PolygonSymbolizer()
     polygon_symbolizer.fill = mapnik.Color('rgb(0,0,0)')
-    polygon_symbolizer.fill_opacity = 0.2
+    polygon_symbolizer.fill_opacity = 0.25
     r.symbols.append(polygon_symbolizer) # add the symbolizer to the rule object
 
     # to add outlines to a polygon we create a LineSymbolizer
     line_symbolizer = mapnik.LineSymbolizer()
     line_symbolizer.stroke = mapnik.Color('rgb(0%,0%,0%)')
-    line_symbolizer.stroke_width = 0.5
+    line_symbolizer.stroke_width = 1
     r.symbols.append(line_symbolizer) # add the symbolizer to the rule object
     s.rules.append(r) # now add the rule to the style
 
     m.append_style('Chorology',s)
 
-    ds = mapnik.Shapefile(file = speciesfile)
+    #ds = mapnik.Shapefile(file = speciesfile)
+    ds = mapnik.GeoJSON(file = speciesfile)
     layer = mapnik.Layer('shrub')
 
     layer.datasource = ds
@@ -377,7 +384,7 @@ def _generate_svg(filename, symbol):
             assert False, 'Unknown shape: %s' % symbol.get_shape()
 
 
-def _render(themap, filename):
+def _render(themap, filename, format):
     m = themap.get_base_map()
     ctx = mapnik.Context()
 
@@ -422,9 +429,9 @@ def _render(themap, filename):
 
         ds.add_feature(f)
 
-    mapnik.render_to_file(m, filename, 'png')
+    mapnik.render_to_file(m, filename, format)
 
-    if themap.has_legend():
+    if themap.has_legend() and themap.has_symbols() and format == 'png':
         _add_legend(filename, themap)
 
 def _add_legend(filename, themap):
@@ -485,7 +492,7 @@ def _add_legend(filename, themap):
             assert False, 'Unsupported shape: %s' % symbol.get_shape()
 
         draw.text(
-            (x1 + 20 + (r * 2), y1 + 10 + displacement),
+            (x1 + 20 + (r * 2), y1 + 8 + displacement),
             text = symbol.get_title(),
             fill = (0, 0, 0),
             font = font,
