@@ -40,7 +40,7 @@ for (s, (title, lat, lng)) in accounts.items():
     else:
         symbol = black
 
-    #themap.add_marker(lat, lng, title, symbol)
+    themap.add_marker(lat, lng, title, symbol)
 
 themap.set_legend(True)
 themap.render_to('herb-map', format = fileformat)
