@@ -1,5 +1,5 @@
 
-import mapgenlib
+import maputils
 
 query = '''
 prefix dc: <http://purl.org/dc/elements/1.1/>
@@ -17,4 +17,4 @@ WHERE {
     geo:lat ?lat;
     geo:long ?lng.
 }'''
-mapgenlib.color_scale_map(query, 'malt-wort-ratio-map')
+maputils.color_scale_map(query, 'malt-wort-ratio-map', legend = False)

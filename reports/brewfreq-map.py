@@ -1,5 +1,5 @@
 
-import mapgenlib
+import maputils
 
 query = '''
 prefix neg: <http://www.garshol.priv.no/2014/neg/>
@@ -15,7 +15,7 @@ WHERE {
     tb:brew-frequency ?ratio.
 
 }'''
-mapgenlib.color_scale_map(
+maputils.color_scale_map(
     query,
     'brewfreq-map.html',
     max_value = 40
