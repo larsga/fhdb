@@ -62,6 +62,7 @@ mapping = {
     ('barley', 'wheat')                          : 'barley_wheat',
     ('rye', 'barley')                            : 'mixed_rye',
     ('barley', 'brome', 'oats')                  : 'bizarre',
+    ('emmer', 'spelt')                           : 'bizarre',
     ('oats',)                                    : 'oats',
     ('rye',)                                     : 'rye',
     }
