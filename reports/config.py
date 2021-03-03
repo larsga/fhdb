@@ -70,14 +70,16 @@ def make_west_europe_map(spec):
         east = -4, west = 28, south = 52.5, north = 63.5,
         width = 2000, height = 1600,
         elevation = spec.elevation,
-        color = spec.color
+        color = spec.color,
+        speciesfile = spec.speciesfile
     ), color = spec.color)
 
 def make_finland_map(spec):
     return mapniklib.MapnikMap(mapniklib.make_simple_map(
         east = 23, west = 27, south = 59, north = 64,
         elevation = spec.elevation,
-        color = spec.color
+        color = spec.color,
+        speciesfile = spec.speciesfile
     ), color = spec.color)
 
 def make_baltic_map(spec):
@@ -85,7 +87,8 @@ def make_baltic_map(spec):
         east = 24, west = 26, south = 53.5, north = 59.7,
         width = 1600, height = 1200,
         elevation = spec.elevation,
-        color = spec.color
+        color = spec.color,
+        speciesfile = spec.speciesfile
     ), color = spec.color)
 
 def make_norway_map(spec):
@@ -93,7 +96,8 @@ def make_norway_map(spec):
         east = 6, west = 12, south = 57.9, north = 63.9,
         width = 1200, height = 1250,
         elevation = spec.elevation,
-        color = spec.color
+        color = spec.color,
+        speciesfile = spec.speciesfile
     ), color = spec.color)
 
 def make_mid_norway_map(spec):
@@ -101,7 +105,8 @@ def make_mid_norway_map(spec):
         east = 7.5, west = 10, south = 59, north = 63,
         width = 1400, height = 1200,
         elevation = spec.elevation,
-        color = spec.color
+        color = spec.color,
+        speciesfile = spec.speciesfile
     ), color = spec.color)
 
 def make_norway_sweden_map(spec):
