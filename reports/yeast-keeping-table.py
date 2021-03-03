@@ -1,7 +1,7 @@
 
 import tablelib, sparqllib
 
-MIN_ACCOUNTS = 1
+MIN_ACCOUNTS = 2
 
 query = '''
 prefix dc: <http://purl.org/dc/elements/1.1/>
@@ -32,6 +32,8 @@ select ?s ?l where {
 
 labels = {uri : label for (uri, label) in sparqllib.query_for_rows(q2)}
 def get_method_name(uri):
+    if uri == 'Other':
+        return 'Other'
     return labels[uri]
 
 format = tablelib.get_format()
