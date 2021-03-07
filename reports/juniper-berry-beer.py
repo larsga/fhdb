@@ -1,19 +1,5 @@
 
-import colorsys
-import maplib
-import sparqllib
-
-lat = 61.8
-lng = 9.45
-
-themap = maplib.GoogleMap(lat, lng, 6)
-
-symbols = {
-    '1' : themap.add_symbol('white', '#FFFFFF', '#000000'),
-    '0' : themap.add_symbol('black', '#000000', '#000000'),
-    'true' : themap.add_symbol('white', '#FFFFFF', '#000000'),
-    'false' : themap.add_symbol('black', '#000000', '#000000')
-}
+import maputils
 
 query = '''
 prefix dc: <http://purl.org/dc/elements/1.1/>
@@ -29,7 +15,4 @@ WHERE {
     geo:long ?lng;
     tb:juniper-berry-beer ?mead.
 }'''
-for (s, lat, lng, title, mead) in sparqllib.query_for_rows(query):
-    themap.add_marker(lat, lng, title, symbols[mead])
-
-themap.render_to('juniper-berry-beer')
+maputils.make_boolean_map(query, 'juniper-berry-beer')
