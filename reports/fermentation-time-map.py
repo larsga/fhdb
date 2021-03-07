@@ -1,5 +1,5 @@
 
-import sparqllib, config, mapgenlib
+import sparqllib, config, maputils
 
 query = '''
 prefix dc: <http://purl.org/dc/elements/1.1/>
@@ -27,9 +27,9 @@ biggest = 250
 increment = (biggest - smallest) / symbol_count
 
 if themap.get_color():
-    colorfunc = mapgenlib.color
+    colorfunc = maputils.color
 else:
-    colorfunc = mapgenlib.bwcolor
+    colorfunc = maputils.bwcolor
 
 symbols = [themap.add_symbol('id%s' % ix,
                              '#' + colorfunc(ix, symbol_count),

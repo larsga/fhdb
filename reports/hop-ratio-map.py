@@ -1,5 +1,5 @@
 
-import mapgenlib
+import maputils
 
 query = '''
 prefix neg: <http://www.garshol.priv.no/2014/neg/>
@@ -15,4 +15,4 @@ WHERE {
     tb:hop-wort-ratio ?ratio.
 
 }'''
-mapgenlib.color_scale_map(query, 'hop-ratio-map.html')
+maputils.color_scale_map(query, 'hop-ratio-map')

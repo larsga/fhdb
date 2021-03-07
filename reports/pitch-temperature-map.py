@@ -2,7 +2,7 @@
 #encoding=utf-8
 
 import re, codecs, sys
-import maplib, mapniklib, sparqllib, mapgenlib, config
+import maplib, mapniklib, sparqllib, maputils, config
 import pitch
 
 # ===== ALL IN ONE DATA SET
@@ -15,9 +15,9 @@ biggest = 40
 increment = (biggest - smallest) / (symbol_count - 1)
 
 if themap.get_color():
-    colorfunc = mapgenlib.color
+    colorfunc = maputils.color
 else:
-    colorfunc = mapgenlib.bwcolor
+    colorfunc = maputils.bwcolor
 
 symbols = [themap.add_symbol('id%s' % ix,
                              '#' + colorfunc(ix, symbol_count),
