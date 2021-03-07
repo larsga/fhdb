@@ -140,16 +140,9 @@ def value_mapper(v):
     'Remap values for better visualization.'
     return math.log(v)
 
-def color_scale_map(query, outfile, max_value = 1000000):
+def color_scale_map(query, outfile, max_value = 1000000, legend = False,
+                    symbol_count = 10):
     themap = config.make_map_from_cli_args()
-
-    symbols = [themap.add_symbol('id%s' % ix,
-                                 '#' + color(ix, symbol_count),
-                                 '#000000',
-                                 strokeweight = 1#,
-                                 #scale = (ix / float(symbol_count)) * max_scale
-               )
-               for ix in range(symbol_count)]
 
     smallest = 1000000
     biggest = 0
@@ -159,10 +152,21 @@ def color_scale_map(query, outfile, max_value = 1000000):
         biggest = max(biggest, value)
 
     increment = (biggest - smallest) / (symbol_count - 1)
+    symbols = [themap.add_symbol('id%s' % ix,
+                                 '#' + color(ix, symbol_count),
+                                 '#000000',
+                                 strokeweight = 1,
+                                 title = '%s-%s' % (smallest + increment * ix,
+                                                    smallest + increment * (ix+1))
+                                 #,scale = (ix / float(symbol_count)) * max_scale
+               )
+               for ix in range(symbol_count)]
+
     for (lat, lng, title, org_value) in sparqllib.query_for_rows(query):
         ratio = value_mapper(min(float(org_value), max_value))
         index = (int((ratio - smallest) / increment))
         symbol = symbols[index]
         themap.add_marker(lat, lng, title, symbol, 'Value: %s' % org_value)
 
+    themap.set_legend(legend)
     themap.render_to(outfile)
