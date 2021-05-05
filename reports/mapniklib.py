@@ -23,7 +23,22 @@ district_file = None
 #district_file = '/Users/larsga/prog/python/etno-distrikt/regions.json'
 #district_file = '/Users/larsga/prog/python/etno-distrikt/regions-clipped.json'
 
-# ===== NORMAL MAP
+# ===== BASE MAP
+# A base map is the actual geography rendering without symbols or legends.
+# These can be of different kinds.
+
+class BaseMap:
+
+    def get_transform(self):
+        'Post-rendering transform function.'
+        return None
+
+    def make_map(self):
+        'Produces a configured mapnik map for the base.'
+        raise NotImplementedError()
+
+# ===== FULL MAP
+# A full map is the base + symbols/legend
 
 class MapnikMap(maplib.AbstractMap):
 
@@ -44,8 +59,9 @@ class MapnikMap(maplib.AbstractMap):
         filename = make_ending_for(filename, format)
         legend_box = _render(self, filename, format)
 
-        if self._transform:
-            self._transform(filename, legend_box)
+        transform = self._base_map.get_transform()
+        if transform:
+            transform(filename, legend_box)
 
         if len(sys.argv) > 1:
             os.system('open ' + filename)
@@ -70,6 +86,16 @@ black_and_white = Colors(
     water_color = '#F6F6F6',
     land_color = '#BBBBBB',
 )
+
+# ===== SIMPLE BASE MAP
+
+class SimpleBaseMap(BaseMap):
+
+    def __init__(self, mapnik_map):
+        self._mapnik_map = mapnik_map
+
+    def make_map(self):
+        return self._mapnik_map
 
 def make_simple_map(shapefile = None, west = -5, south = 55, east = 35, north = 67, width = 2000, height = 1200, elevation = ELEVATION_DEFAULT, color = True, speciesfile = None):
     if color:
@@ -98,7 +124,7 @@ def make_simple_map(shapefile = None, west = -5, south = 55, east = 35, north = 
         _add_districts(m, district_file)
 
     zoom_to_box(m, west, south, east, north)
-    return m
+    return SimpleBaseMap(m)
 
 def zoom_to_box(m, west, south, east, north):
     # the box is defined in degrees when passed in to us, but now that
@@ -424,9 +450,8 @@ def _generate_svg(filename, symbol):
         else:
             assert False, 'Unknown shape: %s' % symbol.get_shape()
 
-
 def _render(themap, filename, format):
-    m = themap.get_base_map()
+    m = themap.get_base_map().make_map()
     ctx = mapnik.Context()
 
     symbol_layers = {}
@@ -558,6 +583,87 @@ def _unhexdigit(digit):
     else:
         return ord(digit.lower()) - 87
 
+# ===== FREE-FORM COLOUR-FILL MAP
+
+class ColoredRegionMap(BaseMap):
+
+    def __init__(self, view):
+        self._view = view
+        self._legend = False
+        self._district_file = '/Users/larsga/prog/python/etno-distrikt/regions-clipped.json'
+        self._label_formatter = lambda x,y: '%s-%s' % (x, y)
+        self._field = 'name'
+        self._name_to_color = {}
+        self._symbols = []
+
+    def set_legend(self, legend):
+        self._legend = legend
+
+    def set_district_file(self, district_file):
+        self._district_file = district_file
+
+    def set_label_formatter(self, label_formatter):
+        self._label_formatter = label_formatter
+
+    def set_field(self, field):
+        self._field = field
+
+    def set_name_to_color(self, name_to_color):
+        self._name_to_color = name_to_color
+
+    def render_to(self, outfile):
+        themap = self.make_map()
+        _render_coloured_map(themap, outfile, self._view, self._symbols if self._legend else [])
+
+    def add_symbol(self, symbol):
+        self._symbols.append(symbol)
+
+    def get_transform(self):
+        return self._view.transform
+
+    def make_map(self):
+        m = mapnik.Map(self._view.width, self._view.height)
+        m.srs = '+proj=merc +ellps=WGS84 +datum=WGS84 +no_defs'
+        m.background = mapnik.Color(default_colors.water_color)
+
+        s = mapnik.Style() # style object to hold rules
+
+        for (name, color) in self._name_to_color.items():
+            rule = make_rule(color)
+            rule.filter = mapnik.Filter("[%s] = '%s'" % (
+                self._field, name.encode('utf-8'))
+            )
+            s.rules.append(rule) # now add the rule to the style
+
+        m.append_style('My Style',s)
+
+        ds = mapnik.GeoJSON(file = self._district_file)
+        layer = mapnik.Layer('world')
+
+        layer.datasource = ds
+        layer.srs = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
+        layer.styles.append('My Style')
+
+        m.layers.append(layer)
+
+        view = self._view
+        zoom_to_box(m, view.west, view.south, view.east, view.north)
+        return m
+
+def _render_coloured_map(themap, outfile, view, symbols):
+    outfile = make_ending_for(outfile, 'png')
+    mapnik.render_to_file(themap, outfile, 'PNG')
+
+    legend_box = None
+    if symbols:
+        legend_box = _add_legend(outfile, symbols)
+
+    if view.transform:
+        view.transform(outfile, legend_box)
+
+    if len(sys.argv) > 1:
+        os.system('open ' + outfile)
+
 # ===== CHOROPLETH MAP
 
 def make_color_scale(count):
@@ -596,29 +702,9 @@ def make_rule(color):
     return r
 
 GRAY = 'rgb(60%, 60%, 60%)'
-class ChoroplethMap:
+class ChoroplethMap(ColoredRegionMap):
 
-    def __init__(self, view):
-        self._view = view
-        self._legend = False
-        self._district_file = '/Users/larsga/prog/python/etno-distrikt/regions-clipped.json'
-        self._label_formatter = lambda x,y: '%s-%s' % (x, y)
-
-    def set_legend(self, legend):
-        self._legend = legend
-
-    def set_district_file(self, district_file):
-        self._district_file = district_file
-
-    def set_label_formatter(self, label_formatter):
-        self._label_formatter = label_formatter
-
-    def render_to(self, outfile, district_to_value, levels = 10,
-                  field_name = 'name'):
-        # _render_choropleth_map(outfile, self._view, district_to_value,
-        #                        levels, self._legend, self._district_file,
-        #                        self._label_formatter)
-
+    def set_district_to_value(self, district_to_value, levels = 10):
         lowest = min([v for v in district_to_value.values() if v != None])
         biggest = max(district_to_value.values())
         inc = (biggest - lowest) / float(levels)
@@ -630,142 +716,9 @@ class ChoroplethMap:
 
             name_to_color[district] = colors[ix] if ix != None else GRAY
 
-        symbols = []
-        if self._legend:
-            colors = make_color_scale_rgb(levels) # diff syntax
-            symbols = [maplib.Symbol(None, colors[ix], title = self._label_formatter(lowest + ix * inc, lowest + (ix+1) * inc), shape = maplib.CIRCLE)
-                       for ix in range(levels + 1)]
+        self.set_name_to_color(name_to_color)
 
-        _render_coloured_map(outfile, self._view, name_to_color,
-                             symbols, self._district_file,
-                             field_name)
-
-def _render_choropleth_map(outfile, view, district_to_value, levels, legend,
-                           district_file):
-    outfile = make_ending_for(outfile, 'png')
-
-    m = mapnik.Map(view.width, view.height)
-    m.srs = '+proj=merc +ellps=WGS84 +datum=WGS84 +no_defs'
-    m.background = mapnik.Color(default_colors.water_color)
-
-    s = mapnik.Style() # style object to hold rules
-
-    lowest = min([v for v in district_to_value.values() if v != None])
-    biggest = max(district_to_value.values())
-    inc = (biggest - lowest) / float(levels)
-
-    buckets = {}
-    for (district, value) in district_to_value.items():
-        ix = int(round((value - lowest) / inc)) if value != None else None
-        if ix not in buckets:
-            buckets[ix] = []
-        buckets[ix].append(district)
-
-    colors = make_color_scale(levels)
-    for ix in range(levels + 1):
-        if ix not in buckets:
-            continue
-
-        rule = make_rule(colors[ix])
-        rule.filter = mapnik.Filter(' or '.join([
-            "[name] = '%s'" % name.encode('utf-8') for name in buckets[ix]
-        ]))
-        # print ix, u' or '.join([
-        #     u"[name] = '%s'" % name for name in buckets[ix]
-        # ])
-        s.rules.append(rule) # now add the rule to the style
-
-    # None = no value, treated specially
-    if None in buckets:
-        rule = make_rule('rgb(60%, 60%, 60%)')
-        rule.filter = mapnik.Filter(' or '.join([
-            "[name] = '%s'" % name.encode('utf-8') for name in buckets[None]
-        ]))
-        s.rules.append(rule)
-
-    m.append_style('My Style',s)
-
-    ds = mapnik.GeoJSON(file = district_file)
-    layer = mapnik.Layer('world')
-
-    layer.datasource = ds
-    layer.srs = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
-    layer.styles.append('My Style')
-
-    m.layers.append(layer)
-
-    zoom_to_box(m, view.west, view.south, view.east, view.north)
-    mapnik.render_to_file(m, outfile, 'PNG')
-
-    if legend:
-        colors = make_color_scale_rgb(levels)
-        symbols = [maplib.Symbol(None, colors[ix], title = format_label(lowest + ix * inc, lowest + (ix+1) * inc), shape = maplib.CIRCLE)
-            for ix in range(levels + 1)]
-        _add_legend(outfile, symbols)
-
-    if len(sys.argv) > 1:
-        os.system('open ' + outfile)
-
-# ===== FREE-FORM COLOUR-FILL MAP
-
-class ColoredRegionMap:
-
-    def __init__(self, view):
-        self._view = view
-        self._legend = False
-        self._district_file = '/Users/larsga/prog/python/etno-distrikt/regions-clipped.json'
-        self._label_formatter = lambda x,y: '%s-%s' % (x, y)
-
-    def set_legend(self, legend):
-        self._legend = legend
-
-    def set_district_file(self, district_file):
-        self._district_file = district_file
-
-    def set_label_formatter(self, label_formatter):
-        self._label_formatter = label_formatter
-
-    def render_to(self, outfile, name_to_color, field = 'name'):
-        _render_coloured_map(outfile, self._view, name_to_color,
-                             None, self._district_file, field)
-
-def _render_coloured_map(outfile, view, name_to_color, symbols,
-                         district_file, field_name):
-    outfile = make_ending_for(outfile, 'png')
-
-    m = mapnik.Map(view.width, view.height)
-    m.srs = '+proj=merc +ellps=WGS84 +datum=WGS84 +no_defs'
-    m.background = mapnik.Color(default_colors.water_color)
-
-    s = mapnik.Style() # style object to hold rules
-
-    for (name, color) in name_to_color.items():
-        rule = make_rule(color)
-        rule.filter = mapnik.Filter("[%s] = '%s'" % (
-            field_name, name.encode('utf-8'))
-        )
-        s.rules.append(rule) # now add the rule to the style
-
-    m.append_style('My Style',s)
-
-    ds = mapnik.GeoJSON(file = district_file)
-    layer = mapnik.Layer('world')
-
-    layer.datasource = ds
-    layer.srs = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
-    layer.styles.append('My Style')
-
-    m.layers.append(layer)
-
-    zoom_to_box(m, view.west, view.south, view.east, view.north)
-    mapnik.render_to_file(m, outfile, 'PNG')
-
-    legend_box = None
-    if symbols:
-        legend_box = _add_legend(outfile, symbols)
-
-    if view.transform:
-        view.transform(outfile, legend_box)
-
-    if len(sys.argv) > 1:
-        os.system('open ' + outfile)
+        colors = make_color_scale_rgb(levels) # diff syntax
+        for ix in range(levels + 1):
+            title = self._label_formatter(lowest + ix * inc, lowest + (ix+1) * inc)
+            self.add_symbol(maplib.Symbol(None, colors[ix], title = title, shape = maplib.CIRCLE))
