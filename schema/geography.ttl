@@ -16,6 +16,7 @@ dbp:Province rdfs:subClassOf dbp:Region.
 dbp:Austria rdfs:label "Austria"; a dbp:Country.
 dbp:Belarus rdfs:label "Belarus"; a dbp:Country.
 dbp:Belgium rdfs:label "Belgium"; a dbp:Country.
+dbp:Croatia rdfs:label "Croatia"; a dbp:Country.
 dbp:Denmark rdfs:label "Denmark"; a dbp:Country.
 dbp:Estonia rdfs:label "Estonia"; a dbp:Country.
 dbp:Finland rdfs:label "Finland"; a dbp:Country.

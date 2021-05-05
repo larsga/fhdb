@@ -1,5 +1,6 @@
 #encoding=utf-8
 
+import config
 import sparqllib
 import pitch
 
@@ -18,7 +19,8 @@ other = 0
 
 unreadable = 0
 temperatures = []
-for (s, lat, lng, t, c) in sparqllib.query_for_rows(pitch.query):
+q = pitch.make_query(country = config.get_country())
+for (s, lat, lng, t, c) in sparqllib.query_for_rows(q):
     temp = pitch.get_temp(t)
 
     if temp:
@@ -52,12 +54,30 @@ print '  Milk', milks
 print '  Body', bodies
 print '  Other', other
 
+LANG = config.get_language()
+label = {
+    'en' : 'Pitch temperatures',
+    'no' : 'Tilsetningstemperaturer'
+}
+
 from matplotlib import pyplot
 
 #pyplot.style.use('grayscale')
 (n, bins, patches) = pyplot.hist(temperatures, BINS, alpha=0.5,
-                                 label = 'Pitch temperatures')
-pyplot.title('Pitch temperatures')
-pyplot.xlabel('Degrees C')
-pyplot.ylabel('Number of accounts')
-pyplot.show()
+                                 label = label[LANG])
+if LANG == 'en':
+    pyplot.title('Pitch temperatures')
+    pyplot.xlabel('Degrees C')
+    pyplot.ylabel('Number of accounts')
+elif LANG == 'no':
+    pyplot.title('Tilsetningstemperaturer')
+    pyplot.xlabel('Grader C')
+    pyplot.ylabel('Antall beskrivelser')
+else:
+    assert False
+
+if not config.get_file():
+    pyplot.show()
+else:
+    pyplot.savefig(config.get_file())
+    pyplot.close()

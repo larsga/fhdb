@@ -3,6 +3,7 @@ import sparqllib
 import tablelib
 
 format = tablelib.get_format()
+property = 'tb:herbs'
 
 MIN_ACCOUNTS = 3
 
@@ -63,10 +64,10 @@ SELECT DISTINCT ?h ?c ?s
 WHERE {
   ?s dc:title ?title;
     tb:part-of ?c;
-    tb:herbs ?h.
+    %s ?h.
 
   ?c a dbp:Country.
-}'''
+}''' % property
 #  FILTER (?h != neg:alder-branches && ?h != neg:straw )
 
 def get_herb_name(h):

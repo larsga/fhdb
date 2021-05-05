@@ -19,14 +19,19 @@ if not SHAPEDIR.endswith('/'):
 
 ELEVATION_DEFAULT = False
 
-# ===== MAP
+district_file = None
+#district_file = '/Users/larsga/prog/python/etno-distrikt/regions.json'
+#district_file = '/Users/larsga/prog/python/etno-distrikt/regions-clipped.json'
+
+# ===== NORMAL MAP
 
 class MapnikMap(maplib.AbstractMap):
 
-    def __init__(self, base_map, color = True):
+    def __init__(self, base_map, color = True, transform = None):
         maplib.AbstractMap.__init__(self, default_scale = 8)
         self._base_map = base_map
         self._color = color
+        self._transform = transform
 
     def get_base_map(self):
         return self._base_map
@@ -37,7 +42,11 @@ class MapnikMap(maplib.AbstractMap):
     def render_to(self, filename, width = None, height = None, bottom = None,
                   format = 'png'):
         filename = make_ending_for(filename, format)
-        _render(self, filename, format)
+        legend_box = _render(self, filename, format)
+
+        if self._transform:
+            self._transform(filename, legend_box)
+
         if len(sys.argv) > 1:
             os.system('open ' + filename)
 
@@ -85,7 +94,13 @@ def make_simple_map(shapefile = None, west = -5, south = 55, east = 35, north = 
 
     if speciesfile:
         _add_species(m, speciesfile)
+    if district_file:
+        _add_districts(m, district_file)
 
+    zoom_to_box(m, west, south, east, north)
+    return m
+
+def zoom_to_box(m, west, south, east, north):
     # the box is defined in degrees when passed in to us, but now that
     # the projection is Mercator, the bounding box must be specified
     # in metres (no, I don't know why). we solve this by explicitly
@@ -95,7 +110,6 @@ def make_simple_map(shapefile = None, west = -5, south = 55, east = 35, north = 
     trans = mapnik.ProjTransform(source, target)
     thebox = mapnik.Box2d(west, south, east, north)
     m.zoom_to_box(trans.forward(thebox))
-    return m
 
 def _add_green_land(m, shapefile, colors):
     s = mapnik.Style() # style object to hold rules
@@ -171,6 +185,32 @@ def _add_species(m, speciesfile):
 
     m.layers.append(layer)
 
+def _add_districts(m, district_file):
+    s = mapnik.Style()
+    r = mapnik.Rule()
+
+    # polygon_symbolizer = mapnik.PolygonSymbolizer()
+    # polygon_symbolizer.fill = mapnik.Color('rgb(0,0,0)')
+    # polygon_symbolizer.fill_opacity = 0.25
+    # r.symbols.append(polygon_symbolizer)
+
+    line_symbolizer = mapnik.LineSymbolizer()
+    line_symbolizer.stroke = mapnik.Color('rgb(0%,0%,0%)')
+    line_symbolizer.stroke_width = 0.5
+    r.symbols.append(line_symbolizer)
+    s.rules.append(r)
+
+    m.append_style('districts',s)
+
+    ds = mapnik.GeoJSON(file = district_file)
+    layer = mapnik.Layer('districts')
+
+    layer.datasource = ds
+    layer.srs = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
+    layer.styles.append('districts')
+
+    m.layers.append(layer)
+
 def _make_transform(source, target):
     source = mapnik.Projection(source)
     target = mapnik.Projection(target)
@@ -239,7 +279,8 @@ def _add_elevation(m):
 
     rs = mapnik.RasterSymbolizer()
 
-    # COLORIZER_DISCRETE is a binned/classified renderer. Other options are COLORIZER_LINEAR (stretched) and
+    # COLORIZER_DISCRETE is a binned/classified renderer.
+    # Other options are COLORIZER_LINEAR (stretched) and
     # COLORIZER_EXACT (unique)
     rs.colorizer = mapnik.RasterColorizer(
         mapnik.COLORIZER_DISCRETE, mapnik.Color(0, 0, 0, 0)
@@ -431,18 +472,19 @@ def _render(themap, filename, format):
 
     mapnik.render_to_file(m, filename, format)
 
+    box = None
     if themap.has_legend() and themap.has_symbols() and format == 'png':
-        _add_legend(filename, themap)
+        used_symbols = [s for s in themap.get_symbols() if themap.is_symbol_used(s)]
+        box = _add_legend(filename, used_symbols)
+    return box
 
-def _add_legend(filename, themap):
+def _add_legend(filename, used_symbols):
     from PIL import Image, ImageDraw, ImageFont
 
     im = Image.open(filename)
 
     r = 12
     font = ImageFont.truetype('Arial.ttf', r * 2)
-
-    used_symbols = [s for s in themap.get_symbols() if themap.is_symbol_used(s)]
 
     widest = 0
     for symbol in used_symbols:
@@ -455,9 +497,11 @@ def _add_legend(filename, themap):
     y1 = 10
     x2 = 10 + r * 2 + offset * 3 + widest
     y2 = 10 + displace * len(used_symbols) + offset
+    box = [(x1, y1), (x2, y2)]
+
     draw = ImageDraw.Draw(im)
     draw.rectangle(
-        [(x1, y1), (x2, y2)],
+        box,
         outline = (0, 0, 0),
         fill = (255, 255, 255),
         width = 2,
@@ -500,6 +544,7 @@ def _add_legend(filename, themap):
 
     #im.show()
     im.save(filename, 'PNG')
+    return box
 
 def _parse_color(color):
     return (_unhex(color[1 : 3]), _unhex(color[3 : 5]), _unhex(color[5 : 7]))
@@ -512,3 +557,215 @@ def _unhexdigit(digit):
         return int(digit)
     else:
         return ord(digit.lower()) - 87
+
+# ===== CHOROPLETH MAP
+
+def make_color_scale(count):
+    import colormaps
+
+    inc = len(colormaps._magma_data) / count
+    return [
+        'rgb(%s%%, %s%%, %s%%)' % tuple([int(round(x * 100)) for x in colormaps._magma_data[inc * ix]])
+        for ix in range(count + 1)
+    ]
+
+def nicehex(v):
+    return hex(v)[2 : ].zfill(2)
+
+def make_color_scale_rgb(count):
+    import colormaps
+
+    inc = len(colormaps._magma_data) / count
+    return [
+        '#%s%s%s' % tuple([nicehex(int(round(x * 256))) for x in colormaps._magma_data[inc * ix]])
+        for ix in range(count + 1)
+    ]
+
+def make_rule(color):
+    r = mapnik.Rule() # rule object to hold symbolizers
+    # to fill a polygon we create a PolygonSymbolizer
+    polygon_symbolizer = mapnik.PolygonSymbolizer()
+    polygon_symbolizer.fill = mapnik.Color(color)
+    r.symbols.append(polygon_symbolizer) # add the symbolizer to the rule object
+
+    # to add outlines to a polygon we create a LineSymbolizer
+    line_symbolizer = mapnik.LineSymbolizer()
+    line_symbolizer.stroke = mapnik.Color('rgb(5%,5%,5%)')
+    line_symbolizer.stroke_width = 0.2
+    r.symbols.append(line_symbolizer) # add the symbolizer to the rule object
+    return r
+
+GRAY = 'rgb(60%, 60%, 60%)'
+class ChoroplethMap:
+
+    def __init__(self, view):
+        self._view = view
+        self._legend = False
+        self._district_file = '/Users/larsga/prog/python/etno-distrikt/regions-clipped.json'
+        self._label_formatter = lambda x,y: '%s-%s' % (x, y)
+
+    def set_legend(self, legend):
+        self._legend = legend
+
+    def set_district_file(self, district_file):
+        self._district_file = district_file
+
+    def set_label_formatter(self, label_formatter):
+        self._label_formatter = label_formatter
+
+    def render_to(self, outfile, district_to_value, levels = 10,
+                  field_name = 'name'):
+        # _render_choropleth_map(outfile, self._view, district_to_value,
+        #                        levels, self._legend, self._district_file,
+        #                        self._label_formatter)
+
+        lowest = min([v for v in district_to_value.values() if v != None])
+        biggest = max(district_to_value.values())
+        inc = (biggest - lowest) / float(levels)
+
+        name_to_color = {}
+        colors = make_color_scale(levels)
+        for (district, value) in district_to_value.items():
+            ix = int(round((value - lowest) / inc)) if value != None else None
+
+            name_to_color[district] = colors[ix] if ix != None else GRAY
+
+        symbols = []
+        if self._legend:
+            colors = make_color_scale_rgb(levels) # diff syntax
+            symbols = [maplib.Symbol(None, colors[ix], title = self._label_formatter(lowest + ix * inc, lowest + (ix+1) * inc), shape = maplib.CIRCLE)
+                       for ix in range(levels + 1)]
+
+        _render_coloured_map(outfile, self._view, name_to_color,
+                             symbols, self._district_file,
+                             field_name)
+
+def _render_choropleth_map(outfile, view, district_to_value, levels, legend,
+                           district_file):
+    outfile = make_ending_for(outfile, 'png')
+
+    m = mapnik.Map(view.width, view.height)
+    m.srs = '+proj=merc +ellps=WGS84 +datum=WGS84 +no_defs'
+    m.background = mapnik.Color(default_colors.water_color)
+
+    s = mapnik.Style() # style object to hold rules
+
+    lowest = min([v for v in district_to_value.values() if v != None])
+    biggest = max(district_to_value.values())
+    inc = (biggest - lowest) / float(levels)
+
+    buckets = {}
+    for (district, value) in district_to_value.items():
+        ix = int(round((value - lowest) / inc)) if value != None else None
+        if ix not in buckets:
+            buckets[ix] = []
+        buckets[ix].append(district)
+
+    colors = make_color_scale(levels)
+    for ix in range(levels + 1):
+        if ix not in buckets:
+            continue
+
+        rule = make_rule(colors[ix])
+        rule.filter = mapnik.Filter(' or '.join([
+            "[name] = '%s'" % name.encode('utf-8') for name in buckets[ix]
+        ]))
+        # print ix, u' or '.join([
+        #     u"[name] = '%s'" % name for name in buckets[ix]
+        # ])
+        s.rules.append(rule) # now add the rule to the style
+
+    # None = no value, treated specially
+    if None in buckets:
+        rule = make_rule('rgb(60%, 60%, 60%)')
+        rule.filter = mapnik.Filter(' or '.join([
+            "[name] = '%s'" % name.encode('utf-8') for name in buckets[None]
+        ]))
+        s.rules.append(rule)
+
+    m.append_style('My Style',s)
+
+    ds = mapnik.GeoJSON(file = district_file)
+    layer = mapnik.Layer('world')
+
+    layer.datasource = ds
+    layer.srs = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
+    layer.styles.append('My Style')
+
+    m.layers.append(layer)
+
+    zoom_to_box(m, view.west, view.south, view.east, view.north)
+    mapnik.render_to_file(m, outfile, 'PNG')
+
+    if legend:
+        colors = make_color_scale_rgb(levels)
+        symbols = [maplib.Symbol(None, colors[ix], title = format_label(lowest + ix * inc, lowest + (ix+1) * inc), shape = maplib.CIRCLE)
+            for ix in range(levels + 1)]
+        _add_legend(outfile, symbols)
+
+    if len(sys.argv) > 1:
+        os.system('open ' + outfile)
+
+# ===== FREE-FORM COLOUR-FILL MAP
+
+class ColoredRegionMap:
+
+    def __init__(self, view):
+        self._view = view
+        self._legend = False
+        self._district_file = '/Users/larsga/prog/python/etno-distrikt/regions-clipped.json'
+        self._label_formatter = lambda x,y: '%s-%s' % (x, y)
+
+    def set_legend(self, legend):
+        self._legend = legend
+
+    def set_district_file(self, district_file):
+        self._district_file = district_file
+
+    def set_label_formatter(self, label_formatter):
+        self._label_formatter = label_formatter
+
+    def render_to(self, outfile, name_to_color, field = 'name'):
+        _render_coloured_map(outfile, self._view, name_to_color,
+                             None, self._district_file, field)
+
+def _render_coloured_map(outfile, view, name_to_color, symbols,
+                         district_file, field_name):
+    outfile = make_ending_for(outfile, 'png')
+
+    m = mapnik.Map(view.width, view.height)
+    m.srs = '+proj=merc +ellps=WGS84 +datum=WGS84 +no_defs'
+    m.background = mapnik.Color(default_colors.water_color)
+
+    s = mapnik.Style() # style object to hold rules
+
+    for (name, color) in name_to_color.items():
+        rule = make_rule(color)
+        rule.filter = mapnik.Filter("[%s] = '%s'" % (
+            field_name, name.encode('utf-8'))
+        )
+        s.rules.append(rule) # now add the rule to the style
+
+    m.append_style('My Style',s)
+
+    ds = mapnik.GeoJSON(file = district_file)
+    layer = mapnik.Layer('world')
+
+    layer.datasource = ds
+    layer.srs = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
+    layer.styles.append('My Style')
+
+    m.layers.append(layer)
+
+    zoom_to_box(m, view.west, view.south, view.east, view.north)
+    mapnik.render_to_file(m, outfile, 'PNG')
+
+    legend_box = None
+    if symbols:
+        legend_box = _add_legend(outfile, symbols)
+
+    if view.transform:
+        view.transform(outfile, legend_box)
+
+    if len(sys.argv) > 1:
+        os.system('open ' + outfile)

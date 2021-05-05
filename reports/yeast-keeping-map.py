@@ -6,20 +6,40 @@ import sparqllib
 
 themap = config.make_map_from_cli_args()
 
+LANG = config.get_language()
+labels = {'en' : {
+        'other' : 'Other',
+        'cakes' : 'Yeast cakes',
+        'log'   : 'Yeast log',
+        'ring'  : 'Yeast ring',
+        'dried' : 'Dried',
+        'cask'  : 'Cask bottom',
+        'wet'   : 'Wet',
+    }, 'no' : {
+        'other' : 'Annet',
+        'cakes' : u'Gjærkaker',
+        'log'   : u'Gjærstokk',
+        'ring'  : u'Gjærkrans',
+        'dried' : u'Tørket',
+        'cask'  : 'Bunn av fat',
+        'wet'   : u'Våt',
+    }
+}
+
 black = themap.add_symbol('black', '#000000', '#000000', strokeweight = 1,
-                          title = 'Other')
-yellow = themap.add_symbol('yellow', '#FFAAAA', '#000000', strokeweight = 1, title = 'Yeast cakes')
-dark_yellow = themap.add_symbol('dark_yellow', '#AAAAFF', '#000000', strokeweight = 1, title = 'Yeast log')
-dark_yellow2 = themap.add_symbol('dark_yellow2', '#FFFFAA', '#000000', strokeweight = 1, title = 'Yeast ring')
+                          title = labels[LANG]['other'])
+yellow = themap.add_symbol('yellow', '#FFAAAA', '#000000', strokeweight = 1, title = labels[LANG]['cakes'])
+dark_yellow = themap.add_symbol('dark_yellow', '#AAAAFF', '#000000', strokeweight = 1, title = labels[LANG]['log'])
+dark_yellow2 = themap.add_symbol('dark_yellow2', '#FFFFAA', '#000000', strokeweight = 1, title = labels[LANG]['ring'])
 brown = themap.add_symbol('brown', '#C04343', '#000000', strokeweight = 1,
-                          title = 'Dried')
+                          title = labels[LANG]['dried'])
 #white = themap.add_symbol('white', '#FFFFFF', '#000000', strokeweight = 1)
 green = themap.add_symbol('green', '#00FF00', '#000000', strokeweight = 1,
-                          title = 'Cask')
+                          title = labels[LANG]['cask'])
 #red = themap.add_symbol('red', '#FF0000', '#000000', strokeweight = 1)
 #dark_red = themap.add_symbol('dark_red', '#AA0000', '#000000', strokeweight = 1)
 blue = themap.add_symbol('blue', '#4444FF', '#000000', strokeweight = 1,
-                         title = 'Wet')
+                         title = labels[LANG]['wet'])
 symbols = {
     'Dried in a trough'           : brown,
     'Dried in a trough with potato flour' : brown,
@@ -89,4 +109,4 @@ for (s, lat, lng, proc, procname, title) in sparqllib.query_for_rows(query):
     themap.add_marker(lat, lng, title, symbol, procname)
 
 themap.set_legend(True)
-themap.render_to('yeast-keeping-map')
+themap.render_to(config.get_file() or 'yeast-keeping-map')

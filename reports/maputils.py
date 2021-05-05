@@ -141,15 +141,20 @@ def value_mapper(v):
     return math.log(v)
 
 def color_scale_map(query, outfile, max_value = 1000000, legend = False,
-                    symbol_count = 10):
+                    symbol_count = 10, value_mapper = value_mapper):
+    data = [(lat, lng, title, value_mapper(min(float(ratio), max_value)))
+            for (lat, lng, title, ratio) in sparqllib.query_for_rows(query)]
+    color_scale_map_data(data, outfile, legend, symbol_count)
+
+def color_scale_map_data(data, outfile, legend = False, symbol_count = 10,
+                         the_range = None):
     themap = config.make_map_from_cli_args()
 
-    smallest = 1000000
-    biggest = 0
-    for (lat, lng, title, ratio) in sparqllib.query_for_rows(query):
-        value = value_mapper(min(float(ratio), max_value))
-        smallest = min(smallest, value)
-        biggest = max(biggest, value)
+    if the_range:
+        (smallest, biggest) = the_range
+    else:
+        smallest = min([v for (lat, lng, title, v) in data])
+        biggest = max([v for (lat, lng, title, v) in data])
 
     increment = (biggest - smallest) / (symbol_count - 1)
     symbols = [themap.add_symbol('id%s' % ix,
@@ -162,8 +167,8 @@ def color_scale_map(query, outfile, max_value = 1000000, legend = False,
                )
                for ix in range(symbol_count)]
 
-    for (lat, lng, title, org_value) in sparqllib.query_for_rows(query):
-        ratio = value_mapper(min(float(org_value), max_value))
+    for (lat, lng, title, org_value) in data:
+        ratio = org_value
         index = (int((ratio - smallest) / increment))
         symbol = symbols[index]
         themap.add_marker(lat, lng, title, symbol, 'Value: %s' % org_value)

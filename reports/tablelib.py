@@ -1,5 +1,5 @@
 
-import sys, string, os
+import sys, string, os, codecs
 import sparqllib
 
 def get_format():
@@ -125,45 +125,50 @@ class CountryTable:
         else:
             return [value]
 
+shorthands = {'United_Kingdom' : 'UK'}
+def default_row_label(url):
+    name = get_last_part(url)
+    name = shorthands.get(name, name)
+    return name
+
 def make_table(filename, query, get_column_label, label, caption,
-               min_accounts = 0, format = 'html'):
-    table = CountryTable(min_accounts)
+               min_accounts = 0, format = 'html',
+               get_row_label = default_row_label,
+               row_type_name = 'Country'):
+    table = CountryTable(min_accounts, row_label = row_type_name)
 
     # v=value, c=country, s=uri of account
     for (v, c, s) in sparqllib.query_for_rows(query):
         table.add_account(v, c, s)
 
     if format == 'html':
-        writer = HtmlWriter(open(filename, 'w'))
+        writer = HtmlWriter(codecs.open(filename, 'w', 'utf-8'))
     elif format == 'latex':
-        writer = LatexWriter(open(filename, 'w'), label = label,
+        writer = LatexWriter(codecs.open(filename, 'w', 'utf-8'), label = label,
                              caption = caption,
                              columns = len(table.get_columns()) + 2)
     else:
         assert False, 'Unknown format %s' % format
 
-    write_table(writer, table, get_column_label)
+    write_table(writer, table, get_column_label, get_row_label)
 
     if len(sys.argv) > 1:
         os.system('open %s' % filename)
 
-shorthands = {'United_Kingdom' : 'UK'}
-
 # herb-table-like
-def write_table(writer, table, get_column_label):
+def write_table(writer, table, get_column_label, get_row_label = default_row_label):
     writer.start_table()
     writer.new_row()
     writer.header(table.get_row_label())
 
     columns = table.get_columns()
     for col in columns:
-        writer.header(get_column_label(col).encode('utf-8'))
+        writer.header(get_column_label(col))
 
     writer.header('Accounts')
 
     for country in table.get_countries():
-        name = get_last_part(str(country)).strip()
-        name = shorthands.get(name, name)
+        name = get_row_label(str(country)).strip()
 
         writer.new_row()
         writer.header(name)
@@ -332,7 +337,7 @@ class HtmlWriter(TableWriter):
             self.out.write(' class="%s">' % klass)
         else:
             self.out.write('>')
-        self.out.write(str(content))
+        self.out.write(unicode(content))
 
     def cell(self, content, klass = None, breaking = True):
         self.out.write('<td')

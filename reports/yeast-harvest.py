@@ -9,16 +9,29 @@ lng = 9.45
 
 themap = config.make_map_from_cli_args()
 
-NEG = 'http://www.garshol.priv.no/2014/neg/'
+LANG = config.get_language()
+labels = {'en' : {
+        'bottom' : 'Bottom',
+        'top' : 'Top',
+        'cask' : 'Cask-bottom',
+        'either' : 'Either',
+    }, 'no' : {
+        'bottom' : 'Bunn',
+        'top' : 'Topp',
+        'cask' : u'Bunn av tønne',
+        'either' : 'Bunn/topp',
+    }
+}
 
-BLACK = themap.add_symbol('black', '#000000', '#000000', title = 'Bottom')
+BLACK = themap.add_symbol('black', '#000000', title = labels[LANG]['bottom'])
 DARK_GRAY = themap.add_symbol('dark_gray', '#555555', '#000000',
-                              title = 'Cask bottom')
-EITHER = themap.add_symbol('gray', '#999999', '#000000', title = 'Either')
+                              title = labels[LANG]['cask'])
+EITHER = themap.add_symbol('gray', '#999999', title = labels[LANG]['either'])
+TOP = themap.add_symbol('white', '#FFFFFF', title = labels[LANG]['top'])
 
+NEG = 'http://www.garshol.priv.no/2014/neg/'
 symbols =  {
-    NEG + 'top' : themap.add_symbol('white', '#FFFFFF', '#000000',
-                                    title = 'Top'),
+    NEG + 'top' : TOP,
     NEG + 'bottom' : BLACK,
     NEG + 'cask-bottom' : DARK_GRAY,
     NEG + 'either' : EITHER,
@@ -50,4 +63,4 @@ for (s, lat, lng, title, harvest) in sparqllib.query_for_rows(query):
     themap.add_marker(lat, lng, title, symbol)
 
 themap.set_legend(True)
-themap.render_to('yeast-harvest')
+themap.render_to(config.get_file() or 'yeast-harvest')
