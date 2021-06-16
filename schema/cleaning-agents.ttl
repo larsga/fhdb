@@ -24,6 +24,10 @@ clean:sulphur-smoke a tb:CleaningAgent;
   rdfs:label "Sulphur smoke";
   dc:description """Sulphur smoking the vessels.""".
 
+clean:smoke a tb:CleaningAgent;
+  rdfs:label "Unspecified smoke";
+  dc:description """Smoking the vessels without specifying what with.""".
+
 clean:ash a tb:CleaningAgent;
   rdfs:label "Ash";
   dc:description """Plain ash (we think).""".

@@ -61,8 +61,8 @@ label = {
 }
 
 from matplotlib import pyplot
+pyplot.style.use(config.get_plot_style())
 
-#pyplot.style.use('grayscale')
 (n, bins, patches) = pyplot.hist(temperatures, BINS, alpha=0.5,
                                  label = label[LANG])
 if LANG == 'en':

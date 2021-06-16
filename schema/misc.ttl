@@ -120,8 +120,6 @@ neu:response a neu:ItemType.
 
 neg:party a tb:OppskakeType;
   rdfs:label "Proper oppskåke party in brewhouse".
-neg:house-party a tb:OppskakeType;
-  rdfs:label "Party, but only for the household".
 neg:house-tasting a tb:OppskakeType;
   rdfs:label "Everyone in the household tasted the beer".
 neg:skokubolle a tb:OppskakeType;

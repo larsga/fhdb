@@ -1,5 +1,5 @@
 
-import sparqllib
+import sparqllib, config
 
 BINS = 20
 
@@ -33,9 +33,16 @@ years.sort()
 print years[0], '-', years[-1]
 
 from matplotlib import pyplot
+pyplot.style.use(config.get_plot_style())
+
 (n, bins, patches) = pyplot.hist(years, BINS, alpha=0.5,
                                  label = 'Accounts by year')
 pyplot.title('Accounts by year')
 pyplot.xlabel('Year')
 pyplot.ylabel('Number of accounts')
-pyplot.show()
+
+if not config.get_file():
+    pyplot.show()
+else:
+    pyplot.savefig(config.get_file())
+    pyplot.close()

@@ -27,6 +27,9 @@ values = [float(h) for (h, c, s) in sparqllib.query_for_rows(query)]
 # PLOT A HISTOGRAM
 # http://matplotlib.org/1.2.1/examples/pylab_examples/histogram_demo.html
 from matplotlib import pyplot
+
+pyplot.style.use('ggplot')
+
 (n, bins, patches) = pyplot.hist(values, 10)
 pyplot.title('Hopping rates in farmhouse ale')
 pyplot.ylabel('Number of accounts')

@@ -119,6 +119,9 @@ class Symbol:
     def get_stroke_color(self):
         return self._strokecolor
 
+    def get_stroke_weight(self):
+        return self._strokeweight
+
     def get_scale(self):
         return self._scale
 

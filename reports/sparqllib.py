@@ -29,6 +29,9 @@ def query_for_rows(query):
     return [[value(val) for val in row]
             for row in sparql.query(ENDPOINT, PREFIXES + query)]
 
+def query_for_rows_raw(query):
+    return sparql.query(ENDPOINT, PREFIXES + query)
+
 REPLS = [('"', '\\"'), ('\n', '\\n'), ('\r', '\\r'), ('\t', '\\t'),
          ('\\', '\\\\')]
 def escape(str):

@@ -1,6 +1,6 @@
 #encoding=utf-8
 
-import sparqllib, tablelib, sys
+import sparqllib, tablelib, sys, config
 from numlib import *
 
 BINS = 10
@@ -42,6 +42,7 @@ for (s, t, group) in sparqllib.query_for_rows(query):
 
 import numpy
 from matplotlib import pyplot
+pyplot.style.use(config.get_plot_style())
 
 ix = 0
 for groupname in GROUPS.keys():

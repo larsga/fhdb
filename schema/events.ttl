@@ -11,108 +11,128 @@
 # ----- ANNUAL EVENTS
 
 event:xmas a tb:Event;
-  rdfs:label "Christmas";
-  dc:description """.""".
+  rdfs:label "Christmas"@en, "Jul"@no;
+  dc:description """.""";
+  tb:repeating-event true.
 
 event:easter a tb:Event;
-  rdfs:label "Easter";
-  dc:description """.""".
+  rdfs:label "Easter"@en, "Påske"@no;
+  dc:description """.""";
+  tb:repeating-event true.
 
 event:ee-victory a tb:Event;
   rdfs:label "Estonian Victory Day";
-  dc:description """Introduced 1934. Victory Day on June 23rd.""".
-
-event:whitsun a tb:Event;
-  rdfs:label "Whitsun";
-  dc:description """.""".
+  dc:description """Introduced 1934. Victory Day on June 23rd.""";
+  tb:repeating-event true.
 
 event:martinisingen a tb:Event;
   rdfs:label "Martinisingen";
   dc:description """Also known as Mardipäev. November 10. Also known as
-  St. Martin's Day.""".
+  St. Martin's Day.""";
+  tb:repeating-event true.
 
 event:michaelmas a tb:Event;
   rdfs:label "Michaelmas";
   dc:description """Feast of Saint Michael and All Angels, 29 September.
-  In Swedish known as Mikaelidagen, or Mickelsmäss.""".
+  In Swedish known as Mikaelidagen, or Mickelsmäss.""";
+  tb:repeating-event true.
 
 event:midsummer a tb:Event;
-  rdfs:label "Midsummer";
+  rdfs:label "Midsummer"@en, "Jonsok"@no;
   dc:description """The midsummer celebration. Jonsok & St Hans are the same
-  thing. June 23/24. Latvian Jani again same.""".
+  thing. June 23/24. Latvian Jani again same.""";
+  tb:repeating-event true.
 
 event:summer a tb:Event;
-  rdfs:label "Summer";
-  dc:description """Just generally for the summer.""".
+  rdfs:label "Summer"@en, "Sommeren"@no;
+  dc:description """Just generally for the summer.""";
+  tb:repeating-event true.
 
 event:haymaking a tb:Event;
-  rdfs:label "Haymaking";
-  dc:description """The cutting of grass for animal feed.""".
+  rdfs:label "Haymaking"@en, "Høyonna"@no;
+  dc:description """The cutting of grass for animal feed.""";
+  tb:repeating-event true.
 
 event:harvest a tb:Event;
-  rdfs:label "Grain harvest";
-  dc:description """The harvesting of the grain. Høstonn.""".
+  rdfs:label "Grain harvest"@en, "Kornhøsten"@no;
+  dc:description """The harvesting of the grain. Høstonn.""";
+  tb:repeating-event true.
 
 event:harvest-celebration a tb:Event;
-  rdfs:label "Harvest celebration";
+  rdfs:label "Harvest celebration"@en, "Kornhøstfeiring"@no;
   dc:description """Beer for drinking at the celebration at the end of harvest,
-  not for during the actual harvest work.""".
+  not for during the actual harvest work.""";
+  tb:repeating-event true.
 
 event:autumn a tb:Event;
-  rdfs:label "Autumn";
-  dc:description """Not really clear.""".
+  rdfs:label "Autumn"@en, "Høsten"@no;
+  dc:description """Not really clear.""";
+  tb:repeating-event true.
 
 event:kingerit a tb:Event;
   rdfs:label "Kingerit";
-  dc:description """Some kind of visit from the priest. Need to ask ML.""".
+  dc:description """Some kind of visit from the priest. Need to ask ML.""";
+  tb:repeating-event true.
 
 event:pentecost a tb:Event;
-  rdfs:label "Pentecost";
-  dc:description """Pinse in Norwegian.""".
+  rdfs:label "Whitsun"@en, "Pinse"@no;
+  dc:description """Also called pentecost""";
+  tb:repeating-event true.
 
 event:suitsepuhad a tb:Event;
   rdfs:label "Suitsepühad";
-  dc:description """7th Sunday after Easter. Surely that is pentecost?""".
+  dc:description """7th Sunday after Easter. Surely that is pentecost?""";
+  tb:repeating-event true.
 
 event:spring-work a tb:Event;
   rdfs:label "Våronn";
-  dc:description """Ploughing and sowing.""".
+  dc:description """Ploughing and sowing.""";
+  tb:repeating-event true.
 
 event:spring a tb:Event;
-  rdfs:label "Spring";
-  dc:description """Simply for the spring, without more detail.""".
+  rdfs:label "Spring"@en, "Våren"@no;
+  dc:description """Simply for the spring, without more detail.""";
+  tb:repeating-event true.
 
 event:new-years-eve a tb:Event;
-  rdfs:label "New Year's Eve".
+  rdfs:label "New Year's Eve";
+  tb:repeating-event true.
 
 event:candlemas a tb:Event;
   rdfs:label "Candlemas";
-  dc:description """Kyndelsmesse in Norwegian, February 2.""".
+  dc:description """Kyndelsmesse in Norwegian, February 2.""";
+  tb:repeating-event true.
 
 event:spring-day a tb:Event;
   rdfs:label "Spring day (May 1st)";
-  dc:description """In Estonia.""".
+  dc:description """In Estonia.""";
+  tb:repeating-event true.
 
 event:spring-fishing a tb:Event;
-  rdfs:label "The spring fishery";
-  dc:description "February-April".
+  rdfs:label "The spring fishery"@en, "Vårfisket"@no;
+  dc:description "February-April";
+  tb:repeating-event true.
 
 event:threshing a tb:Event;
-  rdfs:label "Threshing".
+  rdfs:label "Threshing";
+  tb:repeating-event true.
 
 event:martensgille a tb:Event;
   rdfs:label "Mårtensgille";
-  dc:description "Not really clear what it is.".
+  dc:description "Not really clear what it is.";
+  tb:repeating-event true.
 
 event:valborgsmassa a tb:Event;
   rdfs:label "Valborgsmässa";
-  dc:description "April 30 or May 1.".
+  dc:description "April 30 or May 1.";
+  tb:repeating-event true.
 
 event:husforhor a tb:Event;
   rdfs:label "Husförhör";
   dc:description """Annual event where the priest questioned the members of the
   household to verify their knowledge of the bible and cathechism.""";
-  rdfs:seeAlso <https://sv.wikipedia.org/wiki/Husf%C3%B6rh%C3%B6r>.
+  rdfs:seeAlso <https://sv.wikipedia.org/wiki/Husf%C3%B6rh%C3%B6r>;
+  tb:repeating-event true.
 
 # ----- OTHER REPEATING
 
@@ -122,31 +142,39 @@ event:husforhor a tb:Event;
 # ----- SINGULAR EVENTS
 
 event:dugnad a tb:Event;
-  rdfs:label "Collective work event";
+  rdfs:label "Collective work event"@en, "Dugnad"@no;
   dc:description """Any kind of work where the neighbours gather to help out
-  one of the farmers with some work.""".
+  one of the farmers with some work.""";
+  tb:repeating-event false.
 
 event:weddings a tb:Event;
-  rdfs:label "Wedding".
+  rdfs:label "Weddings"@en, "Bryllup"@no;
+  tb:repeating-event false.
 
 event:funerals a tb:Event;
-  rdfs:label "Funerals".
+  rdfs:label "Funerals"@en, "Begravelser"@no;
+  tb:repeating-event false.
 
 event:baptisms a tb:Event;
-  rdfs:label "Baptisms".
+  rdfs:label "Baptisms"@en, "Barnedåp"@no;
+  tb:repeating-event false.
 
 event:tekkjardona a tb:Event;
-  rdfs:label "House-thatching dugnad";
-  dc:description "Collective work to thatch someone's roof".
+  rdfs:label "House-thatching dugnad"@en, "Tekkjardona"@no;
+  dc:description "Collective work to thatch someone's roof";
+  tb:repeating-event false.
 
 event:auctions a tb:Event;
-  rdfs:label "Auctions";
-  dc:descriptions "Should be self-evident. See sources.".
+  rdfs:label "Auctions"@en, "Auksjoner"@no;
+  dc:descriptions "Should be self-evident. See sources.";
+  tb:repeating-event false.
 
 event:barsel a tb:Event;
   rdfs:label "Barsel";
-  dc:descriptions "Celebration of a child being born.".
+  dc:descriptions "Celebration of a child being born.";
+  tb:repeating-event false.
 
 event:confirmation a tb:Event;
-  rdfs:label "Confirmation";
-  dc:descriptions "Christian confirmation, at 14-15 years of age.".
+  rdfs:label "Confirmation"@en, "Konfirmasjon"@no;
+  dc:descriptions "Christian confirmation, at 14-15 years of age.";
+  tb:repeating-event false.

@@ -2,6 +2,9 @@
 import sparqllib, maplib
 import config
 
+LEGEND = False
+OAT_BELT = False
+
 # ----- STEP 1: COLLECT THE DATA
 
 def strip_uri(uri):
@@ -44,10 +47,11 @@ def tostr(grain):
 NS = 'http://www.garshol.priv.no/2014/neg/'
 GEO = 'http://www.w3.org/2003/01/geo/wgs84_pos#'
 
-lat = 61.8
-lng = 9.45
-
 themap = config.make_map_from_cli_args()
+
+if OAT_BELT:
+    geojson = open('/Users/larsga/data/privat/trad-beer/works/map-data/hasund-line.json').read()
+    themap.add_line_string(geojson = geojson, color = '#0000FF', width = 3)
 
 mapping = {
     ('barley',)                                  : 'barley',
@@ -92,27 +96,5 @@ for (s, (title, lat, lng, grain)) in data.items():
 
     themap.add_marker(lat, lng, t, mapping[grain])
 
-#themap.set_legend(True)
+themap.set_legend(LEGEND)
 themap.render_to('grain-map')
-
-# ----- STEP 3: DRAW THE OATS BELT
-
-# print '<script>'
-# print 'var oatbelt_coors = ['
-# for line in open('/Users/lars.garshol/data/privat/trad-beer/norge/havrebeltet.txt'):
-#     (lng, lat) = line.strip().split(',')
-#     print '  new google.maps.LatLng(%s, %s),' % (lat, lng)
-# print '];'
-
-# print '''
-# var oatbelt = new google.maps.Polyline({
-#     path: oatbelt_coors,
-#     geodesic: true,
-#     strokeColor: '#FF0000',
-#     strokeOpacity: 1.0,
-#     strokeWeight: 2
-#   });
-
-# oatbelt.setMap(map);
-# </script>
-# '''

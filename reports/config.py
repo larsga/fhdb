@@ -47,10 +47,10 @@ class MapView:
 def norway_montage(filename, legend_box):
     # hacky workaround for broken PIL
     import os
-    os.system('gm convert %s tst.gif' % filename)
+    os.system('gm convert %s /tmp/tst.gif' % filename)
 
-    tmpfile = 'tst.png'
-    os.system('gm convert tst.gif %s' % tmpfile)
+    tmpfile = '/tmp/tst.png'
+    os.system('gm convert /tmp/tst.gif %s' % tmpfile)
     #shutil.copyfile(filename, tmpfile)
     # </hack>
 
@@ -126,6 +126,9 @@ def get_file():
 def get_country():
     return args.country
 
+def get_plot_style():
+    return args.style
+
 # ===== PARSE THE CMD-LINE
 
 parser = argparse.ArgumentParser()
@@ -133,5 +136,6 @@ parser.add_argument('spec', nargs = '?')
 parser.add_argument('--lang', default = 'en')
 parser.add_argument('--file')
 parser.add_argument('--country')
+parser.add_argument('--style', default = 'ggplot')
 
 args = parser.parse_args()

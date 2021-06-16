@@ -6,13 +6,13 @@ import maputils
 LANG = config.get_language()
 labels = {
     'en' : {
-        'true' : 'Cold mash',
-        'false' : 'No cold mash',
+        'true' : 'Juniper infusion',
+        'false' : 'No infusion',
         'borderline' : 'Borderline',
     },
     'no' : {
-        'true' : u'Kaldmesk',
-        'false' : u'Ikke kaldmesk',
+        'true' : u'Einerlåg',
+        'false' : u'Ikke einerlåg',
         'borderline' : u'Både og',
     }
 }
@@ -23,15 +23,13 @@ prefix neg: <http://www.garshol.priv.no/2014/neg/>
 prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
 prefix tb: <http://www.garshol.priv.no/2014/trad-beer/>
 
-SELECT DISTINCT ?s ?lat ?lng ?title ?yeast
+SELECT DISTINCT ?s ?lat ?lng ?title ?mead
 WHERE {
   ?s
     dc:title ?title;
     geo:lat ?lat;
     geo:long ?lng;
-    tb:process ?proc.
-
-  ?proc neg:cold-mash ?yeast.
+    tb:juniper-infusion ?mead.
 }'''
-maputils.make_boolean_map(query, config.get_file() or 'cold-mash-map',
+maputils.make_boolean_map(query, config.get_file() or 'juniper-infusion-map',
                           labels[LANG])

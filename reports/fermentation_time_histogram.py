@@ -35,6 +35,8 @@ def make(bins = 25, outfile = None, dpi = 100):
     # PLOT A HISTOGRAM
     # http://matplotlib.org/1.2.1/examples/pylab_examples/histogram_demo.html
     from matplotlib import pyplot
+    pyplot.style.use('ggplot')
+
     h = pyplot.hist(values, bins)
     pyplot.title('Fermentation time')
     pyplot.xlabel('Hours')

@@ -410,12 +410,12 @@ class LatexWriter(TableWriter):
         self.out.write('\\\\\n')
         self.out.write('\\hline\n')
         self.out.write('\\end{tabular}\n')
-        self.out.write('\\caption{%s}\label{%s}\n' % (self._caption, self._label))
+        self.out.write(u'\\caption{%s}\label{%s}\n' % (self._caption, self._label))
         self.out.write('\\end{center}\n')
         self.out.write('\\end{table}\n')
 
 def escape(s):
-    return s.replace('%', '\\%').replace('_', ' ')
+    return s.replace(u'%', u'\\%').replace(u'_', u' ')
 
 class ConsoleWriter(TableWriter):
 

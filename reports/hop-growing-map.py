@@ -1,6 +1,8 @@
 
 import sparqllib, config
 
+OAT_BELT = True
+
 # ----- STEP 1: COLLECT THE DATA
 
 def strip_uri(uri):
@@ -33,6 +35,10 @@ for (s, t, lat, lng, v) in sparqllib.query_for_rows(query):
 
 themap = config.make_map_from_cli_args()
 
+if OAT_BELT:
+    geojson = open('/Users/larsga/data/privat/trad-beer/works/map-data/hasund-line.json').read()
+    themap.add_line_string(geojson = geojson, color = '#0000FF', width = 3)
+
 green = themap.add_symbol('green', '#00FF00', '#000000', 1)   # grown
 yellow = themap.add_symbol('yellow', '#FFFF00', '#000000', 1) # mixed
 red = themap.add_symbol('red', '#FF0000', '#000000', 1)       # bought
@@ -58,4 +64,4 @@ for (s, (title, lat, lng, hops)) in data.items():
         print s
         raise
 
-themap.render_to('hop-growing-map.html')
+themap.render_to('hop-growing-map')

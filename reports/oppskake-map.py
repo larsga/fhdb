@@ -1,6 +1,7 @@
 
 # encoding=utf-8
 
+import config
 import maputils
 
 query = '''
@@ -16,12 +17,29 @@ select ?s ?title ?cat ?lat ?lng where {
 }
 '''
 
+labels = {
+    'en' : {
+        'party' :         u'Oppskåke',
+        'house-tasting' : 'House tasting',
+        'skokubolle' :    'Skokubolle',
+        'none' :          'Nothing',
+    },
+    'no' : {
+        'party' :         u'Oppskåke',
+        'house-tasting' : 'Husstanden smaker',
+        'skokubolle' :    'Skokubolle',
+        'none' :          'Ingen markering',
+    }
+}
+
+LANG = config.get_language()
 PREFIX = 'http://www.garshol.priv.no/2014/neg/'
 symbols = [
-    (PREFIX + 'party',         '#FFFF00', u'Oppskåke'),
-    (PREFIX + 'house-party',   '#FFFFFF', 'House party'),
-    (PREFIX + 'house-tasting', '#AAAAAA', 'House tasting'),
-    (PREFIX + 'skokubolle',    '#00FF00', 'Skokubolle'),
-    (PREFIX + 'none',          '#000000', 'Nothing'),
+    (PREFIX + 'party',         '#FFFF00', labels[LANG]['party']),
+    (PREFIX + 'house-tasting', '#AAAAAA', labels[LANG]['house-tasting']),
+    (PREFIX + 'skokubolle',    '#00FF00', labels[LANG]['skokubolle']),
+    (PREFIX + 'none',          '#000000', labels[LANG]['none']),
 ]
-maputils.make_thing_map(query, symbols, 'oppskake-map', legend = True)
+maputils.make_thing_map(query, symbols,
+                        config.get_file() or 'oppskake-map',
+                        legend = True)

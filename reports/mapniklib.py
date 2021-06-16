@@ -54,12 +54,36 @@ class MapnikMap(maplib.AbstractMap):
     def get_color(self):
         return self._color
 
+    def add_line_string(self, geojson, color, width):
+        m = self._base_map._mapnik_map
+
+        s = mapnik.Style()
+        r = mapnik.Rule()
+
+        line_symbolizer = mapnik.LineSymbolizer()
+        line_symbolizer.stroke = mapnik.Color(color)
+        line_symbolizer.stroke_width = width
+        r.symbols.append(line_symbolizer)
+        s.rules.append(r)
+
+        m.append_style('CustomLine',s)
+
+        with open('/tmp/geojson.json', 'w') as f:
+            f.write(geojson)
+        ds = mapnik.GeoJSON(file = '/tmp/geojson.json')
+        layer = mapnik.Layer('linestring')
+
+        layer.datasource = ds
+        layer.srs = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
+        layer.styles.append('CustomLine')
+        m.layers.append(layer)
+
     def render_to(self, filename, width = None, height = None, bottom = None,
                   format = 'png'):
         filename = make_ending_for(filename, format)
         legend_box = _render(self, filename, format)
 
-        transform = self._base_map.get_transform()
+        transform = self._base_map.get_transform() or self._transform
         if transform:
             transform(filename, legend_box)
 
@@ -254,17 +278,6 @@ def _add_lakes(m, colors):
     m.append_style('LakeStyle', s)
 
     ds = mapnik.Shapefile(file = SHAPEDIR + 'ne_10m_lakes/ne_10m_lakes.shp')
-    # ds = mapnik.PostGIS(
-    #     host = 'localhost',
-    #     dbname = 'larsga',
-    #     user = 'larsga',
-    #     table = '''
-    #       (select way from planet_osm_polygon where
-    #            (("natural" in ('water', 'lake')) or water = 'lake') AND
-    #            ST_Intersects(way, !bbox!)
-    #       ) as foo
-    #     '''
-    # )
     layer = mapnik.Layer('lakes')
     layer.datasource = ds
     # https://help.openstreetmap.org/questions/13250/what-is-the-correct-projection-i-should-use-with-mapnik
@@ -393,7 +406,8 @@ def _generate_svg(filename, symbol):
         if symbol.get_shape() == maplib.CIRCLE:
             f.write('''
                 <svg viewBox="0 0 %s %s" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="%s" cy="%s" r="%s" stroke="%s" fill="%s"/>
+                  <circle cx="%s" cy="%s" r="%s" stroke="%s" fill="%s"
+                          stroke-width="%s"/>
                 </svg>
             ''' % (
                 size,
@@ -402,7 +416,8 @@ def _generate_svg(filename, symbol):
                 mid,
                 mid,
                 symbol.get_stroke_color(),
-                symbol.get_color()
+                symbol.get_color(),
+                symbol.get_stroke_weight()
             ))
 
         elif symbol.get_shape() == maplib.SQUARE:

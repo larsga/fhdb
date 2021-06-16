@@ -1,6 +1,7 @@
 #encoding=utf-8
 
 import re
+import config
 import maputils
 
 KORNOL = re.compile(u'k((orn)|(ønnj))øl')
@@ -14,4 +15,6 @@ symbols = [
     (MALTOL,     '#00FF00', u'Maltøl'),
     (DRICKA,     '#FF0000', u'Dricka'),
 ]
-maputils.make_term_map('tb:beer-name', symbols, 'beer-name-map')
+maputils.make_term_map('tb:beer-name', symbols,
+                       config.get_file() or 'beer-name-map',
+                       language = config.get_language())

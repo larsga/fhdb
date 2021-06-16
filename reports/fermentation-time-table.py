@@ -15,7 +15,7 @@ SELECT DISTINCT ?h ?c ?s
 WHERE {
   ?s dc:title ?title;
     tb:part-of ?c;
-    tb:fermentation-time ?h.
+    tb:fermentation-time ?h;
 
   ?c a dbp:Country.
 }

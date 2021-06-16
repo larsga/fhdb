@@ -13,7 +13,7 @@ WHERE {
   ?s dc:title ?title;
     tb:year ?year.
 
-  ?s tb:own-yeast ?yeast.
+  ?s tb:own-malts ?yeast.
 }'''
 
 def decade(year):

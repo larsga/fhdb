@@ -30,7 +30,8 @@ WHERE {
     %s ?term.
 }'''
 
-def make_term_map(termprop, symbols, filename, usemap = None, scale = None):
+def make_term_map(termprop, symbols, filename, usemap = None, scale = None,
+                  language = 'en'):
     global lat, lng
     # symbols: [(regex, color, name), ...]
 
@@ -40,8 +41,12 @@ def make_term_map(termprop, symbols, filename, usemap = None, scale = None):
     symbols = [(regex, themap.add_symbol(random_id(), color, stroke, strokeweight = 1, title = name, scale = scale))
                for (regex, color, name) in symbols]
 
+    othername = {
+        'en' : 'Other',
+        'no' : 'Annet',
+    }[language]
     OTHER = themap.add_symbol('black', '#000000', stroke, strokeweight = 1,
-                              title = 'Other', scale = scale)
+                              title = othername, scale = scale)
 
     unmatched = []
     for (title, lat, lng, term) in sparqllib.query_for_rows(query % termprop):
@@ -86,15 +91,18 @@ def make_thing_map(query, symbols, filename, legend = False):
     themap.set_legend(legend)
     themap.render_to(filename)
 
-def make_boolean_map(query, filename):
+def make_boolean_map(query, filename, labels = None):
     themap = config.make_map_from_cli_args()
+    if labels:
+        themap.set_legend(True)
+    labels = labels or {'borderline' : '', 'true' : '', 'false' : ''}
 
-    symbols = {'true' : themap.add_symbol('white', '#FFFFFF', '#000000'),
-               'false' : themap.add_symbol('black', '#000000', '#000000'),
-               'http://www.garshol.priv.no/2014/neg/both' :
-               themap.add_symbol('gray', '#999999', '#000000'),
-               'http://www.garshol.priv.no/2014/neg/borderline' :
-               themap.add_symbol('gray', '#999999', '#000000')}
+    gray = themap.add_symbol('gray', '#999999', title = labels['borderline'])
+    symbols = {
+        'true' : themap.add_symbol('white', '#FFFF00', title = labels['true']),
+        'false' : themap.add_symbol('black', '#000000', title = labels['false']),
+        'http://www.garshol.priv.no/2014/neg/both' : gray,
+        'http://www.garshol.priv.no/2014/neg/borderline' : gray}
 
     for (s, lat, lng, title, value) in sparqllib.query_for_rows(query):
         symbol = symbols[value]
@@ -141,13 +149,20 @@ def value_mapper(v):
     return math.log(v)
 
 def color_scale_map(query, outfile, max_value = 1000000, legend = False,
-                    symbol_count = 10, value_mapper = value_mapper):
+                    symbol_count = 10, value_mapper = value_mapper,
+                    label_formatter = lambda y,x: '%s-%s' % (y,x)):
     data = [(lat, lng, title, value_mapper(min(float(ratio), max_value)))
             for (lat, lng, title, ratio) in sparqllib.query_for_rows(query)]
-    color_scale_map_data(data, outfile, legend, symbol_count)
+    color_scale_map_data(data, outfile, legend, symbol_count,
+                         label_formatter)
+
+def format_scale_2_digits(low, high):
+    low = int(round(low * 10.0)) / 10.0
+    high = int(round(high * 10.0)) / 10.0
+    return '%s-%s' % (low, high)
 
 def color_scale_map_data(data, outfile, legend = False, symbol_count = 10,
-                         the_range = None):
+                         label_formatter = None, the_range = None):
     themap = config.make_map_from_cli_args()
 
     if the_range:
@@ -157,15 +172,16 @@ def color_scale_map_data(data, outfile, legend = False, symbol_count = 10,
         biggest = max([v for (lat, lng, title, v) in data])
 
     increment = (biggest - smallest) / (symbol_count - 1)
-    symbols = [themap.add_symbol('id%s' % ix,
-                                 '#' + color(ix, symbol_count),
-                                 '#000000',
-                                 strokeweight = 1,
-                                 title = '%s-%s' % (smallest + increment * ix,
-                                                    smallest + increment * (ix+1))
-                                 #,scale = (ix / float(symbol_count)) * max_scale
-               )
-               for ix in range(symbol_count)]
+    symbols = [themap.add_symbol(
+        'id%s' % ix,
+        '#' + color(ix, symbol_count),
+        '#000000',
+        strokeweight = 1,
+        title = label_formatter(smallest + increment * ix,
+                                smallest + increment * (ix+1))
+        #,scale = (ix / float(symbol_count)) * max_scale
+    )
+    for ix in range(symbol_count)]
 
     for (lat, lng, title, org_value) in data:
         ratio = org_value
