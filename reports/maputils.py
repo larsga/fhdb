@@ -67,29 +67,39 @@ def make_term_map(termprop, symbols, filename, usemap = None, scale = None,
     for term in unmatched:
         print term
 
+def pick_name(name_or_names):
+    if type(name_or_names) == type({}):
+        return name_or_names[config.get_language()]
+    else:
+        return name_or_names
+
 def make_thing_map(query, symbols, filename, legend = False):
     global lat, lng
     # symbols: [(uri, color, name), ...]
 
     themap = config.make_map_from_cli_args()
     symbols = {
-        uri : (themap.add_symbol(random_id(), color, '#000000', 1, title = name), name)
+        uri : (themap.add_symbol(random_id(), color, '#000000', 1, title = pick_name(name)), pick_name(name))
         for (uri, color, name) in symbols
     }
     other = themap.add_symbol(random_id(), '#000000', '#000000', 1, title = 'Other')
 
+    unclassified = {}
     for (s, title, thing, lat, lng) in sparqllib.query_for_rows(query):
         try:
             (symbol, name) = symbols[thing]
         except KeyError:
-            print 'Unclassified:', thing
+            unclassified[thing] = unclassified.get(thing, 0) + 1
             symbol = other
             name = thing
 
         themap.add_marker(lat, lng, title + ': ' + name, symbol)
 
+    for (thing, count) in unclassified.items():
+        print 'Unclassified: %s %s' % (thing, count)
+
     themap.set_legend(legend)
-    themap.render_to(filename)
+    themap.render_to(config.get_file() or filename)
 
 def make_boolean_map(query, filename, labels = None):
     themap = config.make_map_from_cli_args()

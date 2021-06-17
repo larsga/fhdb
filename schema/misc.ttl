@@ -147,3 +147,15 @@ neg:bakers-yeast a tb:YeastType.
 neg:brewers-yeast a tb:YeastType.
 neg:lager-yeast a tb:YeastType.
 neg:distillers-yeast a tb:YeastType.
+
+# ===== HOP TREATMENT
+# on process!
+
+#HopTreatmentMethod
+#  neg:humlebeit
+#  neg:hop-tea
+#  neg:boil-hops-in-wort
+#  neg:boil-hops-in-mash
+#  neg:hops-in-mash
+#  neg:lauter-through-hops
+#  neg:dry-hopping
