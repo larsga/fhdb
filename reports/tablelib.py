@@ -8,6 +8,11 @@ def get_format():
         format = sys.argv[1]
     return format
 
+def get_country():
+    if len(sys.argv) > 2:
+        return sys.argv[2]
+    return None
+
 def percent(part, whole):
     return int(round(100.0 * part / whole))
 
@@ -134,12 +139,16 @@ def default_row_label(url):
 def make_table(filename, query, get_column_label, label, caption,
                min_accounts = 0, format = 'html',
                get_row_label = default_row_label,
-               row_type_name = 'Country'):
+               row_type_name = 'Country',
+               country = None, simplify_mapping = {}):
     table = CountryTable(min_accounts, row_label = row_type_name)
+    if country:
+        country = 'http://dbpedia.org/resource/' + country
 
     # v=value, c=country, s=uri of account
     for (v, c, s) in sparqllib.query_for_rows(query):
-        table.add_account(v, c, s)
+        if country == None or country == c:
+            table.add_account(simplify_mapping.get(v, v), c, s)
 
     if format == 'html':
         writer = HtmlWriter(codecs.open(filename, 'w', 'utf-8'))
@@ -150,7 +159,10 @@ def make_table(filename, query, get_column_label, label, caption,
     else:
         assert False, 'Unknown format %s' % format
 
-    write_table(writer, table, get_column_label, get_row_label)
+    if not country:
+        write_table(writer, table, get_column_label, get_row_label)
+    else:
+        write_single_table(writer, table, get_column_label, get_row_label)
 
     if len(sys.argv) > 1:
         os.system('open %s' % filename)
@@ -199,6 +211,32 @@ def write_table(writer, table, get_column_label, get_row_label = default_row_lab
         writer.header('%s %%' % int(p), klass = get_class(count, total),
                     breaking = False)
 
+    writer.cell('100%')
+    writer.end_table()
+
+def write_single_table(writer, table, get_column_label, get_row_label = default_row_label):
+    writer.start_table()
+    writer.new_row()
+    writer.header(table.get_row_label())
+    writer.header('Count')
+    writer.header('Percent')
+
+    # there's only going to be one country
+    for country in table.get_countries():
+        total = table.get_country_count(country)
+        for col in table.get_columns():
+            writer.new_row()
+            writer.header(get_column_label(col))
+            used = table.get_count(col, country)
+
+            writer.cell(used)
+            p = percent(used, total)
+            writer.cell('%s %%' % int(p), klass = get_class(used, total),
+                        breaking = False)
+
+    writer.new_row()
+    writer.header('Total')
+    writer.header(table.get_total())
     writer.cell('100%')
     writer.end_table()
 
