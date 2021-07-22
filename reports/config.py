@@ -129,6 +129,9 @@ def get_country():
 def get_plot_style():
     return args.style
 
+def get_format():
+    return args.format
+
 # ===== PARSE THE CMD-LINE
 
 parser = argparse.ArgumentParser()
@@ -137,5 +140,6 @@ parser.add_argument('--lang', default = 'en')
 parser.add_argument('--file')
 parser.add_argument('--country')
 parser.add_argument('--style', default = 'ggplot')
+parser.add_argument('--format', default = 'png')
 
 args = parser.parse_args()

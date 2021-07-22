@@ -32,4 +32,5 @@ WHERE {
 for (s, lat, lng, title, trad) in sparqllib.query_for_rows(query):
     themap.add_marker(lat, lng, title, symbols[trad])
 
-themap.render_to('brewing-tradition')
+themap.render_to(config.get_file() or 'brewing-tradition',
+                 format = config.get_format())

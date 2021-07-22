@@ -32,4 +32,4 @@ for (title, place, lat, lng) in sparqllib.query_for_rows(query):
 
 # ===== RENDER
 
-themap.render_to(config.get_file() or 'now-map')
+themap.render_to(config.get_file() or 'now-map', format = config.get_format())
