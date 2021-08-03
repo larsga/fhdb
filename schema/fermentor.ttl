@@ -74,8 +74,16 @@ neg:cool-room a tb:FermentorLocation;
   rdfs:label "Cool room";
   dc:description "Some room described as 'not too warm'.".
 
+neg:cold-room a tb:FermentorLocation;
+  rdfs:label "Cold room";
+  dc:description "Some room described as cold, but well above freezing.".
+
 neg:near-fire a tb:FermentorLocation;
   rdfs:label "Near the fire/oven".
+
+neg:near-chimney a tb:FermentorLocation;
+  rdfs:label "Near the chimney";
+  dc:description "This is a warm place because of the heat from chimney.".
 
 neg:brewhouse a tb:FermentorLocation;
   rdfs:label "Brewhouse";
@@ -85,3 +93,10 @@ neg:brewroom-next-to-folkestue a tb:FermentorLocation;
   rdfs:label "Brewroom next to folkestue";
   dc:description """The brewhouse was in a larger building, next to the
   folkestue, where the farm workers sat. The folkestue was heated in winter.""".
+
+neg:vetlestova a tb:FermentorLocation;
+  rdfs:label "Room next to kitchen";
+  dc:description """Room that's neither cold nor warm.""".
+
+neg:cellar a tb:FermentorLocation;
+  rdfs:label "Cellar".
