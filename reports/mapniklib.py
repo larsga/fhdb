@@ -150,16 +150,19 @@ def make_simple_map(shapefile = None, west = -5, south = 55, east = 35, north = 
     zoom_to_box(m, west, south, east, north)
     return SimpleBaseMap(m)
 
+def project(srs, west, south, east, north):
+    source = mapnik.Projection('+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs')
+    target = mapnik.Projection(srs)
+    trans = mapnik.ProjTransform(source, target)
+    thebox = mapnik.Box2d(west, south, east, north)
+    return trans.forward(thebox)
+
 def zoom_to_box(m, west, south, east, north):
     # the box is defined in degrees when passed in to us, but now that
     # the projection is Mercator, the bounding box must be specified
     # in metres (no, I don't know why). we solve this by explicitly
     # converting degrees to metres
-    source = mapnik.Projection('+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs')
-    target = mapnik.Projection(m.srs)
-    trans = mapnik.ProjTransform(source, target)
-    thebox = mapnik.Box2d(west, south, east, north)
-    m.zoom_to_box(trans.forward(thebox))
+    m.zoom_to_box(project(m.srs, west, south, east, north))
 
 def _add_green_land(m, shapefile, colors):
     s = mapnik.Style() # style object to hold rules
@@ -737,3 +740,47 @@ class ChoroplethMap(ColoredRegionMap):
         for ix in range(levels + 1):
             title = self._label_formatter(lowest + ix * inc, lowest + (ix+1) * inc)
             self.add_symbol(maplib.Symbol(None, colors[ix], title = title, shape = maplib.CIRCLE))
+
+# ===== XML MAP
+
+SRS = '+proj=merc +ellps=WGS84 +datum=WGS84 +no_defs'
+class XmlMap(maplib.AbstractMap):
+
+    def __init__(self, view):
+        maplib.AbstractMap.__init__(self, default_scale = 8)
+        self._view = view
+
+    def render_to(self, filename, width = None, height = None, bottom = None,
+                  format = 'png'):
+        box = project(SRS, east = self._view.east, west = self._view.west,
+                      north = self._view.north, south = self._view.south)
+
+        landfile = SHAPEDIR + 'ne_10m_admin_0_countries/ne_10m_admin_0_countries.shp'
+
+        with open('/tmp/mapnik.xml', 'w') as f:
+            f.write('''
+<Map
+    background-color="#88CCFF"
+    srs="%s"
+    maximum-extent="%s, %s, %s, %s"
+>
+  <Style name="land">
+    <Rule>
+      <PolygonSymbolizer fill="#409050" />
+
+      <LineSymbolizer stroke="rgb(85%%,85%%,90%%)" stroke-width="0.2"/>
+    </Rule>
+  </Style>
+
+  <Layer srs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs" name="land">
+    <StyleName>land</StyleName>
+    <Datasource>
+      <Parameter name="file">%s</Parameter>
+      <Parameter name="type">shape</Parameter>
+    </Datasource>
+  </Layer>
+</Map>
+            ''' % (SRS, box.minx, box.maxx, box.miny, box.maxy, landfile))
+
+        # FIXME: use Python API for this instead
+        os.system('mapnik-render --map-width %s --map-height %s /tmp/mapnik.xml %s' % (self._view.width, self._view.height, filename))
