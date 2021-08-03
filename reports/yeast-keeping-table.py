@@ -36,9 +36,25 @@ def get_method_name(uri):
         return 'Other'
     return labels[uri]
 
-format = tablelib.get_format()
-tablelib.make_table('yeast-keeping-table.html', query, get_method_name,
-                    label = 'yeast_keeping',
-                    caption = 'Methods for yeast preservation',
-                    min_accounts = MIN_ACCOUNTS,
-                    format = format)
+YEAST = 'http://www.garshol.priv.no/2017/trad-beer/yeast-keeping/'
+mapping = {
+    'straw-ring-with-hops' : 'straw-ring',
+    'straw'                : 'straw-ring',
+    'cloth-over-ash'       : 'cloth',
+    'trough'               : 'wooden-object',
+    'trough-and-cloth'     : 'wooden-object',
+    'wooden-boards'        : 'wooden-object',
+    'plate'                : 'wooden-object',
+    'bowl'                 : 'wooden-object',
+}
+mapping = {YEAST + k : YEAST + v for (k, v) in mapping.items()}
+
+tablelib.make_table(
+    'yeast-keeping-table.html', query, get_method_name,
+    label = 'yeast_keeping',
+    caption = 'Methods for yeast preservation',
+    min_accounts = MIN_ACCOUNTS,
+    format = tablelib.get_format(),
+    country = tablelib.get_country(),
+    simplify_mapping = mapping
+)
