@@ -350,9 +350,18 @@ tb:own-yeast rdfs:domain tb:Account;
   rdfs:range neg:Boolean;
   rdfs:comment "Did they have their own yeast.".
 
+tb:yeast-starter rdfs:domain tb:Account;
+  rdfs:range neg:Boolean;
+  rdfs:comment """Was the yeast dissolved and started in wort before being
+  pitched.""".
+
+tb:baking-yeast rdfs:domain tb:Account;
+  rdfs:range tb:YeastType;
+  rdfs:comment "What kind of yeast did they use for baking.".
+
 tb:yeast-type rdfs:domain tb:Account;
   rdfs:range tb:YeastType;
-  rdfs:comment "What kind of yeast did they use.".
+  rdfs:comment "What kind of yeast did they use for the beer.".
 
 tb:yeast-harvest rdfs:domain tb:Account;
   rdfs:range neg:YeastHarvestPlace;
@@ -373,7 +382,8 @@ tb:fermentor-wrap rdfs:domain tb:Account;
 
 tb:fermentor-place rdfs:domain tb:Account;
   rdfs:range tb:FermentorLocation;
-  rdfs:comment """Where the fermentor was placed.""".
+  rdfs:comment """Where the fermentor was placed. If there is a difference
+  between summer and winter, record the winter alternative.""".
 
 # beers
 
@@ -419,6 +429,57 @@ tb:rostdrikke rdfs:domain tb:Account;
 tb:birch-sap-beer rdfs:domain tb:Account;
   rdfs:range neg:Boolean;
   rdfs:comment "Drink from birch sap, not really a beer.".
+
+# ===== QUOTE PROPERTIES
+
+tb:baking-yeast-q rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal;
+  rdfs:comment "Quote about what yeast was used for baking.".
+
+tb:top-bottom-yeast-q rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal;
+  rdfs:comment "Quote about differences between top and bottom yeast.".
+
+tb:fermentation-stop-q rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal;
+  rdfs:comment "Quote about when to stop fermentation.".
+
+tb:yeast-harvest-q rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal;
+  rdfs:comment "Quote about how the yeast was harvested or kept.".
+
+tb:pitch-temperature-q rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal;
+  rdfs:comment "Quote about how the pitch temperature was recognized.".
+
+tb:borrow-yeast-q rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal;
+  rdfs:comment "Quote about borrowing yeast from neighbours.".
+
+tb:yeast-starter-q rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal;
+  rdfs:comment "Quote about setting a yeast starter.".
+
+tb:fermentation-temperature-q rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal;
+  rdfs:comment """Quote about setting fermentation temperature (really
+  temperature during fermentation).""".
+
+tb:fermentation-time-q rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal;
+  rdfs:comment """Quote about suitable fermentation time.""".
+
+tb:yeast-log-q rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal;
+  rdfs:comment """Quote about yeast logs.""".
+
+tb:yeast-cake-q rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal;
+  rdfs:comment """Quote about yeast cake.""".
+
+tb:yeast-reuse-q rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal;
+  rdfs:comment """Quote about how the yeast was reused.""".
 
 # ===== DUBIOUS
 
