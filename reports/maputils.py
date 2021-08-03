@@ -31,7 +31,7 @@ WHERE {
 }'''
 
 def make_term_map(termprop, symbols, filename, usemap = None, scale = None,
-                  language = 'en'):
+                  language = config.get_language()):
     global lat, lng
     # symbols: [(regex, color, name), ...]
 
@@ -61,7 +61,7 @@ def make_term_map(termprop, symbols, filename, usemap = None, scale = None,
             unmatched.append(term)
 
     themap.set_legend(True)
-    themap.render_to(filename)
+    themap.render_to(config.get_file() or filename)
 
     unmatched.sort()
     for term in unmatched:
@@ -172,7 +172,8 @@ def format_scale_2_digits(low, high):
     return '%s-%s' % (low, high)
 
 def color_scale_map_data(data, outfile, legend = False, symbol_count = 10,
-                         label_formatter = None, the_range = None):
+                         label_formatter = format_scale_2_digits,
+                         the_range = None):
     themap = config.make_map_from_cli_args()
 
     if the_range:
@@ -182,6 +183,7 @@ def color_scale_map_data(data, outfile, legend = False, symbol_count = 10,
         biggest = max([v for (lat, lng, title, v) in data])
 
     increment = (biggest - smallest) / (symbol_count - 1)
+
     symbols = [themap.add_symbol(
         'id%s' % ix,
         '#' + color(ix, symbol_count),
