@@ -31,7 +31,7 @@ neg:olkong a neg:Herb;
   owl:sameAs neg:perikum. # seems like this is correct
 
 neg:perikum a neg:Herb;
-  rdfs:label "Perikum", "St. John's wort"@en;
+  rdfs:label "Perikum"@no, "St. John's wort"@en;
   rdfs:seeAlso <http://no.wikipedia.org/wiki/Perikumslekten>;
   dc:description """Not entirely clear which species is meant, but one
   respondent specified it as Hypericum quadrangulum which according to
@@ -54,7 +54,7 @@ neg:ryllik a neg:Herb;
   rdfs:seeAlso <http://no.wikipedia.org/wiki/Ryllik>.
 
 neg:myrica-gale a neg:Herb;
-  rdfs:label "Pors", "Myrica"@en;
+  rdfs:label "Pors"@no, "Myrica"@en;
   rdfs:seeAlso <http://no.wikipedia.org/wiki/Pors>.
 
 neg:carraway a neg:Herb;
@@ -140,7 +140,7 @@ neg:matricaria-chamomilla a neg:Herb;
   rdfs:label "Matricaria chamomilla", "Chamomile".
 
 neg:meadwort a neg:Herb;
-  rdfs:label "Meadwort", "mjødurt".
+  rdfs:label "Meadwort", "mjødurt", "Filipendula ulmaria", "Meadowsweet".
 
 neg:vikis a neg:Herb;
   rdfs:label "Bush vetch", "Vicia sepium";

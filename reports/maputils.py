@@ -6,7 +6,7 @@ import sparqllib
 import config
 
 def random_id():
-    return ''.join([random.choice(string.letters) for ix in range(10)])
+    return ''.join([random.choice(string.ascii_letters) for ix in range(10)])
 
 def matches(regex, s):
     m = regex.match(s)
@@ -65,7 +65,7 @@ def make_term_map(termprop, symbols, filename, usemap = None, scale = None,
 
     unmatched.sort()
     for term in unmatched:
-        print term
+        print(term)
 
 def pick_name(name_or_names):
     if type(name_or_names) == type({}):
@@ -96,7 +96,7 @@ def make_thing_map(query, symbols, filename, legend = False):
         themap.add_marker(lat, lng, title + ': ' + name, symbol)
 
     for (thing, count) in unclassified.items():
-        print 'Unclassified: %s %s' % (thing, count)
+        print('Unclassified: %s %s' % (thing, count))
 
     themap.set_legend(legend)
     themap.render_to(config.get_file() or filename)

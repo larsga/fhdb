@@ -2,7 +2,7 @@
 Implementation of the Map class which generates PNG maps using Mapnik.
 '''
 
-import json, sys, os
+import json, sys, os, random, string
 import mapnik
 import maplib
 
@@ -20,6 +20,7 @@ if not SHAPEDIR.endswith('/'):
 ELEVATION_DEFAULT = False
 
 district_file = None
+#district_file = '/Users/larsga/prog/python/etno-distrikt/landsdeler.json'
 #district_file = '/Users/larsga/prog/python/etno-distrikt/regions.json'
 #district_file = '/Users/larsga/prog/python/etno-distrikt/regions-clipped.json'
 
@@ -78,8 +79,13 @@ class MapnikMap(maplib.AbstractMap):
         layer.styles.append('CustomLine')
         m.layers.append(layer)
 
+    def add_shaded_region(self, shape, color = 'rgb(0%, 0%, 0%)', opacity = 0.15):
+        m = self._base_map._mapnik_map
+        _add_shaded_region(m, shape = shape, color = color, opacity = opacity)
+
     def render_to(self, filename, width = None, height = None, bottom = None,
-                  format = 'png'):
+                  format = 'png', preview = True):
+        format = format or 'png'
         filename = make_ending_for(filename, format)
         legend_box = _render(self, filename, format)
 
@@ -87,7 +93,7 @@ class MapnikMap(maplib.AbstractMap):
         if transform:
             transform(filename, legend_box)
 
-        if len(sys.argv) > 1:
+        if preview and len(sys.argv) > 1:
             os.system('open ' + filename)
 
 def make_ending_for(filename, format):
@@ -143,7 +149,7 @@ def make_simple_map(shapefile = None, west = -5, south = 55, east = 35, north = 
     _add_glaciers(m)
 
     if speciesfile:
-        _add_species(m, speciesfile)
+        _add_shaded_region(m, jsonfile = speciesfile, color = 'black', opacity = 0.25)
     if district_file:
         _add_districts(m, district_file)
 
@@ -208,33 +214,45 @@ def _add_borders(m, shapefile, colors):
 
     m.layers.append(layer)
 
-def _add_species(m, speciesfile):
-    'speciesfile = shapefile with species distribution'
+def random_id():
+    return ''.join([random.choice(string.ascii_letters) for ix in range(10)])
+
+def _add_shaded_region(m, shape = None, opacity = 0.25, color = 'rgb(0%,0%,0%)',
+                       jsonfile = None):
+    '''shape = geojson shape object for region
+    jsonfile = geojson file containing region'''
 
     s = mapnik.Style() # style object to hold rules
     r = mapnik.Rule() # rule object to hold symbolizers
     # to fill a polygon we create a PolygonSymbolizer
     polygon_symbolizer = mapnik.PolygonSymbolizer()
-    polygon_symbolizer.fill = mapnik.Color('rgb(0,0,0)')
-    polygon_symbolizer.fill_opacity = 0.25
+    polygon_symbolizer.fill = mapnik.Color(color)
+    polygon_symbolizer.fill_opacity = opacity
     r.symbols.append(polygon_symbolizer) # add the symbolizer to the rule object
 
     # to add outlines to a polygon we create a LineSymbolizer
     line_symbolizer = mapnik.LineSymbolizer()
-    line_symbolizer.stroke = mapnik.Color('rgb(0%,0%,0%)')
+    line_symbolizer.stroke = mapnik.Color(color)
     line_symbolizer.stroke_width = 1
     r.symbols.append(line_symbolizer) # add the symbolizer to the rule object
     s.rules.append(r) # now add the rule to the style
 
-    m.append_style('Chorology',s)
+    the_id = random_id()
+    m.append_style(the_id, s)
 
-    #ds = mapnik.Shapefile(file = speciesfile)
-    ds = mapnik.GeoJSON(file = speciesfile)
-    layer = mapnik.Layer('shrub')
+    if shape:
+        with open('/tmp/region.json', 'w') as f:
+            json.dump({'type': 'FeatureCollection', 'features' : [shape]}, f)
+        jsonfile = '/tmp/region.json'
+    elif not jsonfile:
+        assert False, 'Must specify either shape or jsonfile'
+
+    ds = mapnik.GeoJSON(file = jsonfile)
+    layer = mapnik.Layer(random_id())
 
     layer.datasource = ds
     layer.srs = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
-    layer.styles.append('Chorology')
+    layer.styles.append(the_id)
 
     m.layers.append(layer)
 
@@ -325,13 +343,14 @@ def _add_elevation(m):
     # Other options are COLORIZER_LINEAR (stretched) and
     # COLORIZER_EXACT (unique)
     rs.colorizer = mapnik.RasterColorizer(
-        mapnik.COLORIZER_DISCRETE, mapnik.Color(0, 0, 0, 0)
+        mapnik.COLORIZER_LINEAR, mapnik.Color(0, 0, 0, 0)
     )
-    #rs.colorizer.add_stop(0, mapnik.Color(217, 217, 229))
 
+    rs.colorizer.add_stop(10, mapnik.Color(64, 144, 80))
     rs.colorizer.add_stop(250, mapnik.Color(58, 130, 72))
     rs.colorizer.add_stop(500, mapnik.Color(37, 117, 69))
     rs.colorizer.add_stop(1000, mapnik.Color(27, 75, 46))
+    rs.colorizer.add_stop(2000, mapnik.Color(0, 0, 0))
 
     r.symbols.append(rs)
     s.rules.append(r)
@@ -368,11 +387,18 @@ def _add_elevation(m):
     srs = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
 
     # ds = mapnik.Gdal(
-    #     base = '/Users/larsga/Desktop/DTM50_UTM33_20200904',
-    #     file = 'norge.tif',
+    #     base = SHAPEDIR + '/DTM50_UTM33_20200904',
+    #     file = '7405_50m_33.tif', #'norge.tif',
     #     band = 1,
     # )
-    # srs = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
+    # srs = '+proj=utm +zone=33 +ellps=WGS84 +datum=WGS84 +units=m +no_defs'
+
+    # ds = mapnik.Gdal(
+    #     base = '/Users/larsga/Desktop/Nedlastingspakke/',
+    #     file = '6400_1_10m_z33.tif',
+    #     band = 1,
+    # )
+    # srs = '+proj=utm +zone=33 +ellps=WGS84 +datum=WGS84 +units=m +no_defs'
 
     layer = mapnik.Layer('Elevation')
     layer.datasource = ds
@@ -474,6 +500,8 @@ def _render(themap, filename, format):
 
     symbol_layers = {}
     for symbol in themap.get_symbols():
+        assert not(symbol.get_label())
+
         svgfile = '/tmp/%s.svg' % symbol.get_id()
         _generate_svg(svgfile, symbol)
 

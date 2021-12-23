@@ -1,6 +1,6 @@
 
 import sys, os, argparse
-import maplib, mapniklib
+import maplib, mapniklib, mapleaflib
 
 def parse_spec(spec, speciesfile = None):
     parts = spec.split(':')
@@ -14,22 +14,30 @@ def parse_spec(spec, speciesfile = None):
 
 def make_map_from_cli_args(speciesfile = None, map_type = 'default'):
     if len(sys.argv) > 1:
+        if sys.argv[1] == 'lf':
+            return mapleaflib.LeafletMap(61.8, 9.45, 6)
+
         spec = parse_spec(sys.argv[1], speciesfile)
 
         if spec.area in map_views:
             view = map_views[spec.area]
 
             if map_type == 'default':
-                return mapniklib.MapnikMap(mapniklib.make_simple_map(
+                themap = mapniklib.MapnikMap(mapniklib.make_simple_map(
                     east = view.east, west = view.west, south = view.south,
                     north = view.north, width = view.width,
                     height = view.height, elevation = spec.elevation,
-                    color = spec.color
+                    color = spec.color, speciesfile = spec.speciesfile
                 ), color = spec.color, transform = view.transform)
             elif map_type == 'choropleth':
-                return mapniklib.ChoroplethMap(view)
+                themap = mapniklib.ChoroplethMap(view)
             elif map_type == 'colored-region':
-                return mapniklib.ColoredRegionMap(view)
+                themap = mapniklib.ColoredRegionMap(view)
+
+            #add_kornol_region(themap)
+            #add_style_regions(themap)
+            #add_landsdeler(themap)
+            return themap
 
     return maplib.GoogleMap(61.8, 9.45, 6)
 
@@ -55,7 +63,7 @@ def norway_montage(filename, legend_box):
     # </hack>
 
     from PIL import Image, ImageDraw
-    im = Image.open(open(tmpfile))
+    im = Image.open(open(tmpfile, 'rb'))
 
     southern_no = im.crop((0, 1440, 720, 2500))   # 720x1060
     northern_no = im.crop((486, 510, 1186, 1570)) # 700x1060
@@ -83,8 +91,8 @@ map_views = {
                               width = 1200, height = 800),
     'west-nordic' : MapView(east = -4, west = 25, south = 52.5, north = 63.5,
                             width = 1800, height = 1400),
-    'europe-all-big' : MapView(east = -15, west = 50, south = 36, north = 71,
-                               width = 2000, height = 1400),
+    'europe-all-big' : MapView(east = -15, west = 50, south = 34, north = 71,
+                               width = 2000, height = 1600),
     'norway-sweden' : MapView(east = 6, west = 18, south = 57.9, north = 63.9,
                               width = 1800, height = 1200),
     'mid-norway' : MapView(east = 7.5, west = 10, south = 59, north = 63,
@@ -117,20 +125,77 @@ class MapSpecification:
 
 # ===== COMMAND-LINE OPTIONS
 
+def _get_args():
+    global args
+    if not args:
+        args = parser.parse_args()
+    return args
+
 def get_language():
-    return args.lang
+    return _get_args().lang
 
 def get_file():
-    return args.file
+    return _get_args().file
 
 def get_country():
-    return args.country
+    return _get_args().country
 
 def get_plot_style():
-    return args.style
+    return _get_args().style
 
 def get_format():
-    return args.format
+    return _get_args().format
+
+# ===== EXPERIMENT
+
+import json
+
+def get_region(regions, name):
+    for region in regions['features']:
+        if region['properties']['name'] == name:
+            return region
+
+def add_kornol_region(themap):
+    THEFILE = '/Users/larsga/prog/python/etno-distrikt/regions-clipped.json'
+    regions = json.load(open(THEFILE))
+
+    for (name, color) in [('Nordfjord', 'rgb(20%,40%,25%)'),
+                          (u'Sunnmøre', 'rgb(20%,40%,25%)'),
+                          # ('Romsdalen', 'rgb(100%,0%,0%)'),
+                          # (u'Nordmøre', 'rgb(100%,0%,0%)')
+    ]:
+        shape = get_region(regions, name)
+        themap.add_shaded_region(shape, color = color, opacity = 0.6)
+
+def add_style_regions(themap):
+    THEFILE = '/Users/larsga/prog/python/etno-distrikt/regions-clipped.json'
+    regions = json.load(open(THEFILE))
+
+    for (name, color) in [('Nordfjord', 'rgb(20%,40%,25%)'),
+                          (u'Sunnmøre', 'rgb(20%,40%,25%)'),
+
+                          (u'Indre Sogn', 'rgb(20%,40%,65%)'),
+                          (u'Voss',       'rgb(20%,40%,65%)'),
+                          (u'Hardanger',  'rgb(20%,40%,65%)'),
+
+                          (u'Stjørdalen', 'rgb(60%,20%,15%)'),
+    ]:
+        shape = get_region(regions, name)
+        themap.add_shaded_region(shape, color = color, opacity = 1.0)
+
+def add_landsdeler(themap):
+    THEFILE = '/Users/larsga/prog/python/etno-distrikt/landsdeler.json'
+    regions = json.load(open(THEFILE))
+
+    for (name, color) in [('Vestlandet', 'rgb(20%,40%,100%)'),
+                          (u'Østlandet', 'rgb(100%,40%,25%)'),
+                          ('Telemark',   'rgb(80%,80%,25%)'),
+                          ('Midt-Norge', 'rgb(20%,100%,25%)'),
+                          (u'Sørlandet', 'rgb(80%,80%,80%)'),
+                          ('Nord-Norge', 'rgb(20%,20%,20%)'),
+    ]:
+        shape = get_region(regions, name)
+        themap.add_shaded_region(shape, color = color, opacity = 1.0)
 
 # ===== PARSE THE CMD-LINE
 
@@ -140,6 +205,6 @@ parser.add_argument('--lang', default = 'en')
 parser.add_argument('--file')
 parser.add_argument('--country')
 parser.add_argument('--style', default = 'ggplot')
-parser.add_argument('--format', default = 'png')
+parser.add_argument('--format')
 
-args = parser.parse_args()
+args = None # let other modules get a chance to insert args first

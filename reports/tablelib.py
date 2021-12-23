@@ -74,12 +74,12 @@ class CountryTable:
         return self._sort_rows()
 
     def sort_countries(self):
-        values = count_by_key(self._country.values())
+        values = list(count_by_key(self._country.values()))
         values.sort(key = lambda i: -i[1])
         return [c for (c, count) in values]
 
     def sort_columns(self, columns):
-        values = count_by_key(flatten(self._values.values()))
+        values = list(count_by_key(flatten(self._values.values())))
         values.sort(key = lambda i: -i[1])
         return [col for (col, count) in values]
 
@@ -375,7 +375,7 @@ class HtmlWriter(TableWriter):
             self.out.write(' class="%s">' % klass)
         else:
             self.out.write('>')
-        self.out.write(unicode(content))
+        self.out.write(str(content))
 
     def cell(self, content, klass = None, breaking = True):
         self.out.write('<td')
@@ -384,7 +384,7 @@ class HtmlWriter(TableWriter):
         else:
             self.out.write('>')
 
-        content = unicode(content)
+        content = str(content)
         if not breaking:
             content = content.replace(' ', '&nbsp;')
         self.out.write(content)
@@ -442,7 +442,7 @@ class LatexWriter(TableWriter):
         if klass in colormap:
             self.out.write(colormap[klass])
 
-        self.out.write(escape(unicode(content)))
+        self.out.write(escape(str(content)))
 
     def end_table(self):
         self.out.write('\\\\\n')
@@ -471,7 +471,7 @@ class ConsoleWriter(TableWriter):
         self.cell(content)
 
     def cell(self, content, klass = None, breaking = True):
-        self.rows[-1].append(unicode(content))
+        self.rows[-1].append(str(content))
 
     def end_table(self):
         col_widths = [0] * len(self.rows[0])
@@ -480,8 +480,8 @@ class ConsoleWriter(TableWriter):
                 col_widths[ix] = max(col_widths[ix], len(row[ix]))
 
         for row in self.rows:
-            line = [string.ljust(row[ix], col_widths[ix]) for ix in range(len(row))]
-            print '  '.join(line)
+            line = [row[ix].ljust(col_widths[ix]) for ix in range(len(row))]
+            print('  '.join(line))
 
 class TabWriter(TableWriter):
     '''Just writes the table as a tab-separated file. Good for copying and

@@ -57,11 +57,11 @@ WHERE {
 }'''
 for (s, lat, lng, title, t) in sparqllib.query_for_rows(query):
     if t in symbols:
-        if not  title:
-            print 'NO TITLE', s
+        if not title:
+            print('NO TITLE %s' % s)
         themap.add_marker(lat, lng, title or 'No title', symbols[t])
     else:
-        print 'NO SYMBOL FOR', t
+        print('NO SYMBOL FOR %s' % t)
 
 # ===== RENDER
 

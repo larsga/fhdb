@@ -44,15 +44,15 @@ for (s, lat, lng, t, c) in sparqllib.query_for_rows(q):
 import numpy
 
 temperatures.sort()
-print temperatures
-print 'Interpreted temperatures', len(temperatures)
-print 'Unreadable', unreadable
-print 'Average', average(temperatures)
-print '  Single', len(singles), average(singles), numpy.std(singles)
-print '  Range', len(ranges), average(ranges), numpy.std(ranges)
-print '  Milk', milks
-print '  Body', bodies
-print '  Other', other
+print(temperatures)
+print('Interpreted temperatures', len(temperatures))
+print('Unreadable', unreadable)
+print('Average', average(temperatures))
+print('  Single', len(singles), average(singles), numpy.std(singles))
+print('  Range', len(ranges), average(ranges), numpy.std(ranges))
+print('  Milk', milks)
+print('  Body', bodies)
+print('  Other', other)
 
 LANG = config.get_language()
 label = {
@@ -63,7 +63,7 @@ label = {
 from matplotlib import pyplot
 pyplot.style.use(config.get_plot_style())
 
-(n, bins, patches) = pyplot.hist(temperatures, BINS, alpha=0.5,
+(n, bins, patches) = pyplot.hist(temperatures, BINS,
                                  label = label[LANG])
 if LANG == 'en':
     pyplot.title('Pitch temperatures')

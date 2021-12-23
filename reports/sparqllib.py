@@ -2,7 +2,9 @@
 Reusable utilities to make life with SPARQL easier.
 '''
 
-import types, httplib, urlparse, urllib
+import http.client as httplib
+import urllib.parse as urlparse
+import types, urllib
 import sparql
 
 ENDPOINT = 'http://localhost:8890/sparql'
@@ -13,7 +15,7 @@ def query_for_value(query):
     try:
         (a, ) = row
         return a[0].value
-    except ValueError, e:
+    except ValueError:
         return None
 
 def query_for_list(query):
@@ -77,6 +79,6 @@ def do_update(update):
     resp = conn.getresponse()
 
     if resp.status > 299:
-        print repr(update)
-        print resp.read()
+        print(repr(update))
+        print(resp.read())
         raise Exception('Error %s: %s' % (resp.status, resp.reason))

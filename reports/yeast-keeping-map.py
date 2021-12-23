@@ -104,7 +104,7 @@ WHERE {
 for (s, lat, lng, proc, procname, title) in sparqllib.query_for_rows(query):
     symbol = symbols.get(procname, black)
     if symbol == black:
-        print 'UNMAPPED', repr(procname)
+        print('UNMAPPED', repr(procname))
 
     themap.add_marker(lat, lng, title, symbol, procname)
 

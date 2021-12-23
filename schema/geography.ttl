@@ -78,6 +78,8 @@ dbp:Romsdal a dbp:Region; rdfs:label "Romsdal";
   tb:part-of <http://dbpedia.org/resource/M%C3%B8re_og_Romsdal>.
 dbp:Hornindal a dbp:Region; rdfs:label "Hornindal";
   tb:part-of dbp:Nordfjord.
+dbp:Romerike a dbp:Region; rdfs:label "Romerike";
+  tb:part-of dbp:Akershus.
 
 dbp:Akershus a dbp:Province;
   rdfs:label "Akershus";

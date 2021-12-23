@@ -4,8 +4,9 @@ import tablelib
 
 format = tablelib.get_format()
 property = 'tb:herbs'
+region_type = 'dbp:Country' # 'dbp:Province'
 
-MIN_ACCOUNTS = 3
+MIN_ACCOUNTS = 1
 
 # merge herbs in the statistics without having to merge them in the
 # source data. used for synonyms I have decided to accept, but means I
@@ -66,8 +67,8 @@ WHERE {
     tb:part-of ?c;
     %s ?h.
 
-  ?c a dbp:Country.
-}''' % property
+  ?c a %s.
+}''' % (property, region_type)
 #  FILTER (?h != neg:alder-branches && ?h != neg:straw )
 
 def get_herb_name(h):

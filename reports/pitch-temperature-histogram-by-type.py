@@ -67,28 +67,10 @@ for groupname in GROUPS.keys():
 
 # --- Combine
 
-from PIL import Image
+import imglib
 
-images = [Image.open('pitch-%s.png' % i) for i in range(ix)]
-widths, heights = zip(*(i.size for i in images))
-
-width = max(widths) * 2
-height = heights[0] + heights[1]
-
-new_im = Image.new('RGB', (width, height))
-
-y_offset = 0
-for im in images[ : 2]:
-  new_im.paste(im, (0, y_offset))
-  y_offset += im.size[1]
-
-y_offset = 0
-for im in images[2 : ]:
-  new_im.paste(im, (images[0].size[0], y_offset))
-  y_offset += im.size[1]
-
-new_im.save('pitch-temperature-histogram-by-type.png')
-
-import sys, os
-if len(sys.argv) > 1:
-    os.system('open pitch-temperature-histogram-by-type.png')
+imglib.tile_images(
+    imagelist = ['pitch-%s.png' % i for i in range(ix)],
+    rows = [[0, 1], [2, 3]],
+    outfile = 'pitch-temperature-histogram-by-type.png'
+)

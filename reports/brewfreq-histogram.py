@@ -38,8 +38,7 @@ from matplotlib import pyplot
 freqs = [float(freq) for (s, freq) in sparqllib.query_for_rows(query)]
 
 pyplot.style.use(config.get_plot_style())
-(n, bins, patches) = pyplot.hist(freqs, BINS, alpha=0.5,
-                                 label = label[LANG])
+(n, bins, patches) = pyplot.hist(freqs, BINS, label = label[LANG])
 
 pyplot.title(label[LANG])
 if LANG == 'en':

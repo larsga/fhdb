@@ -44,6 +44,9 @@ WHERE {
   ?s tb:part-of ?c.
   ?c a dbp:Country.
 
+  ?s tb:year ?year.
+  FILTER( ?year > 1985 )
+
   %s
 }    '''
 
@@ -119,7 +122,7 @@ def get_category(t, quiet = True):
         return 'body'
     else:
         if not quiet:
-            print 'OTHER:', t
+            print('OTHER:', t)
         return 'none'
 
 def get_name(url):

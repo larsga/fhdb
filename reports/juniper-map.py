@@ -1,3 +1,4 @@
+# encoding=utf-8
 
 import config
 import colorsys
@@ -18,13 +19,27 @@ lat = 61.8
 lng = 9.45
 
 themap = config.make_map_from_cli_args()
+LANG = config.get_language()
+
+labels = {
+'en' : {
+    'infusion' : 'Infusion',
+    'none' : 'No juniper',
+    'filter' : 'Filter only'
+    },
+'no' : {
+    'infusion' : u'Einerlåg',
+    'none' : 'Ingen einer',
+    'filter' : 'Bare i rost'
+    },
+}[LANG]
 
 white = themap.add_symbol('white', '#FFFFFF', '#000000', strokeweight = 1,
-                          title = 'Infusion')
+                          title = labels['infusion'])
 black = themap.add_symbol('black', '#000000', '#000000', strokeweight = 1,
-                          title = 'No juniper')
+                          title = labels['none'])
 gray = themap.add_symbol('gray', '#BBBBBB', '#000000', strokeweight = 1,
-                         title = 'Filter only')
+                         title = labels['filter'])
 symbols = {1 : white, 0 : black, 0.5 : gray}
 
 query = '''
@@ -61,7 +76,7 @@ for (s, title, lat, lng, herbs) in sparqllib.query_for_rows(query):
     else:
         is_juniper = 0
 
-    if accounts.has_key(s):
+    if s in accounts:
         is_juniper = max(accounts[s][3], is_juniper)
 
     accounts[s] = (title, lat, lng, is_juniper)
@@ -70,4 +85,4 @@ for (title, lat, lng, juniper) in accounts.values():
     themap.add_marker(lat, lng, title, symbols[juniper])
 
 themap.set_legend(True)
-themap.render_to('juniper-map')
+themap.render_to(config.get_file() or 'juniper-map')

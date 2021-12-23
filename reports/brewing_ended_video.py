@@ -36,8 +36,7 @@ def convert(year_none_false):
     else:
         return int(year_none_false)
 
-def render_year(year, rows, filename, mapfactory):
-    print year
+def render_year(year, rows, filename, mapfactory, legend = True, year_label = True):
     themap = mapfactory(config.MapSpecification())
     alive = themap.add_symbol('alive', '#FFFF00', '#000000', scale = 8,
                               title = 'Ongoing')
@@ -63,9 +62,11 @@ def render_year(year, rows, filename, mapfactory):
         if symbol:
             themap.add_marker(lat, lng, None, symbol)
 
-    themap.set_legend(True)
+    themap.set_legend(legend)
+    themap.render_to(filename, preview = False)
 
-    themap.render_to(filename)
+    if year_label:
+        add_year(filename, year)
 
 def add_year(filename, year):
     from PIL import Image, ImageDraw, ImageFont
@@ -89,10 +90,13 @@ def add_year(filename, year):
 if __name__ == '__main__':
     rows = collect_rows()
     for year in range(1850, 2000):
+        print(year)
         filename = 'video/%04d.png' % (year - 1850)
         render_year(year, rows,
                     filename = filename,
-                    mapfactory = config.make_nordic_map)
-        add_year(filename, year)
+                    mapfactory = config.make_map_from_cli_args,
+                    legend = True,
+                    year_label = True
+        )
 
     os.system('ffmpeg -r 5 -f image2 -s 1800x1400 -i video/%04d.png -vcodec libx264 -crf 25  -pix_fmt yuv420p -y brewing-ended.mp4')

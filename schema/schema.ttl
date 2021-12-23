@@ -183,6 +183,18 @@ tb:spent-grain-term rdfs:domain tb:Account;
   rdfs:range rdfs:Literal;
   rdfs:comment "The local term for the spent grain.".
 
+tb:fermentor-term rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal;
+  rdfs:comment "The local term for the fermenting vessel.".
+
+tb:wort-term rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal;
+  rdfs:comment "The local term for the wort.".
+
+tb:strainer-term rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal;
+  rdfs:comment "The local term for the strainer: filtering vessel/lauter tun.".
+
 # malting
 
 tb:barley-rows rdfs:domain tb:Account;

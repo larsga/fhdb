@@ -1,5 +1,6 @@
 
 import sys
+from functools import reduce
 import sparqllib, tablelib
 
 names = {

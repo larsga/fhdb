@@ -23,3 +23,6 @@ neg:rye a tb:GrainType;
 
 neg:wheat a tb:GrainType;
   rdfs:label "Wheat".
+
+neg:millet a tb:GrainType;
+  rdfs:label "Millet".

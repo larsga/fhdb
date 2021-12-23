@@ -1,8 +1,17 @@
 
+import config
 import sparqllib
 
+BINS = 10
+
 # ===========================================================================
-# GLOBAL
+# MAIN
+
+cfilter = ''
+titleadd = ''
+if config.get_country():
+    cfilter = 'FILTER( ?c = dbp:%s )' % config.get_country()
+    titleadd = ' in ' + config.get_country()
 
 query = '''
 prefix dc: <http://purl.org/dc/elements/1.1/>
@@ -20,14 +29,15 @@ WHERE {
     tb:brew-frequency ?h.
 
   ?c a dbp:Country.
-}''' #   FILTER( ?c = dbp:Norway )
+  %s
+}''' % cfilter
 
 values = [float(t) for (t, c, s) in sparqllib.query_for_rows(query)]
 
 # PLOT A HISTOGRAM
 # http://matplotlib.org/1.2.1/examples/pylab_examples/histogram_demo.html
 from matplotlib import pyplot
-(n, bins, patches) = pyplot.hist(values, 10)
+(n, bins, patches) = pyplot.hist(values, BINS)
 pyplot.title('Brews per year')
 pyplot.xlabel('Brews')
 pyplot.ylabel('Number of accounts')

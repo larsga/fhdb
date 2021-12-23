@@ -27,7 +27,7 @@ BLACK = themap.add_symbol('black', '#000000', title = labels[LANG]['bottom'])
 DARK_GRAY = themap.add_symbol('dark_gray', '#555555', '#000000',
                               title = labels[LANG]['cask'])
 EITHER = themap.add_symbol('gray', '#999999', title = labels[LANG]['either'])
-TOP = themap.add_symbol('white', '#FFFFFF', title = labels[LANG]['top'])
+TOP = themap.add_symbol('yellow', '#FFFF00', title = labels[LANG]['top'])
 
 NEG = 'http://www.garshol.priv.no/2014/neg/'
 symbols =  {
@@ -58,7 +58,7 @@ for (s, lat, lng, title, harvest) in sparqllib.query_for_rows(query):
     try:
         symbol = symbols[harvest]
     except KeyError:
-        print 'KeyError:', s, harvest
+        print('KeyError:', s, harvest)
         raise
     themap.add_marker(lat, lng, title, symbol)
 

@@ -18,6 +18,9 @@ DEFAULT_STROKEWEIGHT = 2
 
 # ===== MAP
 
+# Next implementation: Leaflet
+#   supports custom markers
+
 class AbstractMap:
 
     def __init__(self, default_scale = 5):
@@ -40,10 +43,14 @@ class AbstractMap:
     def get_symbols(self):
         return self._symbols
 
-    def add_symbol(self, id, color, strokecolor = '#000000', strokeweight = None,
-                   title = None, scale = None, shape = CIRCLE):
+    def add_symbol(self, id, color, strokecolor = '#000000',
+                   strokeweight = None, title = None, scale = None,
+                   shape = CIRCLE, label = None, textcolor = None):
+        '''title: name in legend
+        label: text inside actual symbol icon'''
         s = Symbol(id, color, strokecolor, strokeweight, title = title,
-                   scale = scale or self._default_scale, shape = shape)
+                   scale = scale or self._default_scale, shape = shape,
+                   label = label, textcolor = textcolor)
         self._symbols.append(s)
         return s
 
@@ -86,7 +93,10 @@ class GoogleMap(AbstractMap):
     def get_zoom_level(self):
         return self._zoom
 
-    def render_to(self, filename, width = '100%', height = '100%', bottom = ''):
+    def render_to(self, filename, width = '100%', height = '100%', bottom = '',
+                  format = 'html'):
+        format = format or 'html'
+        assert format == 'html', 'Incorrect format %s' % format
         if not filename.endswith('.html'):
             filename += '.html'
 
@@ -101,7 +111,8 @@ class GoogleMap(AbstractMap):
 class Symbol:
 
     def __init__(self, id, color, strokecolor = None, strokeweight = None,
-                 title = None, scale = None, shape = None):
+                 title = None, scale = None, shape = None, label = None,
+                 textcolor = None):
         self._id = id
         self._color = color
         self._strokecolor = strokecolor or color
@@ -109,6 +120,8 @@ class Symbol:
         self._title = title
         self._scale = scale or 5
         self._shape = shape
+        self._label = label
+        self._textcolor = textcolor
 
     def get_id(self):
         return self._id
@@ -130,6 +143,12 @@ class Symbol:
 
     def get_shape(self):
         return self._shape
+
+    def get_label(self):
+        return self._label
+
+    def get_text_color(self):
+        return self._textcolor
 
     def render_to(self, outf):
         outf.write('''
@@ -178,6 +197,12 @@ class Marker:
 
 # ===== RENDERING
 
+def to_jstr(value):
+    if value == None:
+        return 'null'
+
+    return "'%s'" % value.replace("'", "\\'")
+
 def render(themap, filename, width = '100%', height = '100%', bottom = ''):
     outf = codecs.open(filename, 'w', 'utf-8')
     outf.write(u'''
@@ -218,12 +243,21 @@ var map = new google.maps.Map(document.getElementById('%s'), mapOptions);
 var markers = [];
 var marker_dict = {};
 
-function add_marker(theid, lat, lng, title, symbol, data) {
+function add_marker(theid, lat, lng, title, symbol, label, textcolor, data) {
+  var thelabel = null;
+  if (label != null) {
+    thelabel = new google.maps.Marker({
+      text: label,
+      color: textcolor
+    });
+  }
+
   var marker = new google.maps.Marker({
       position: new google.maps.LatLng(lat, lng),
       map: map,
       title: title,
-      icon: symbol
+      icon: symbol,
+      label: thelabel
   });
 
   marker.popupid = theid;
@@ -267,12 +301,14 @@ function add_marker(theid, lat, lng, title, symbol, data) {
         symbol.render_to(outf)
 
     for marker in themap.get_markers():
-        outf.write(u"add_marker('%s', %s, %s, '%s', %s, %s);\n" %
+        outf.write(u"add_marker('%s', %s, %s, %s, %s, %s, %s, %s);\n" %
                    (marker.get_id(),
                     marker.get_latitude(),
                     marker.get_longitude(),
-                    marker.get_title().replace("'", "\\'"),
+                    to_jstr(marker.get_title()),
                     marker.get_symbol().get_id(),
+                    to_jstr(marker.get_symbol().get_label()),
+                    to_jstr(marker.get_symbol().get_text_color()),
                     json.dumps(marker.get_data())))
 
     outf.write(u'</script>\n\n\n')

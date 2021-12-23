@@ -26,7 +26,7 @@ WHERE {
 }'''
 for (s, title, lat, lng, v) in sparqllib.query_for_rows(query):
     hops = []
-    if data.has_key(s):
+    if s in data:
         hops = data[s][-1]
     hops.append(strip_uri(v))
 
@@ -66,6 +66,7 @@ mapping = {
     ('barley', 'wheat')                          : 'barley_wheat',
     ('rye', 'barley')                            : 'mixed_rye',
     ('barley', 'brome', 'oats')                  : 'bizarre',
+    ('barley', 'brome', 'oats', 'rye', 'wheat')  : 'bizarre',
     ('emmer', 'spelt')                           : 'bizarre',
     ('oats',)                                    : 'oats',
     ('rye',)                                     : 'rye',

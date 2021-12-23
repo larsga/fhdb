@@ -29,6 +29,14 @@ neg:felt-blankets a tb:FermentorWrapping;
   rdfs:label "Felt blankets";
   dc:description "'Feltar' in Swedish.".
 
+neg:insulated-steel a tb:FermentorWrapping;
+  rdfs:label "Insulated steel tank";
+  dc:description "For example modern dairy tank with insulation.".
+
+neg:insulation-mat a tb:FermentorWrapping;
+  rdfs:label "Insulation mat";
+  dc:description "Any sort of insulation mat.".
+
 neg:none a tb:FermentorWrapping;
   rdfs:label "None";
   dc:description "The fermentor was not covered with anything.".

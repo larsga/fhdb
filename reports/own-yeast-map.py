@@ -31,4 +31,4 @@ WHERE {
 for (s, lat, lng, title) in sparqllib.query_for_rows(query):
     themap.add_marker(lat, lng, title, symbol)
 
-themap.render_to('own-yeast-map')
+themap.render_to(config.get_file() or 'own-yeast-map')

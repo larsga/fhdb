@@ -178,3 +178,8 @@ event:confirmation a tb:Event;
   rdfs:label "Confirmation"@en, "Konfirmasjon"@no;
   dc:descriptions "Christian confirmation, at 14-15 years of age.";
   tb:repeating-event false.
+
+event:ship-launch a tb:Event;
+  rdfs:label "Ship launch"@en, "Fartygsbyggen"@sv;
+  dc:descriptions "Building of a ship/boat.";
+  tb:repeating-event false.
