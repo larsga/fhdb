@@ -230,7 +230,7 @@ tb:clean-with rdfs:domain tb:Account;
 # brewing process
 
 tb:process rdfs:domain tb:Account;
-  rdfs:range neg:Process;
+  rdfs:range tb:Process;
   rdfs:comment "The most common (or oldest) brewing process in the area.".
 
 neg:boiled rdfs:domain tb:Account;
@@ -707,6 +707,10 @@ dc:title rdfs:domain tb:Account; # also dot
 rdfs:label rdfs:domain rdf:Resource;
   rdfs:range rdfs:Literal.
 
+dc:description rdfs:domain rdf:Resource;
+  rdfs:label "Description";
+  rdfs:range rdfs:Literal.
+
 tb:place-of-origin rdfs:domain tb:Account; # also dot
   rdfs:range dbo:Place;
   rdfs:comment "What place does the account describe?".
@@ -771,3 +775,69 @@ ulma:something rdfs:domain ulma:Account;
 tb:online-copy rdfs:domain ulma:Account;
   rdfs:label "Place";
   rdfs:range rdf:Resource.
+
+# ===== BREWING PROCESS
+
+tb:Process a rdfs:Class;
+  rdfs:label "Brewing process".
+
+tb:cold-mash rdfs:domain tb:Process;
+  rdfs:label "Cold mash";
+  rdfs:range neg:Boolean.
+
+tb:infusion-mash-steps rdfs:domain tb:Process;
+  rdfs:label "Infusion mashing steps";
+  rdfs:comment """The minimum number of times hot water are added to
+  the mash for the purpose of raising the mash temperature. Sparging
+  does not count. Zero means infusion mashing was not done. If not
+  specified we don't know.""";
+  rdfs:range xsd:int.
+
+tb:mash-circulation-rounds rdfs:domain tb:Process;
+  rdfs:label "Mash circulation rounds";
+  rdfs:comment """The minimum number of times the wort was run off, heated,
+  and poured back. Zero means infusion mashing was not done. If not specified
+  we don't know.""";
+  rdfs:range xsd:int.
+
+tb:mash-kettle-heated rdfs:domain tb:Process;
+  rdfs:label "Mash heated in kettle";
+  rdfs:comment """Whether the mash was heated in the kettle by applying
+  direct heat on the outside of the kettle.""";
+  rdfs:range neg:Boolean.
+
+tb:mash-boiled rdfs:domain tb:Process;
+  rdfs:label "Mash boiled";
+  rdfs:comment """Whether the mash was boiled in the kettle by applying
+  direct heat on the outside of the kettle. If this is true, mash-kettle-heated
+  must also be true.""";
+  rdfs:range neg:Boolean.
+
+tb:stones-in-mash rdfs:domain tb:Process;
+  rdfs:label "Stones in mash";
+  rdfs:comment """Whether hot stones were added to the mash.""";
+  rdfs:range neg:Boolean.
+
+tb:mash-in-oven rdfs:domain tb:Process;
+  rdfs:label "Mash in oven";
+  rdfs:comment """Whether the mash was baked in a hot oven.""";
+  rdfs:range neg:Boolean.
+
+tb:wort-boiled rdfs:domain tb:Process;
+  rdfs:label "Wort boiled";
+  rdfs:comment """Whether the wort is boiled or not. 0-2 minutes boil is
+  borderline.""";
+  rdfs:range neg:Boolean.
+
+tb:ferment-in-mash rdfs:domain tb:Process;
+  rdfs:label "Ferment in mash";
+  rdfs:comment """Whether the beer is 'lautered' after fermentation.""";
+  rdfs:range neg:Boolean.
+
+tb:hop-treatment rdfs:domain tb:Process;
+  rdfs:label "Hop treatment";
+  rdfs:comment """How the hops are processed and added to the beer.""";
+  rdfs:range tb:HopTreatment.
+
+tb:HopTreatment a rdfs:Class;
+  rdfs:label "Hop treatment".

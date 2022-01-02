@@ -19,7 +19,6 @@ labels = {
 
 query = '''
 prefix dc: <http://purl.org/dc/elements/1.1/>
-prefix neg: <http://www.garshol.priv.no/2014/neg/>
 prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
 prefix tb: <http://www.garshol.priv.no/2014/trad-beer/>
 
@@ -31,7 +30,7 @@ WHERE {
     geo:long ?lng;
     tb:process ?proc.
 
-  ?proc neg:cold-mash ?yeast.
+  ?proc tb:cold-mash ?yeast.
 }'''
 maputils.make_boolean_map(query, config.get_file() or 'cold-mash-map',
                           labels[LANG])
