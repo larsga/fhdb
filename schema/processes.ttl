@@ -10,6 +10,24 @@
 # FIXME: check for duplicate processes
 # FIXME: verify that proclib classifies correctly
 
+# prefix tb: <http://www.garshol.priv.no/2014/trad-beer/>
+# select ?p ?l ?d where {
+#   ?p a tb:Process;
+#     rdfs:label ?l;
+#     dc:description ?d;
+#
+#     tb:cold-mash false;
+#     tb:infusion-mash-steps 0;
+#     tb:mash-circulation-rounds 0;
+#     tb:mash-kettle-heated true;
+#     tb:mash-boiled true;
+#     tb:stones-in-mash false;
+#     tb:mash-in-oven false;
+#     tb:wort-boiled true;
+#     tb:ferment-in-mash false;
+#     tb:hop-treatment tb:boil-hops-in-wort.
+# }
+
 # ===== HOP TREATMENTS
 
 tb:boil-hops-in-wort a tb:HopTreatment.
@@ -3426,6 +3444,22 @@ proc:246 a tb:Process;
   tb:stones-in-mash true;
   tb:mash-in-oven false;
   tb:primary-mash-heating tb:mixed;
+  tb:wort-boiled false;
+  tb:ferment-in-mash false;
+  tb:hop-treatment tb:hop-tea.
+
+proc:247 a tb:Process;
+  rdfs:label "Cold mash, infusion mash, stones, hop tea in mash";
+  dc:description """Hot water on mash. Wait. Add hop tea. Add hot stones.
+  Mash boils. Run off. Cool, pitch.""";
+  tb:cold-mash true;
+  tb:infusion-mash-steps 1;
+  tb:mash-circulation-rounds 0;
+  tb:mash-kettle-heated false;
+  tb:mash-boiled true;
+  tb:stones-in-mash true;
+  tb:mash-in-oven false;
+  tb:primary-mash-heating tb:infusion;
   tb:wort-boiled false;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.

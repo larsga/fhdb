@@ -63,6 +63,15 @@ PROPERTIES = {
 TB_BOIL_HOPS_IN_WORT = TB + 'boil-hops-in-wort'
 TB_BOIL_HOPS_IN_MASH = TB + 'boil-hops-in-mash'
 
+TB_MASH_MAPPING = {
+    TB + 'mixed' : 'Mixed',
+    TB + 'oven' : 'Oven',
+    TB + 'infusion' : 'Infusion',
+    TB + 'kettle' : 'Kettle',
+    TB + 'unknown' : None,
+    TB + 'external' : 'External',
+}
+
 # ===== FUNCTIONS
 
 def load_processes():
@@ -92,12 +101,7 @@ def verify_classification_complete(by_class):
     return not missing
 
 def classify_main_heating():
-    by_cat = {}
-    for row in sparqllib.query_for_rows(FULL_QUERY):
-        proc = Process(*row)
-        by_cat[proc._url] = proc.get_main_heating()
-
-    return by_cat
+    return {proc._url : proc.get_main_heating() for proc in load_processes()}
 
 # ===== PROCESS
 
@@ -167,23 +171,22 @@ class Process:
         return None
 
     def get_main_heating(self):
-        cat = None
-        if self._inf and self._stones == False and self._inoven == False and self._mashkettle == False and self._circ == 0:
-            cat = 'Infusion'
-        elif self._mashkettle and self._inf == 0 and self._stones == False and self._inoven == False and self._circ == 0:
-            cat = 'Kettle'
-        elif self._circ and self._mashkettle == False and self._inf == 0 and self._stones == False and self._inoven == False:
-            cat = 'External'
-        elif self._inoven and self._mashkettle == False and self._inf == 0 and self._stones == False and self._circ == 0:
-            cat = 'Oven'
-        elif self._stones == True and self._inoven == False and self._mashkettle == False and self._inf == 0 and self._circ == 0:
-            cat = 'Oven'
+        if self._primary_mash:
+            return TB_MASH_MAPPING[self._primary_mash]
+        else:
+            return self._infer_main_heating()
 
-        # if cat:
-        #     print('%s -> %s' % (proc, cat))
-        # if not cat:
-        #     print('%s: %s' % (self._url, self._name))
-        return cat
+    def _infer_main_heating(self):
+        if self._inf and self._stones == False and self._inoven == False and self._mashkettle == False and self._circ == 0:
+            return 'Infusion'
+        elif self._mashkettle and self._inf == 0 and self._stones == False and self._inoven == False and self._circ == 0:
+            return 'Kettle'
+        elif self._circ and self._mashkettle == False and self._inf == 0 and self._stones == False and self._inoven == False:
+            return 'External'
+        elif self._inoven and self._mashkettle == False and self._inf == 0 and self._stones == False and self._circ == 0:
+            return 'Oven'
+        elif self._stones == True and self._inoven == False and self._mashkettle == False and self._inf == 0 and self._circ == 0:
+            return 'Stone'
 
     def verify(self):
         # hop-treatment
@@ -197,5 +200,5 @@ class Process:
             assert self._circ_strain != None, 'Circulation straining must be specified (%s)' % self.get_no()
 
         # primary-mash-heating
-        if self.get_main_heating() == None:
+        if self._infer_main_heating() == None:
             assert self._primary_mash != None, 'Primary mashing must be specified (%s)' % self.get_no()
