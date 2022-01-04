@@ -800,6 +800,14 @@ tb:mash-circulation-rounds rdfs:domain tb:Process;
   we don't know.""";
   rdfs:range xsd:int.
 
+tb:mash-circulate-strainer rdfs:domain tb:Process;
+  rdfs:label "Circulate mash through strainer";
+  rdfs:comment """True if the mash is circulated by running off through the
+  strainer, false if the clear part is taken off by ladle or similar.
+  If circulation rounds is >0 this must be specified -- otherwise it can be
+  skipped.""";
+  rdfs:range neg:Boolean.
+
 tb:mash-kettle-heated rdfs:domain tb:Process;
   rdfs:label "Mash heated in kettle";
   rdfs:comment """Whether the mash was heated in the kettle by applying
@@ -822,6 +830,12 @@ tb:mash-in-oven rdfs:domain tb:Process;
   rdfs:label "Mash in oven";
   rdfs:comment """Whether the mash was baked in a hot oven.""";
   rdfs:range neg:Boolean.
+
+tb:primary-mash-heating rdfs:domain tb:Process;
+  rdfs:label "Primary mash heating";
+  rdfs:comment """The main way the mash is heated. Not necessary to specify
+  if it can be inferred from other values.""";
+  rdfs:range tb:MashHeatingMethod.
 
 tb:wort-boiled rdfs:domain tb:Process;
   rdfs:label "Wort boiled";

@@ -7,14 +7,6 @@
 @prefix tb: <http://www.garshol.priv.no/2014/trad-beer/>.
 @prefix neg: <http://www.garshol.priv.no/2014/neg/> .
 
-# FIXME: things we don't capture
-#   - distinction between short, normal, and reduction boil
-#   - circulating mash vs decoction mash
-#   - oven mash vs mash-then-bake
-#   - what boils the mash: kettle or stones?
-#   - hot stone in wort! not mash
-
-# FIXME: implement a consistency checker
 # FIXME: check for duplicate processes
 # FIXME: verify that proclib classifies correctly
 
@@ -37,6 +29,27 @@ tb:dry-hopping a tb:HopTreatment;
   dc:description "Put the hops in the fermentor.".
 tb:lauter-through-hops a tb:HopTreatment;
   dc:description "Lautered wort runs through/onto the hops.".
+
+# ===== MASH HEATING METHODS
+
+tb:mixed a tb:MashHeatingMethod;
+  rdfs:label "Mixed heating";
+  dc:description "Several different methods combined with no primary.".
+tb:oven a tb:MashHeatingMethod;
+  rdfs:label "Oven heating";
+  dc:description "Cold/lukewarm water and malt heated in the oven.".
+tb:infusion a tb:MashHeatingMethod;
+  rdfs:label "Infusion heating";
+  dc:description "Liquid heated externally and poured on.".
+tb:kettle a tb:MashHeatingMethod;
+  rdfs:label "Kettle heating";
+  dc:description "Cold/lukewarm water + malt heated in kettle.".
+tb:unknown a tb:MashHeatingMethod;
+  rdfs:label "Unknown heating";
+  dc:description "We simply don't know.".
+tb:external a tb:MashHeatingMethod;
+  rdfs:label "External heating";
+  dc:description "The liquid is run off, heated, and poured back.".
 
 # ===== KETTLE MASH + BOIL
 
@@ -263,6 +276,7 @@ proc:116 a tb:Process;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:kettle;
   tb:wort-boiled true;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:boil-hops-in-wort.
@@ -351,6 +365,7 @@ proc:164 a tb:Process;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:kettle;
   tb:wort-boiled false;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
@@ -450,7 +465,7 @@ proc:191 a tb:Process;
   run off. Pour back on, wait. Run off, boil wort with hops. Cool. Pitch.""";
   tb:cold-mash true;
   tb:infusion-mash-steps 1;
-  tb:mash-circulation-rounds 1;
+  tb:mash-circulation-rounds 0; # not heated, so not noted
   tb:mash-kettle-heated false; # FIXME: I think this is right?
   tb:mash-boiled true;
   tb:stones-in-mash false;
@@ -481,7 +496,7 @@ proc:208 a tb:Process;
   tb:cold-mash true;
   tb:infusion-mash-steps 0;
   tb:mash-circulation-rounds 0;
-  tb:mash-kettle-heated false;
+  tb:mash-kettle-heated true;
   tb:mash-boiled true;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
@@ -495,11 +510,13 @@ proc:233 a tb:Process;
   boil again. Repeat a few times. Then strain, cool, pitch.""";
   tb:cold-mash false;
   tb:infusion-mash-steps 0;
-  tb:mash-circulation-rounds 3; # FIXME: we're remixing each time, not captured
+  tb:mash-circulation-rounds 3; # NOTE: a different form of circulation
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated true;
   tb:mash-boiled true;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:kettle;
   tb:wort-boiled true;
   tb:ferment-in-mash false.
 
@@ -561,6 +578,7 @@ proc:115 a tb:Process;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:kettle;
   tb:wort-boiled false;
   tb:ferment-in-mash false.
 
@@ -572,10 +590,12 @@ proc:146 a tb:Process;
   tb:cold-mash false;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 1;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated true;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:kettle;
   tb:wort-boiled true;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
@@ -587,11 +607,12 @@ proc:202 a tb:Process;
   Cool, pitch.""";
   tb:cold-mash false;
   tb:infusion-mash-steps 1;
-  tb:mash-circulation-rounds 3; # FIXME: no heating
+  tb:mash-circulation-rounds 0; # circulates, but without heating (so skipped)
   tb:mash-kettle-heated true;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:kettle;
   tb:wort-boiled false;
   tb:ferment-in-mash false.
 
@@ -647,10 +668,12 @@ proc:8 a tb:Process;
   tb:cold-mash false;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 2;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled neg:borderline;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
@@ -692,10 +715,12 @@ proc:14 a tb:Process;
   tb:cold-mash false;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 1;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:boil-hops-in-wort.
@@ -752,10 +777,12 @@ proc:35 a tb:Process;
   tb:cold-mash false;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 1;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:boil-hops-in-wort.
@@ -888,11 +915,13 @@ proc:84 a tb:Process;
   tb:cold-mash false;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 1;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled true;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
-  tb:wort-boiled true; # FIXME: I think?
+  tb:primary-mash-heating tb:mixed;
+  tb:wort-boiled true;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
 
@@ -903,10 +932,12 @@ proc:85 a tb:Process;
   tb:cold-mash true;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 1;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
@@ -1001,17 +1032,19 @@ proc:131 a tb:Process;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
 
-proc:135 a tb:Process; # FIXME: no strainer in one step
+proc:135 a tb:Process;
   rdfs:label "Infusion mash, boil with hops, strain";
   dc:description """Pour boiling water on malts. Wait. Take off liquid part,
   boil with hops. Strain. Cool. Pitch.""";
   tb:cold-mash false;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 1;
+  tb:mash-circulate-strainer false; # only 1 round, by ladle
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:boil-hops-in-wort.
@@ -1052,22 +1085,24 @@ proc:139 a tb:Process;
   back. Run off, boil humlebeit, cool, pitch.""";
   tb:cold-mash false;
   tb:infusion-mash-steps 3;
-  tb:mash-circulation-rounds 1; # FIXME: no strainer
+  tb:mash-circulation-rounds 1;
+  tb:mash-circulate-strainer false;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:humlebeit.
 
 proc:140 a tb:Process;
   rdfs:label "Infusion mash, boil mash, restrain, reduction boil with hops";
-  dc:description """Infusion mash. Boil the mash. Run off three times.
-  Reduction boil with hops. Cool. Pitch""";
+  dc:description """Infusion mash. Boil the mash. Run off and pour back three
+  times without heating. Reduction boil with hops. Cool. Pitch""";
   tb:cold-mash false;
   tb:infusion-mash-steps 1;
-  tb:mash-circulation-rounds 3; # FIXME: is that what's meant?
+  tb:mash-circulation-rounds 0; # because not heated
   tb:mash-kettle-heated false; # FIXME hmmm
   tb:mash-boiled true;
   tb:stones-in-mash false;
@@ -1214,10 +1249,12 @@ proc:209 a tb:Process;
   tb:cold-mash false;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 3;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled true;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled neg:borderline;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
@@ -1287,10 +1324,12 @@ proc:245 a tb:Process;
   tb:cold-mash false;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 1;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false; # FIXME: iffy
   tb:mash-boiled true;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled neg:borderline;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
@@ -1667,10 +1706,12 @@ proc:9 a tb:Process;
   tb:cold-mash true;
   tb:infusion-mash-steps 3;
   tb:mash-circulation-rounds 1;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:infusion;
   tb:wort-boiled true;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
@@ -1772,10 +1813,12 @@ proc:55 a tb:Process;
   tb:cold-mash false;
   tb:infusion-mash-steps 2;
   tb:mash-circulation-rounds 3;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
@@ -1862,10 +1905,12 @@ proc:100 a tb:Process;
   tb:cold-mash false;
   tb:infusion-mash-steps 4;
   tb:mash-circulation-rounds 1;
+  tb:mash-circulate-strainer false;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled neg:borderline;
   tb:ferment-in-mash false.
 
@@ -1983,10 +2028,12 @@ proc:127 a tb:Process;
   tb:cold-mash true;
   tb:infusion-mash-steps 2;
   tb:mash-circulation-rounds 1;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false.
 
@@ -2012,10 +2059,12 @@ proc:134 a tb:Process;
   tb:cold-mash false;
   tb:infusion-mash-steps 2;
   tb:mash-circulation-rounds 2;
+  tb:mash-circulate-strainer false;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled neg:borderline;
   tb:ferment-in-mash false.
 
@@ -2026,10 +2075,12 @@ proc:143 a tb:Process;
   tb:cold-mash true;
   tb:infusion-mash-steps 3;
   tb:mash-circulation-rounds 2;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:boil-hops-in-wort.
@@ -2041,10 +2092,12 @@ proc:144 a tb:Process;
   tb:cold-mash true;
   tb:infusion-mash-steps 2;
   tb:mash-circulation-rounds 1;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
@@ -2057,10 +2110,12 @@ proc:145 a tb:Process;
   tb:cold-mash true;
   tb:infusion-mash-steps 3;
   tb:mash-circulation-rounds 3;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled true;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
@@ -2073,10 +2128,12 @@ proc:147 a tb:Process;
   tb:cold-mash false;
   tb:infusion-mash-steps 3;
   tb:mash-circulation-rounds 2;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:boil-hops-in-wort.
@@ -2104,10 +2161,12 @@ proc:173 a tb:Process;
   tb:cold-mash true;
   tb:infusion-mash-steps 2;
   tb:mash-circulation-rounds 4;
+  tb:mash-circulate-strainer false;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
@@ -2134,10 +2193,12 @@ proc:179 a tb:Process;
   tb:cold-mash true;
   tb:infusion-mash-steps 2;
   tb:mash-circulation-rounds 1;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false.
 
@@ -2148,11 +2209,13 @@ proc:180 a tb:Process;
   Cool. Pitch.""";
   tb:cold-mash false;
   tb:infusion-mash-steps 3;
-  tb:mash-circulation-rounds 1; # FIXME: no strainer
+  tb:mash-circulation-rounds 1;
+  tb:mash-circulate-strainer false;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled neg:borderline;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
@@ -2179,10 +2242,12 @@ proc:192 a tb:Process;
   tb:cold-mash false;
   tb:infusion-mash-steps 3;
   tb:mash-circulation-rounds 1;
+  tb:mash-circulate-strainer false;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false.
 
@@ -2197,6 +2262,7 @@ proc:203 a tb:Process;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled false;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:dry-hopping.
@@ -2227,6 +2293,7 @@ proc:205 a tb:Process;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled false;
   tb:ferment-in-mash false.
 
@@ -2251,11 +2318,13 @@ proc:243 a tb:Process;
   a little, boil, pour back. Run off, cool, pitch.""";
   tb:cold-mash false;
   tb:infusion-mash-steps 4;
-  tb:mash-circulation-rounds 2; # FIXME: not actually circle
+  tb:mash-circulation-rounds 2;
+  tb:mash-circulate-strainer false; # NOTE: both decoct *and* circulate
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
@@ -2269,44 +2338,50 @@ proc:32 a tb:Process;
   tb:cold-mash false;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 1;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
 
 proc:41 a tb:Process;
   rdfs:label "Infusion mash, remash, boil, hop tea";
-  dc:description """Infusion mash, run off, boil, remash one or more times,
+  dc:description """Infusion mash, run off, boil, pour back one or more times,
   boiling in between, add hop tea, cool, pitch.""";
   tb:cold-mash false;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 1;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
 
 proc:43 a tb:Process;
-  rdfs:label "Cold-mashed, circulated, dry-hopped";
-  dc:description """Cold mash over night.""";
+  rdfs:label "Cold-mashed, decocted, hop tea";
+  dc:description """Cold mash over night. Pour on hot liquid. Take off liquid
+  part, bring to a boil, pour back 2x. Run off, cool, pitch""";
   tb:cold-mash true;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 2;
+  tb:mash-circulate-strainer false;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled false;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
 
-# FIXME: this is really true decoction, and not circulation
 proc:44 a tb:Process;
   rdfs:label "Mash several times with boils in between, boil wort, hops unknown";
   dc:description """Pour boiling water on, take off the liquid, boil it, repeat
@@ -2315,14 +2390,15 @@ proc:44 a tb:Process;
   tb:cold-mash false;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 3;
+  tb:mash-circulate-strainer false;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false.
 
-# FIXME: this is really true decoction, and not circulation
 proc:49 a tb:Process;
   rdfs:label "Raw ale with repeat tvimesk, hops unknown";
   dc:description """Boil water, pour on malts. Take off the liquid part and
@@ -2330,10 +2406,12 @@ proc:49 a tb:Process;
   tb:cold-mash false;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 4;
+  tb:mash-circulate-strainer false;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false.
 
@@ -2344,10 +2422,12 @@ proc:51 a tb:Process;
   tb:cold-mash false;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 1;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:boil-hops-in-wort.
@@ -2358,11 +2438,13 @@ proc:52 a tb:Process;
   it. Then run through strainer, boil the wort with hops, cool, pitch.""";
   tb:cold-mash false;
   tb:infusion-mash-steps 1;
-  tb:mash-circulation-rounds 1; # FIXME: not true circ
+  tb:mash-circulation-rounds 1;
+  tb:mash-circulate-strainer false;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:boil-hops-in-wort.
@@ -2373,7 +2455,7 @@ proc:62 a tb:Process;
   Bring to a brief boil, then cool and pitch both yeast and hops.""";
   tb:cold-mash false;
   tb:infusion-mash-steps 1;
-  tb:mash-circulation-rounds 1; # FIXME: not heated
+  tb:mash-circulation-rounds 0; # not heated, therefore not noted
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
@@ -2389,11 +2471,13 @@ proc:66 a tb:Process;
   Boil hops in some of the wort, mix worts, cool, pitch.""";
   tb:cold-mash true;
   tb:infusion-mash-steps 1;
-  tb:mash-circulation-rounds 2; # FIXME: not actually circulating
+  tb:mash-circulation-rounds 2;
+  tb:mash-circulate-strainer false;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled false;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:humlebeit.
@@ -2406,10 +2490,12 @@ proc:68 a tb:Process;
   tb:cold-mash true;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 1;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled neg:borderline;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
@@ -2423,10 +2509,12 @@ proc:70 a tb:Process;
   tb:cold-mash true;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 2;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled neg:borderline;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
@@ -2435,15 +2523,16 @@ proc:71 a tb:Process;
   rdfs:label "Raw ale with boiled repeat mash";
   dc:description """Boil hop tea, pour through strainer, leaving the hops
   Pour on boiling water, then boil the mash. Move to strainer, pour on hot
-  water, run off. Pour back on. Repeat several times. Run off, cool, pitch.""";
+  water, run off. Pour back on without heating. Repeat several times. Run off,
+  cool, pitch.""";
   tb:cold-mash false;
-  tb:infusion-mash-steps 2; # FIXME: does this count as two?
-  tb:mash-circulation-rounds 3;
+  tb:infusion-mash-steps 2;
+  tb:mash-circulation-rounds 0; # not heating, so not counted
   tb:mash-kettle-heated false;
   tb:mash-boiled true;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
-  tb:wort-boiled false; # FIXME: maybe check?
+  tb:wort-boiled false;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
 
@@ -2455,10 +2544,12 @@ proc:73 a tb:Process;
   tb:cold-mash false;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 1;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true; # it's more than 2 minutes
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
@@ -2489,15 +2580,16 @@ proc:80 a tb:Process;
   tb:cold-mash false;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 3;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled neg:borderline;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
 
-# FIXME: circulate without heating
 proc:89 a tb:Process;
   rdfs:label "Cold mash, remash and reduction boil, hops unknown";
   dc:description """Cold mash over night. Pour boiling water on malts, run off,
@@ -2505,7 +2597,7 @@ proc:89 a tb:Process;
   boil, cool, pitch.""";
   tb:cold-mash true;
   tb:infusion-mash-steps 1;
-  tb:mash-circulation-rounds 1;
+  tb:mash-circulation-rounds 0; # not heating, so not recording
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
@@ -2520,10 +2612,12 @@ proc:90 a tb:Process;
   tb:cold-mash true;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 1;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:boil-hops-in-wort.
@@ -2536,10 +2630,12 @@ proc:92 a tb:Process;
   tb:cold-mash false;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 3;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled false;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
@@ -2552,22 +2648,24 @@ proc:94 a tb:Process;
   tb:cold-mash false;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 1;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled false;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:lauter-through-hops. # closer than hops-in-mash, really
 
-# FIXME: is there really no heating in the circulation?
 proc:103 a tb:Process;
-  rdfs:label "Remashed raw ale, hops unknown";
-  dc:description """Pour on boiling water, wait, run off, pour back, repeat.
+  rdfs:label "Re-strained raw ale, hops unknown";
+  dc:description """Pour on boiling water, wait, run off, pour back without
+  heating, repeat.
   Do this for 24 hours.""";
   tb:cold-mash false;
   tb:infusion-mash-steps 1;
-  tb:mash-circulation-rounds 10; # just a guess, really
+  tb:mash-circulation-rounds 0; # no heating
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
@@ -2575,14 +2673,13 @@ proc:103 a tb:Process;
   tb:wort-boiled false;
   tb:ferment-in-mash false.
 
-# FIXME: circulates, but not heated in between
 proc:113 a tb:Process;
   rdfs:label "Repeat mashed raw ale with hop tea";
   dc:description """Pour hop tea and hot water on malts. Run off. Pour back.
   Add more hot water. Run off. Cool. Pitch.""";
   tb:cold-mash false;
   tb:infusion-mash-steps 2;
-  tb:mash-circulation-rounds 1;
+  tb:mash-circulation-rounds 0; # not heated, so not capturing
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
@@ -2598,10 +2695,12 @@ proc:126 a tb:Process;
   tb:cold-mash true;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 1;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled false;
   tb:ferment-in-mash false.
 
@@ -2612,11 +2711,13 @@ proc:132 a tb:Process;
   Pitch.""";
   tb:cold-mash true;
   tb:infusion-mash-steps 1;
-  tb:mash-circulation-rounds 2; # FIXME: no strainer
+  tb:mash-circulation-rounds 2;
+  tb:mash-circulate-strainer false;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
@@ -2628,10 +2729,12 @@ proc:133 a tb:Process;
   tb:cold-mash false;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 2;
+  tb:mash-circulate-strainer false;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hops-in-mash.
@@ -2643,6 +2746,7 @@ proc:149 a tb:Process;
   tb:cold-mash true;
   tb:infusion-mash-steps 0;
   tb:mash-circulation-rounds 3;
+  tb:mash-circulate-strainer false;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
@@ -2653,10 +2757,10 @@ proc:149 a tb:Process;
 proc:150 a tb:Process;
   rdfs:label "Cold mash, restrain, raw ale";
   dc:description """Cold mash over night. Add hot water. Run off and pour
-  back several times. Cool, pitch hops and yeast.""";
+  back several times without heating. Cool, pitch hops and yeast.""";
   tb:cold-mash true;
   tb:infusion-mash-steps 1;
-  tb:mash-circulation-rounds 3; # FIXME: not clear if heated
+  tb:mash-circulation-rounds 0; # not heated so not recorded
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
@@ -2672,10 +2776,12 @@ proc:152 a tb:Process;
   tb:cold-mash true;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 2;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled false;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
@@ -2687,10 +2793,12 @@ proc:159 a tb:Process;
   tb:cold-mash false;
   tb:infusion-mash-steps 0;
   tb:mash-circulation-rounds 2;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated true;
-  tb:mash-boiled false;
+  tb:mash-boiled true;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:kettle;
   tb:wort-boiled true;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:boil-hops-in-mash.
@@ -2702,10 +2810,12 @@ proc:172 a tb:Process;
   tb:cold-mash false;
   tb:infusion-mash-steps 3;
   tb:mash-circulation-rounds 1;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:infusion;
   tb:wort-boiled neg:borderline;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
@@ -2718,10 +2828,12 @@ proc:177 a tb:Process;
   tb:cold-mash true;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 3;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:external;
   tb:wort-boiled neg:borderline;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:dry-hopping.
@@ -2733,10 +2845,12 @@ proc:181 a tb:Process;
   tb:cold-mash false;
   tb:infusion-mash-steps 0;
   tb:mash-circulation-rounds 3;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated true;
   tb:mash-boiled true;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false.
 
@@ -2747,10 +2861,12 @@ proc:186 a tb:Process;
   tb:cold-mash true;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 2;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:external;
   tb:wort-boiled true;
   tb:ferment-in-mash false.
 
@@ -2761,20 +2877,23 @@ proc:187 a tb:Process;
   tb:cold-mash false;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 2;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false.
 
 proc:193 a tb:Process;
   rdfs:label "Infusion mash, restrain, hop tea, raw wort";
-  dc:description """Pour hot water on. Wait. Run through twice slowly. Add
+  dc:description """Pour hot water on. Wait. Run through twice slowly without
+  heating. Add
   hop tea.""";
   tb:cold-mash false;
   tb:infusion-mash-steps 1;
-  tb:mash-circulation-rounds 2;
+  tb:mash-circulation-rounds 0; # not heating, so not capturing
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
@@ -2790,11 +2909,13 @@ proc:195 a tb:Process;
   back through. Run off, boil with hops, cool, pitch.""";
   tb:cold-mash true;
   tb:infusion-mash-steps 1;
-  tb:mash-circulation-rounds 3; # FIXME: not circ
+  tb:mash-circulation-rounds 3;
+  tb:mash-circulate-strainer false;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:boil-hops-in-wort.
@@ -2806,10 +2927,12 @@ proc:226 a tb:Process;
   tb:cold-mash true;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 1;
+  tb:mash-circulate-strainer false;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:boil-hops-in-wort.
@@ -2821,10 +2944,12 @@ proc:236 a tb:Process;
   tb:cold-mash false;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 3;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:boil-hops-in-wort.
@@ -2836,10 +2961,12 @@ proc:239 a tb:Process;
   tb:cold-mash false;
   tb:infusion-mash-steps 1;
   tb:mash-circulation-rounds 2;
+  tb:mash-circulate-strainer true;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled neg:borderline;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hops-in-mash.
@@ -3020,6 +3147,7 @@ proc:38 a tb:Process;
   tb:mash-boiled true; # FIXME: stones or kettle?
   tb:stones-in-mash true;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled false;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:boil-hops-in-mash.
@@ -3036,6 +3164,7 @@ proc:42 a tb:Process;
   tb:mash-boiled true; # FIXME: with stones!
   tb:stones-in-mash true;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false.
 
@@ -3050,6 +3179,7 @@ proc:45 a tb:Process;
   tb:mash-boiled false;
   tb:stones-in-mash true;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled false;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
@@ -3065,6 +3195,7 @@ proc:46 a tb:Process;
   tb:mash-boiled false;
   tb:stones-in-mash true;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled false;
   tb:ferment-in-mash true.
 
@@ -3081,6 +3212,7 @@ proc:78 a tb:Process;
   tb:mash-boiled true; # FIXME: but not in the kettle ...
   tb:stones-in-mash true;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled false;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
@@ -3096,6 +3228,7 @@ proc:95 a tb:Process;
   tb:mash-boiled false; # they don't actually say, one way or another
   tb:stones-in-mash true;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled false;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hops-in-mash.
@@ -3111,6 +3244,7 @@ proc:96 a tb:Process;
   tb:mash-boiled false; # they don't actually say, one way or another
   tb:stones-in-mash true;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled false;
   tb:ferment-in-mash false.
 
@@ -3120,7 +3254,7 @@ proc:101 a tb:Process;
   wait. Add more malts, stir, wait. Add more stones until mash boils. Run
   off, cool, pitch.""";
   tb:cold-mash false;
-  tb:infusion-mash-steps 0; # FIXME: are the wet malts cold or hot?
+  tb:infusion-mash-steps 0;
   tb:mash-circulation-rounds 0;
   tb:mash-kettle-heated false;
   tb:mash-boiled true;
@@ -3141,6 +3275,7 @@ proc:107 a tb:Process;
   tb:mash-boiled false;
   tb:stones-in-mash true;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled false;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
@@ -3157,6 +3292,7 @@ proc:120 a tb:Process;
   tb:stones-in-mash true;
   tb:mash-in-oven false;
   tb:wort-boiled true;
+  tb:primary-mash-heating tb:mixed;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:boil-hops-in-wort.
 
@@ -3172,6 +3308,7 @@ proc:124 a tb:Process;
   tb:mash-boiled false;
   tb:stones-in-mash true;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:infusion;
   tb:wort-boiled false;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
@@ -3187,6 +3324,7 @@ proc:170 a tb:Process;
   tb:mash-boiled true;
   tb:stones-in-mash true;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled true;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
@@ -3202,6 +3340,7 @@ proc:174 a tb:Process;
   tb:mash-boiled false;
   tb:stones-in-mash true;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:infusion;
   tb:wort-boiled false;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hops-in-mash.
@@ -3217,6 +3356,7 @@ proc:197 a tb:Process;
   tb:mash-boiled false;
   tb:stones-in-mash true;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled false;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:dry-hopping.
@@ -3232,6 +3372,7 @@ proc:206 a tb:Process;
   tb:mash-boiled false;
   tb:stones-in-mash true;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled false;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:dry-hopping.
@@ -3262,6 +3403,7 @@ proc:234 a tb:Process;
   tb:mash-boiled true;
   tb:stones-in-mash true;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled false;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
@@ -3269,7 +3411,8 @@ proc:234 a tb:Process;
 proc:238 a tb:Process;
   rdfs:label "Some kind of stone beer";
   dc:description "That's all we know";
-  tb:stones-in-mash true.
+  tb:stones-in-mash true;
+  tb:primary-mash-heating tb:unknown.
 
 proc:246 a tb:Process;
   rdfs:label "Infusion mash, stones, hop tea in mash";
@@ -3282,6 +3425,7 @@ proc:246 a tb:Process;
   tb:mash-boiled true;
   tb:stones-in-mash true;
   tb:mash-in-oven false;
+  tb:primary-mash-heating tb:mixed;
   tb:wort-boiled false;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
@@ -3291,9 +3435,9 @@ proc:246 a tb:Process;
 proc:237 a tb:Process;
   rdfs:label "Some kind of oven beer";
   dc:description "That's all we know";
-  tb:mash-in-oven true.
+  tb:mash-in-oven true;
+  tb:primary-mash-heating tb:unknown. # we don't actually know
 
-# FIXME: not capturing mash-in-oven
 proc:36 a tb:Process;
   rdfs:label "Keptinis";
   dc:description """Bake malt loaves. Infusion mash. Run off in strainer.
@@ -3305,20 +3449,23 @@ proc:36 a tb:Process;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven true;
+  tb:primary-mash-heating tb:oven;
   tb:wort-boiled false;
   tb:ferment-in-mash false.
 
 proc:102 a tb:Process;
   rdfs:label "Seto koduõlu";
   dc:description """Bake malt loaves. Infusion mash. Run off in strainer.
-  Pour back many times. Cool. Pitch. Not sure about the hops.""";
+  Pour back many times without heating. Cool. Pitch. Not sure about the hops.
+  """;
   tb:cold-mash false;
   tb:infusion-mash-steps 1;
-  tb:mash-circulation-rounds 3;
+  tb:mash-circulation-rounds 0; # not heating, so not capturing
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven true;
+  tb:primary-mash-heating tb:oven;
   tb:wort-boiled false;
   tb:ferment-in-mash false.
 
@@ -3337,7 +3484,6 @@ proc:123 a tb:Process;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:boil-hops-in-wort.
 
-# FIXME: not capturing mash-then-bake
 proc:154 a tb:Process;
   rdfs:label "Post-mash keptinis";
   dc:description """Infusion mash. Wait. Bake mash in oven. Run off in strainer.
@@ -3349,13 +3495,14 @@ proc:154 a tb:Process;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven true;
+  tb:primary-mash-heating tb:infusion;
   tb:wort-boiled false;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
 
 proc:158 a tb:Process;
   rdfs:label "Oven-mashed raw ale with hop tea";
-  dc:description """Mix malts and hot water, mash in oven, boil hop tea, pour
+  dc:description """Mix malts and cold water, mash in oven, boil hop tea, pour
   through strainer, boil the mash, run off, cool, pitch. Add hop tea to
   taste.""";
   tb:cold-mash false;
@@ -3365,11 +3512,11 @@ proc:158 a tb:Process;
   tb:mash-boiled true;
   tb:stones-in-mash false;
   tb:mash-in-oven true;
+  tb:primary-mash-heating tb:oven;
   tb:wort-boiled false;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
 
-# FIXME: not capturing mash-then-bake
 proc:184 a tb:Process;
   rdfs:label "Malt cake keptinis";
   dc:description """Infusion mash with hops. Wait. Bake mash to 'cakes' in
@@ -3381,6 +3528,7 @@ proc:184 a tb:Process;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven true;
+  tb:primary-mash-heating tb:infusion;
   tb:wort-boiled false;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hops-in-mash.
@@ -3403,15 +3551,15 @@ proc:214 a tb:Process;
 
 proc:215 a tb:Process;
   rdfs:label "Malt loaf with hop tea and recirculation";
-  dc:description """Make malt 'loaves'. Mash. Run off. Pour back, run off
-  again. Repeat. Cool. Add hop tea. Pitch.""";
+  dc:description """Make malt 'loaves', but don't put them in the oven. Mash.
+  Run off. Pour back, run off again. Repeat. Cool. Add hop tea. Pitch.""";
   tb:cold-mash false;
-  tb:infusion-mash-steps 0; # FIXME: dunno
-  tb:mash-circulation-rounds 2; # FIXME: heating?
+  tb:infusion-mash-steps 1;
+  tb:mash-circulation-rounds 0; # no heating
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
-  tb:mash-in-oven true;
+  tb:mash-in-oven false;
   tb:wort-boiled false;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hop-tea.
@@ -3440,12 +3588,12 @@ proc:217 a tb:Process;
   tb:mash-kettle-heated false;
   tb:mash-boiled false;
   tb:stones-in-mash false;
-  tb:mash-in-oven true; # FIXME: post-mash
+  tb:mash-in-oven true;
+  tb:primary-mash-heating tb:infusion;
   tb:wort-boiled false;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:dry-hopping.
 
-# FIXME: post-mash bake
 proc:218 a tb:Process;
   rdfs:label "Post-mash baking, hops unknown";
   dc:description """Mash. Bake malt loaves. Cool. Pitch yeast.""";
@@ -3456,6 +3604,7 @@ proc:218 a tb:Process;
   tb:mash-boiled false;
   tb:stones-in-mash false;
   tb:mash-in-oven true;
+  tb:primary-mash-heating tb:oven;
   tb:wort-boiled false;
   tb:ferment-in-mash false. # Andrus didn't say explicitly, but fair to assume
 
@@ -3504,7 +3653,6 @@ proc:223 a tb:Process;
   tb:ferment-in-mash false;
   tb:hop-treatment tb:hops-in-mash. # FIXME: oven-bake?
 
-# FIXME: not capturing mash-in-oven
 proc:227 a tb:Process;
   rdfs:label "Oven-mashed raw ale with stones";
   dc:description """Heat malts and water in oven. Move to strainer, add hot
@@ -3516,6 +3664,7 @@ proc:227 a tb:Process;
   tb:mash-boiled false;
   tb:stones-in-mash true;
   tb:mash-in-oven true;
+  tb:primary-mash-heating tb:oven;
   tb:wort-boiled false;
   tb:ferment-in-mash false.
 
@@ -3531,7 +3680,7 @@ proc:229 a tb:Process;
   tb:stones-in-mash false;
   tb:mash-in-oven true;
   tb:wort-boiled false;
-  tb:ferment-in-mash false;
+  tb:ferment-in-mash false; # FIXME: when does filtering happen?
   tb:hop-treatment tb:hops-in-mash. # FIXME: oven-bake?
 
 proc:231 a tb:Process;
