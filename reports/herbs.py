@@ -6,7 +6,7 @@ format = tablelib.get_format()
 property = 'tb:herbs'
 region_type = 'dbp:Country' # 'dbp:Province'
 
-MIN_ACCOUNTS = 1
+MIN_ACCOUNTS = 3
 
 # merge herbs in the statistics without having to merge them in the
 # source data. used for synonyms I have decided to accept, but means I

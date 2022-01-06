@@ -1,8 +1,6 @@
 # encoding=utf-8
 
 import config
-import colorsys
-import maplib
 import sparqllib
 
 def number(boolean):
@@ -14,9 +12,6 @@ def number(boolean):
         return 0.0
     else:
         return int(boolean)
-
-lat = 61.8
-lng = 9.45
 
 themap = config.make_map_from_cli_args()
 LANG = config.get_language()

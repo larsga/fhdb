@@ -52,4 +52,4 @@ for (s, lat, lng, proc, title, procname) in sparqllib.query_for_rows(query):
     themap.add_marker(lat, lng, title, symbols[cat], procname)
 
 themap.set_legend(True)
-themap.render_to('malt-drying-simplified-map')
+themap.render_to('process-category-map')
