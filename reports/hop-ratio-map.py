@@ -1,10 +1,15 @@
 
-import maputils
+import maputils, config
+
+thefilter = ''
+if config.get_country():
+    thefilter = '?s tb:part-of dbp:%s' % config.get_country()
 
 query = '''
 prefix neg: <http://www.garshol.priv.no/2014/neg/>
 prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
 prefix tb: <http://www.garshol.priv.no/2014/trad-beer/>
+prefix dbp: <http://dbpedia.org/resource/>
 
 SELECT DISTINCT ?lat ?lng ?title ?ratio
 WHERE {
@@ -14,5 +19,7 @@ WHERE {
     geo:long ?lng;
     tb:hop-wort-ratio ?ratio.
 
-}'''
-maputils.color_scale_map(query, 'hop-ratio-map')
+  %s
+}''' % thefilter
+maputils.color_scale_map(query, config.get_file() or 'hop-ratio-map',
+                         legend = True, value_mapper = lambda v: v)

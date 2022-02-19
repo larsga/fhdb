@@ -6,20 +6,20 @@
 @prefix top: <http://www.garshol.priv.no/2014/trad-beer/topic/> .
 
 neg:none a neg:Herb;
-  rdfs:label "None";
+  rdfs:label "None", "Ingenting"@no;
   dc:description "Used to record when it's clear that no spice was used.".
 
 neg:juniper a neg:Herb;
   rdfs:label "Einer", "Juniper"@en.
 
-neg:juniper-berries a neg:Herb;
-  rdfs:label "Juniper berries"@en. # captured separately from branches
+neg:juniper-berries a neg:Herb; # captured separately from branches
+  rdfs:label "Juniper berries"@en, "Einerbær"@no.
 
 neg:laurel a neg:Herb;
-  rdfs:label "Bay laurel"@en, "Laurus nobilis".
+  rdfs:label "Bay laurel"@en, "Laurus nobilis", "Laurbærblad"@no.
 
 neg:artemisia a neg:Herb;
-  rdfs:label "Artemisia absinthium", "Wormwood"@en.
+  rdfs:label "Artemisia absinthium", "Wormwood"@en, "Malurt"@no.
 
 neg:olkong a neg:Herb;
   rdfs:label "Ølkong";
@@ -58,7 +58,7 @@ neg:myrica-gale a neg:Herb;
   rdfs:seeAlso <http://no.wikipedia.org/wiki/Pors>.
 
 neg:carraway a neg:Herb;
-  rdfs:label "Karve", "Caraway"@en;
+  rdfs:label "Karve"@no, "Caraway"@en;
   rdfs:seeAlso <http://no.wikipedia.org/wiki/Karve>.
 
 neg:reinfann a neg:Herb;
@@ -66,7 +66,7 @@ neg:reinfann a neg:Herb;
   rdfs:seeAlso <http://no.wikipedia.org/wiki/Reinfann>.
 
 neg:hops a neg:Herb;
-  rdfs:label "Humle", "Hops"@en;
+  rdfs:label "Humle"@no, "Hops"@en;
   rdfs:seeAlso <http://no.wikipedia.org/wiki/Humle_(plante)>.
 
 neg:potato-plant a neg:Herb;
@@ -128,7 +128,7 @@ neg:blackberry-leaves a neg:Herb;
   rdfs:label "Blackberry leaves".
 
 neg:bitter-orange-peel a neg:Herb;
-  rdfs:label "Pomeransskal", "Bitter orange peel".
+  rdfs:label "Pomeransskal", "Bitter orange peel"@en, "Pomeransskall"@no.
 
 neg:raphanus-raphanistrum a neg:Herb;
   rdfs:label "Raphanus raphanistrum", "Wild radish".
@@ -140,7 +140,7 @@ neg:matricaria-chamomilla a neg:Herb;
   rdfs:label "Matricaria chamomilla", "Chamomile".
 
 neg:meadwort a neg:Herb;
-  rdfs:label "Meadwort", "mjødurt", "Filipendula ulmaria", "Meadowsweet".
+  rdfs:label "Meadwort", "Mjødurt"@no, "Filipendula ulmaria", "Meadowsweet".
 
 neg:vikis a neg:Herb;
   rdfs:label "Bush vetch", "Vicia sepium";
@@ -159,7 +159,7 @@ neg:cloves a neg:Herb;
   rdfs:label "Cloves", "Nellik"@no.
 
 neg:tobacco a neg:Herb;
-  rdfs:label "Tobacco".
+  rdfs:label "Tobacco"@en, "Tobakk"@no.
 
 neg:pepper a neg:Herb;
   rdfs:label "Pepper".
@@ -168,7 +168,7 @@ neg:tyrirot a neg:Herb;
   rdfs:label "Tyrirot".
 
 neg:alder a neg:Herb;
-  rdfs:label "Alder".
+  rdfs:label "Alder"@en, "Or"@no.
 
 neg:alder-bark a neg:Herb;
   rdfs:label "Alder bark".

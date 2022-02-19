@@ -9,10 +9,20 @@ def parse_spec(spec, speciesfile = None):
     spec.area = parts[0]
     spec.elevation = 'el' in parts
     spec.color = 'bw' not in parts
+
+    if 'ld' in parts:
+        spec.district_file = LANDSDELER
+    elif 'di' in parts:
+        spec.district_file = DIALEKTER
+
     spec.speciesfile = speciesfile
     return spec
 
-def make_map_from_cli_args(speciesfile = None, map_type = 'default'):
+LANDSDELER = '/Users/larsga/prog/python/etno-distrikt/landsdeler.json'
+DIALEKTER = '/Users/larsga/prog/python/etno-distrikt/dialekter.json'
+
+def make_map_from_cli_args(speciesfile = None, map_type = 'default',
+                           district_file = None):
     if len(sys.argv) > 1:
         if sys.argv[1] == 'lf':
             return mapleaflib.LeafletMap(61.8, 9.45, 6)
@@ -27,7 +37,8 @@ def make_map_from_cli_args(speciesfile = None, map_type = 'default'):
                     east = view.east, west = view.west, south = view.south,
                     north = view.north, width = view.width,
                     height = view.height, elevation = spec.elevation,
-                    color = spec.color, speciesfile = spec.speciesfile
+                    color = spec.color, speciesfile = spec.speciesfile,
+                    district_file = spec.district_file
                 ), color = spec.color, transform = view.transform)
             elif map_type == 'choropleth':
                 themap = mapniklib.ChoroplethMap(view)
@@ -85,7 +96,7 @@ def norway_montage(filename, legend_box):
 map_views = {
     'nordic' : MapView(east = 4, west = 30, south = 54.5, north = 65,
                        width = 1800, height = 1400),
-    'norway' : MapView(east = 6, west = 12, south = 57.9, north = 63.9,
+    'norway' : MapView(east = 14.8, west = 3.5, south = 57.9, north = 63.9,
                        width = 1200, height = 1250),
     'arctic-norway' : MapView(east = 20, west = 30, south = 65, north = 71.5,
                               width = 1200, height = 800),
@@ -101,6 +112,8 @@ map_views = {
                                width = 2200, height = 2500,
                                transform = norway_montage),
     'europe' : MapView(east = 4, west = 50, south = 50, north = 65),
+    'europe-trim' : MapView(east = -3, west = 54, south = 50, north = 62.5,
+                           width = 2000, height = 1400),
     'europe-all' : MapView(east = -7, west = 57, south = 47.5, north = 62.5,
                            width = 2000, height = 1400),
     'west-europe' : MapView(east = -4, west = 28, south = 52.5, north = 63.5,
@@ -122,6 +135,7 @@ class MapSpecification:
     def __init__(self):
         self.elevation = False
         self.color = True
+        self.district_file = None
 
 # ===== COMMAND-LINE OPTIONS
 
@@ -145,6 +159,9 @@ def get_plot_style():
 
 def get_format():
     return _get_args().format
+
+def get_debug():
+    return _get_args().debug
 
 # ===== EXPERIMENT
 
@@ -206,5 +223,6 @@ parser.add_argument('--file')
 parser.add_argument('--country')
 parser.add_argument('--style', default = 'ggplot')
 parser.add_argument('--format')
+parser.add_argument('--debug', action='store_true')
 
 args = None # let other modules get a chance to insert args first

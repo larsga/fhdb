@@ -5,9 +5,9 @@ import sparqllib
 
 themap = config.make_map_from_cli_args()
 
-yellow = themap.add_symbol('yellow',   '#FFFF00', '#000000', strokeweight = 1,
+yellow = themap.add_symbol('#FFFF00', '#000000', strokeweight = 1,
                            title = 'Remove')
-black = themap.add_symbol('black', '#000000', '#000000', strokeweight = 1,
+black = themap.add_symbol('#000000', '#000000', strokeweight = 1,
                           title = "Don't remove")
 
 query = '''

@@ -17,7 +17,7 @@ def extract_number(uri):
 themap = config.make_map_from_cli_args()
 
 def symbol(id, color):
-    return themap.add_symbol(id, color, '#000000', WEIGHT)
+    return themap.add_symbol(color, '#000000', WEIGHT)
 
 WEIGHT = 1
 

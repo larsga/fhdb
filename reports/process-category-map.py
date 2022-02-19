@@ -7,19 +7,19 @@ import proclib
 themap = config.make_map_from_cli_args()
 
 symbols = {
-    None : themap.add_symbol('black', '#000000', '#000000', strokeweight = 1,
+    None : themap.add_symbol('#000000', '#000000', strokeweight = 1,
                              title = 'Unclassified'),
-    'Stone' : themap.add_symbol('green', '#00FF00', '#000000',
+    'Stone' : themap.add_symbol('#00FF00', '#000000',
                                 title = 'Stone', strokeweight = 1),
-    'Ferment mash' : themap.add_symbol('teal', '#42DFFF', '#000000',
+    'Ferment mash' : themap.add_symbol('#42DFFF', '#000000',
                                        title = 'Ferment mash', strokeweight = 1),
-    'Oven' : themap.add_symbol('yellow', '#FFFF00', '#000000',
+    'Oven' : themap.add_symbol('#FFFF00', '#000000',
                                title = 'Oven', strokeweight = 1),
-    'Complex mash' : themap.add_symbol('cmash', '#4444FF', '#000000',
+    'Complex mash' : themap.add_symbol('#4444FF', '#000000',
                                title = 'Complex mash', strokeweight = 1),
-    'Raw ale' : themap.add_symbol('raw', '#FF8800', '#000000',
+    'Raw ale' : themap.add_symbol('#FF8800', '#000000',
                                   title = 'Raw ale', strokeweight = 1),
-    'Boiled' : themap.add_symbol('boil', '#FFFFFF', '#000000',
+    'Boiled' : themap.add_symbol('#FFFFFF', '#000000',
                                   title = 'Boiled', strokeweight = 1),
 }
 
@@ -52,4 +52,4 @@ for (s, lat, lng, proc, title, procname) in sparqllib.query_for_rows(query):
     themap.add_marker(lat, lng, title, symbols[cat], procname)
 
 themap.set_legend(True)
-themap.render_to('process-category-map')
+themap.render_to(config.get_file() or 'process-category-map')

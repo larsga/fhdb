@@ -95,8 +95,10 @@ tb:recipe-herbs rdfs:domain tb:Account;
   rdfs:range neg:Herb;
   rdfs:comment """Herbs actually commonly used in the beer and given as
   part of the recipe. Hearsay, what other people did, historical use etc
-  are all ignored. It's not enough for the herb to be use 'sometimes' or
-  'by a few people'. It has to be common to the point of being expected.""".
+  are all ignored. It's not enough for the herb to be used 'sometimes' or
+  'by a few people'. It has to be common to the point of being expected.
+  If the source says in the recipe itself that you 'might' use it, and
+  specifies how, then include it.""".
 
 tb:brewing-ended rdfs:domain tb:Account;
   rdfs:range rdfs:Literal;
@@ -493,6 +495,11 @@ tb:yeast-reuse-q rdfs:domain tb:Account;
   rdfs:range rdfs:Literal;
   rdfs:comment """Quote about how the yeast was reused.""".
 
+
+tb:alder-q rdfs:domain tb:Account;
+  rdfs:range rdfs:Literal;
+  rdfs:comment """Quote about how/why alder wood was used.""".
+
 # ===== DUBIOUS
 
 neg:mash-time rdfs:domain tb:Account;
@@ -783,6 +790,9 @@ tb:Process a rdfs:Class;
 
 tb:cold-mash rdfs:domain tb:Process;
   rdfs:label "Cold mash";
+  rdfs:comment """Leaving cold or lukewarm water on the malt for a long time
+  to achieve an acid rest. So essentially a mash step that does nothing but
+  acidification.""";
   rdfs:range neg:Boolean.
 
 tb:infusion-mash-steps rdfs:domain tb:Process;

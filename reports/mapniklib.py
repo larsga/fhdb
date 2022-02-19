@@ -19,7 +19,7 @@ if not SHAPEDIR.endswith('/'):
 
 ELEVATION_DEFAULT = False
 
-district_file = None
+#district_file = None
 #district_file = '/Users/larsga/prog/python/etno-distrikt/landsdeler.json'
 #district_file = '/Users/larsga/prog/python/etno-distrikt/regions.json'
 #district_file = '/Users/larsga/prog/python/etno-distrikt/regions-clipped.json'
@@ -48,6 +48,7 @@ class MapnikMap(maplib.AbstractMap):
         self._base_map = base_map
         self._color = color
         self._transform = transform
+        self._legend_location = ('top', 'left')
 
     def get_base_map(self):
         return self._base_map
@@ -56,6 +57,16 @@ class MapnikMap(maplib.AbstractMap):
         return self._color
 
     def add_line_string(self, geojson, color, width):
+        if isinstance(self._base_map, ColoredRegionMap):
+            self._base_map.add_line_string(geojson, color, width)
+        else:
+            render_line_string(self._base_map._mapnik_map)
+
+    def add_shaded_region(self, shape, color = 'rgb(0%, 0%, 0%)', opacity = 0.15):
+        m = self._base_map._mapnik_map
+        _add_shaded_region(m, shape = shape, color = color, opacity = opacity)
+
+    def add_rectangle(self, east, west, north, south, color, width = 1):
         m = self._base_map._mapnik_map
 
         s = mapnik.Style()
@@ -67,27 +78,40 @@ class MapnikMap(maplib.AbstractMap):
         r.symbols.append(line_symbolizer)
         s.rules.append(r)
 
-        m.append_style('CustomLine',s)
+        m.append_style('CustomRectangle',s)
 
-        with open('/tmp/geojson.json', 'w') as f:
-            f.write(geojson)
-        ds = mapnik.GeoJSON(file = '/tmp/geojson.json')
-        layer = mapnik.Layer('linestring')
+        fname = '/tmp/geojson-%s.json' % random_id()
+        with open(fname, 'w') as f:
+            json.dump({
+                "type": "FeatureCollection",
+                "name": "rectangle",
+                "features": [{
+                    'type' : 'Feature',
+                    'geometry' : {
+                        'type' : 'Polygon',
+                        'coordinates' : [[(west, north), (east, north),
+                                          (east, south), (west, south),
+                                          (west, north)]]
+                    }
+                }]
+            }, f)
+
+        ds = mapnik.GeoJSON(file = fname)
+        layer = mapnik.Layer('rectangle')
 
         layer.datasource = ds
         layer.srs = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
-        layer.styles.append('CustomLine')
+        layer.styles.append('CustomRectangle')
         m.layers.append(layer)
 
-    def add_shaded_region(self, shape, color = 'rgb(0%, 0%, 0%)', opacity = 0.15):
-        m = self._base_map._mapnik_map
-        _add_shaded_region(m, shape = shape, color = color, opacity = opacity)
+    def set_legend_location(self, vertical, horizontal):
+        self._legend_location = (vertical, horizontal)
 
     def render_to(self, filename, width = None, height = None, bottom = None,
                   format = 'png', preview = True):
         format = format or 'png'
         filename = make_ending_for(filename, format)
-        legend_box = _render(self, filename, format)
+        legend_box = _render(self, filename, format, self._legend_location)
 
         transform = self._base_map.get_transform() or self._transform
         if transform:
@@ -127,7 +151,7 @@ class SimpleBaseMap(BaseMap):
     def make_map(self):
         return self._mapnik_map
 
-def make_simple_map(shapefile = None, west = -5, south = 55, east = 35, north = 67, width = 2000, height = 1200, elevation = ELEVATION_DEFAULT, color = True, speciesfile = None):
+def make_simple_map(shapefile = None, west = -5, south = 55, east = 35, north = 67, width = 2000, height = 1200, elevation = ELEVATION_DEFAULT, color = True, speciesfile = None, district_file = None):
     if color:
         colors = default_colors
     else:
@@ -247,7 +271,13 @@ def _add_shaded_region(m, shape = None, opacity = 0.25, color = 'rgb(0%,0%,0%)',
     elif not jsonfile:
         assert False, 'Must specify either shape or jsonfile'
 
-    ds = mapnik.GeoJSON(file = jsonfile)
+    if jsonfile.endswith('.json'):
+        ds = mapnik.GeoJSON(file = jsonfile)
+    elif jsonfile.endswith('.shp'):
+        ds = mapnik.Shapefile(file = jsonfile)
+    else:
+        assert False
+
     layer = mapnik.Layer(random_id())
 
     layer.datasource = ds
@@ -347,10 +377,23 @@ def _add_elevation(m):
     )
 
     rs.colorizer.add_stop(10, mapnik.Color(64, 144, 80))
+    # rs.colorizer.add_stop(250, mapnik.Color(58, 130, 72))
+    # rs.colorizer.add_stop(500, mapnik.Color(37, 117, 69)) # green
+    # rs.colorizer.add_stop(1000, mapnik.Color(27, 75, 46)) # green
+    # rs.colorizer.add_stop(2000, mapnik.Color(0, 0, 0))
+
+    #rs.colorizer.add_stop(10, mapnik.Color(89, 165, 98))
+
     rs.colorizer.add_stop(250, mapnik.Color(58, 130, 72))
-    rs.colorizer.add_stop(500, mapnik.Color(37, 117, 69))
-    rs.colorizer.add_stop(1000, mapnik.Color(27, 75, 46))
+    rs.colorizer.add_stop(500, mapnik.Color(37, 117, 69)) # green
+    rs.colorizer.add_stop(750, mapnik.Color(27, 75, 46)) # green
+    rs.colorizer.add_stop(1000, mapnik.Color(115, 29, 14))  # brown
     rs.colorizer.add_stop(2000, mapnik.Color(0, 0, 0))
+
+    # rs.colorizer.add_stop(250, mapnik.Color(58, 130, 72))
+    # rs.colorizer.add_stop(500, mapnik.Color(37, 117, 69)) # green
+    # rs.colorizer.add_stop(1000, mapnik.Color(27, 75, 46)) # green
+    # rs.colorizer.add_stop(2000, mapnik.Color(0, 0, 0))
 
     r.symbols.append(rs)
     s.rules.append(r)
@@ -494,7 +537,7 @@ def _generate_svg(filename, symbol):
         else:
             assert False, 'Unknown shape: %s' % symbol.get_shape()
 
-def _render(themap, filename, format):
+def _render(themap, filename, format, legend_location):
     m = themap.get_base_map().make_map()
     ctx = mapnik.Context()
 
@@ -545,11 +588,12 @@ def _render(themap, filename, format):
 
     box = None
     if themap.has_legend() and themap.has_symbols() and format == 'png':
-        used_symbols = [s for s in themap.get_symbols() if themap.is_symbol_used(s)]
-        box = _add_legend(filename, used_symbols)
+        used_symbols = [s for s in themap.get_symbols()
+                        if themap.is_symbol_used(s) or themap.show_unused_symbols()]
+        box = _add_legend(filename, used_symbols, legend_location)
     return box
 
-def _add_legend(filename, used_symbols):
+def _add_legend(filename, used_symbols, legend_location):
     from PIL import Image, ImageDraw, ImageFont
 
     im = Image.open(filename)
@@ -563,11 +607,23 @@ def _add_legend(filename, used_symbols):
         widest = max(widest, width)
 
     offset = 10
+    boxwidth = r * 2 + offset * 3 + widest
     displace = (r * 2) + 12
-    x1 = 10
-    y1 = 10
-    x2 = 10 + r * 2 + offset * 3 + widest
-    y2 = 10 + displace * len(used_symbols) + offset
+    boxheight = displace * len(used_symbols) + offset
+
+    (vertpos, horpos) = legend_location
+    assert vertpos == 'top'
+    assert horpos in ('left', 'right')
+    y1 = offset
+    y2 = offset + boxheight
+    if horpos == 'left':
+        x1 = offset
+        x2 = offset + boxwidth
+    else:
+        (width, height) = im.size
+        x1 = width - (offset + boxwidth)
+        x2 = width - offset
+
     box = [(x1, y1), (x2, y2)]
 
     draw = ImageDraw.Draw(im)
@@ -617,6 +673,28 @@ def _add_legend(filename, used_symbols):
     im.save(filename, 'PNG')
     return box
 
+def render_line_string(m, geojson, color, width):
+    s = mapnik.Style()
+    r = mapnik.Rule()
+
+    line_symbolizer = mapnik.LineSymbolizer()
+    line_symbolizer.stroke = mapnik.Color(color)
+    line_symbolizer.stroke_width = width
+    r.symbols.append(line_symbolizer)
+    s.rules.append(r)
+
+    m.append_style('CustomLine',s)
+
+    with open('/tmp/geojson.json', 'w') as f:
+        f.write(geojson)
+    ds = mapnik.GeoJSON(file = '/tmp/geojson.json')
+    layer = mapnik.Layer('linestring')
+
+    layer.datasource = ds
+    layer.srs = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
+    layer.styles.append('CustomLine')
+    m.layers.append(layer)
+
 def _parse_color(color):
     return (_unhex(color[1 : 3]), _unhex(color[3 : 5]), _unhex(color[5 : 7]))
 
@@ -633,7 +711,7 @@ def _unhexdigit(digit):
 
 class ColoredRegionMap(BaseMap):
 
-    def __init__(self, view):
+    def __init__(self, view, water_color = None):
         self._view = view
         self._legend = False
         self._district_file = '/Users/larsga/prog/python/etno-distrikt/regions-clipped.json'
@@ -641,6 +719,8 @@ class ColoredRegionMap(BaseMap):
         self._field = 'name'
         self._name_to_color = {}
         self._symbols = []
+        self._water_color = water_color or default_colors.water_color
+        self._line_strings = []
 
     def set_legend(self, legend):
         self._legend = legend
@@ -664,20 +744,23 @@ class ColoredRegionMap(BaseMap):
     def add_symbol(self, symbol):
         self._symbols.append(symbol)
 
+    def add_line_string(self, geojson, color, width):
+        self._line_strings.append((geojson, color, width))
+
     def get_transform(self):
         return self._view.transform
 
     def make_map(self):
         m = mapnik.Map(self._view.width, self._view.height)
         m.srs = '+proj=merc +ellps=WGS84 +datum=WGS84 +no_defs'
-        m.background = mapnik.Color(default_colors.water_color)
+        m.background = mapnik.Color(self._water_color)
 
         s = mapnik.Style() # style object to hold rules
 
         for (name, color) in self._name_to_color.items():
             rule = make_rule(color)
             rule.filter = mapnik.Filter("[%s] = '%s'" % (
-                self._field, name.encode('utf-8'))
+                self._field, name)
             )
             s.rules.append(rule) # now add the rule to the style
 
@@ -691,6 +774,9 @@ class ColoredRegionMap(BaseMap):
         layer.styles.append('My Style')
 
         m.layers.append(layer)
+
+        for (geojson, color, width) in self._line_strings:
+            render_line_string(m, geojson, color, width)
 
         view = self._view
         zoom_to_box(m, view.west, view.south, view.east, view.north)

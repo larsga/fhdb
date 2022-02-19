@@ -47,9 +47,9 @@ labeltemplates = {
     },
 }[LANG]
 
-white = themap.add_symbol('white', '#FFFF00', '#000000', strokeweight = 1,
+white = themap.add_symbol('#FFFF00', '#000000', strokeweight = 1,
                           title = labeltemplates['true'] % name)
-black = themap.add_symbol('black', '#000000', '#000000', strokeweight = 1,
+black = themap.add_symbol('#000000', '#000000', strokeweight = 1,
                           title = labeltemplates['false'] % name)
 
 query = '''

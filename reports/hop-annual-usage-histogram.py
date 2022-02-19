@@ -1,3 +1,4 @@
+# encoding=utf-8
 
 import sparqllib
 import config
@@ -8,14 +9,14 @@ if config.get_country():
 
 labels = {
     'en' : {
-        'title' : 'Hopping rates in farmhouse ale',
+        'title' : 'Annual hop usage',
         'y-axis' : 'Number of accounts',
-        'x-axis' : 'Grams per liter',
+        'x-axis' : 'Grams',
     },
     'no' : {
-        'title' : 'Humlebruk',
+        'title' : u'Årlig forbruk av humle',
         'y-axis' : 'Antall beskrivelser',
-        'x-axis' : 'Gram per liter',
+        'x-axis' : 'Gram',
     }
 }[config.get_language()]
 
@@ -32,7 +33,7 @@ SELECT DISTINCT ?h ?c ?s
 WHERE {
   ?s dc:title ?title;
     tb:part-of ?c;
-    tb:hop-wort-ratio ?h.
+    tb:annual-hops-consumption ?h.
 
   ?c a dbp:Country.
   %s

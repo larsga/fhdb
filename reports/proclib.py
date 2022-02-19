@@ -75,12 +75,15 @@ TB_MASH_MAPPING = {
 # ===== FUNCTIONS
 
 def load_processes():
+    return load_process_dict().values()
+
+def load_process_dict():
     by_uri = {}
     for (s, p, o) in sparqllib.query_for_rows(FULL_QUERY):
         if s not in by_uri:
             by_uri[s] = Process(s)
         by_uri[s].add_property(p, o)
-    return by_uri.values()
+    return by_uri
 
 def classify_processes():
     return {proc._url : proc.get_category() for proc in load_processes()}
@@ -139,6 +142,40 @@ class Process:
 
     def get_desc(self):
         return self._desc
+
+    def is_mashing_fully_defined(self):
+        return None not in [self._inf, self._circ, self._mashkettle,
+                            self._mashboil, self._stones]
+
+    # <mashing classification>
+
+    def is_single_infusion(self):
+        # deliberately triggering error if inf == None
+        return self._inf > 0 and self._inf < 2
+
+    def is_multistep_infusion(self):
+        # deliberately triggering error if inf == None
+        return self._inf >= 2
+
+    def is_decoction(self):
+        return self._circ > 0 and not self._circ_strain
+
+    def is_circulation(self):
+        return self._circ > 0 and self._circ_strain
+
+    def is_kettle_mash(self):
+        assert type(self._mashkettle) == bool
+        return self._mashkettle
+
+    def is_mash_boiled(self):
+        assert type(self._mashboil) == bool
+        return self._mashboil
+
+    def is_stone_mash(self):
+        assert type(self._stones) == bool
+        return self._stones
+
+    # </mashing classification>
 
     def infusion_steps_in_range(self, low, high):
         # high is exclusive

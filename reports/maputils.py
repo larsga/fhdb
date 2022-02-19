@@ -1,6 +1,6 @@
 #encoding=utf-8
 
-import random, string
+import random, string, math
 import maplib
 import sparqllib
 import config
@@ -38,14 +38,14 @@ def make_term_map(termprop, symbols, filename, usemap = None, scale = None,
     stroke = '#000000'
 
     themap = usemap or config.make_map_from_cli_args()
-    symbols = [(regex, themap.add_symbol(random_id(), color, stroke, strokeweight = 1, title = name, scale = scale))
+    symbols = [(regex, themap.add_symbol(color, stroke, strokeweight = 1, title = name, scale = scale))
                for (regex, color, name) in symbols]
 
     othername = {
         'en' : 'Other',
         'no' : 'Annet',
     }[language]
-    OTHER = themap.add_symbol('black', '#000000', stroke, strokeweight = 1,
+    OTHER = themap.add_symbol('#000000', stroke, strokeweight = 1,
                               title = othername, scale = scale)
 
     unmatched = []
@@ -79,10 +79,10 @@ def make_thing_map(query, symbols, filename, legend = False):
 
     themap = config.make_map_from_cli_args()
     symbols = {
-        uri : (themap.add_symbol(random_id(), color, '#000000', 1, title = pick_name(name)), pick_name(name))
+        uri : (themap.add_symbol(color, '#000000', 1, title = pick_name(name)), pick_name(name))
         for (uri, color, name) in symbols
     }
-    other = themap.add_symbol(random_id(), '#000000', '#000000', 1, title = 'Other')
+    other = themap.add_symbol('#000000', '#000000', 1, title = 'Other')
 
     unclassified = {}
     for (s, title, thing, lat, lng) in sparqllib.query_for_rows(query):
@@ -107,10 +107,10 @@ def make_boolean_map(query, filename, labels = None):
         themap.set_legend(True)
     labels = labels or {'borderline' : '', 'true' : '', 'false' : ''}
 
-    gray = themap.add_symbol('gray', '#999999', title = labels['borderline'])
+    gray = themap.add_symbol('#999999', title = labels['borderline'])
     symbols = {
-        'true' : themap.add_symbol('white', '#FFFF00', title = labels['true']),
-        'false' : themap.add_symbol('black', '#000000', title = labels['false']),
+        'true' : themap.add_symbol('#FFFF00', title = labels['true']),
+        'false' : themap.add_symbol('#000000', title = labels['false']),
         'http://www.garshol.priv.no/2014/neg/both' : gray,
         'http://www.garshol.priv.no/2014/neg/borderline' : gray}
 
@@ -158,18 +158,35 @@ def value_mapper(v):
     'Remap values for better visualization.'
     return math.log(v)
 
-def color_scale_map(query, outfile, max_value = 1000000, legend = False,
-                    symbol_count = 10, value_mapper = value_mapper,
-                    label_formatter = lambda y,x: '%s-%s' % (y,x)):
-    data = [(lat, lng, title, value_mapper(min(float(ratio), max_value)))
-            for (lat, lng, title, ratio) in sparqllib.query_for_rows(query)]
-    color_scale_map_data(data, outfile, legend, symbol_count,
-                         label_formatter)
-
 def format_scale_2_digits(low, high):
     low = int(round(low * 10.0)) / 10.0
     high = int(round(high * 10.0)) / 10.0
     return '%s-%s' % (low, high)
+
+def _biggest_scale(biggest):
+    oom = 10 ** (int(math.log10(biggest)))
+    new_biggest = oom * math.ceil(biggest / oom)
+    if biggest / new_biggest < 0.75:
+        new_biggest *= 0.75
+    return new_biggest
+
+def calibrate_scale(biggest, smallest):
+    new_biggest = _biggest_scale(biggest)
+
+    if smallest < 0:
+        new_smallest = _biggest_scale(abs(smallest)) * -1
+    else:
+        oom = 10 ** (int(math.log10(smallest)))
+        new_smallest = oom * math.floor(smallest / oom)
+    return (new_biggest, new_smallest)
+
+def color_scale_map(query, outfile, max_value = 1000000, legend = False,
+                    symbol_count = 10, value_mapper = value_mapper,
+                    label_formatter = format_scale_2_digits):
+    data = [(lat, lng, title, value_mapper(min(float(ratio), max_value)))
+            for (lat, lng, title, ratio) in sparqllib.query_for_rows(query)]
+    color_scale_map_data(data, outfile, legend, symbol_count,
+                         label_formatter)
 
 def color_scale_map_data(data, outfile, legend = False, symbol_count = 10,
                          label_formatter = format_scale_2_digits,
@@ -182,15 +199,16 @@ def color_scale_map_data(data, outfile, legend = False, symbol_count = 10,
         smallest = min([v for (lat, lng, title, v) in data])
         biggest = max([v for (lat, lng, title, v) in data])
 
-    increment = (biggest - smallest) / (symbol_count - 1)
+    (biggest, smallest) = calibrate_scale(biggest, smallest)
+    increment = (biggest - smallest) / symbol_count
 
     symbols = [themap.add_symbol(
-        'id%s' % ix,
         '#' + color(ix, symbol_count),
         '#000000',
         strokeweight = 1,
         title = label_formatter(smallest + increment * ix,
-                                smallest + increment * (ix+1))
+                                smallest + increment * (ix+1)),
+        id = 'id%s' % ix
         #,scale = (ix / float(symbol_count)) * max_scale
     )
     for ix in range(symbol_count)]
@@ -201,5 +219,5 @@ def color_scale_map_data(data, outfile, legend = False, symbol_count = 10,
         symbol = symbols[index]
         themap.add_marker(lat, lng, title, symbol, 'Value: %s' % org_value)
 
-    themap.set_legend(legend)
+    themap.set_legend(legend, show_unused = True)
     themap.render_to(outfile)

@@ -1,12 +1,22 @@
 
+import argparse
 import sparqllib
 import tablelib
 
-format = tablelib.get_format()
-property = 'tb:herbs'
-region_type = 'dbp:Country' # 'dbp:Province'
+parser = argparse.ArgumentParser()
+parser.add_argument('--lang', default = 'en')
+parser.add_argument('--format', default = 'html')
+parser.add_argument('--recipe', action='store_true')
+parser.add_argument('--min', type=int, default = 4)
+# <http://www.garshol.priv.no/2021/landsdel/Landsdel>
+parser.add_argument('--regiontype', default = 'dbp:Country')
+args = parser.parse_args()
 
-MIN_ACCOUNTS = 3
+format = args.format
+property = 'tb:herbs' if not args.recipe else 'tb:recipe-herbs'
+region_type = args.regiontype
+LANG = args.lang
+MIN_ACCOUNTS = args.min
 
 # merge herbs in the statistics without having to merge them in the
 # source data. used for synonyms I have decided to accept, but means I
@@ -20,7 +30,7 @@ def better_than(repl, orig):
     if not orig:
         return True
 
-    if repl.lang == 'en':
+    if repl.lang == LANG:
         return True
 
     return False
@@ -77,11 +87,12 @@ def get_herb_name(h):
 CAPTION = '''Herbs used in farmhouse brewing. Columns are not exclusive. Every herb mentioned in the source is included, even if the source says only 'I have heard' or 'I think it was used'.'''
 
 if __name__ == '__main__':
-    tablelib.make_table('herbs.html', query, get_herb_name,
+    tablelib.make_table('herbs', query, get_herb_name,
                         label = 'herbs',
                         caption = CAPTION,
                         min_accounts = MIN_ACCOUNTS,
-                        format = format)
+                        format = format,
+                        lang = LANG)
 
 # # ===== HERBS BY PROVINCE
 

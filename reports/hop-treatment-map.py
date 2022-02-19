@@ -17,7 +17,7 @@ select ?s ?title ?treat ?lat ?lng where {
 }
 '''
 
-PREFIX = 'http://www.garshol.priv.no/2014/neg/'
+PREFIX = 'http://www.garshol.priv.no/2014/trad-beer/'
 symbols = [
     (PREFIX + 'hop-tea',            '#00FF00', {
         'en' : 'Hop tea', 'no' : 'Humle-te',

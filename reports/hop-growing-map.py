@@ -1,7 +1,25 @@
+# encoding=utf-8
 
-import sparqllib, config
+import sparqllib, config, maplib
 
-OAT_BELT = True
+OAT_BELT = False
+
+labels = {
+    'en' : {
+        'grown' : 'Grown',
+        'both' : 'Both',
+        'bought' : 'Bought',
+        'grown-w' : 'Grown and picked wild',
+        'both-w' : 'Both (incl. wild)',
+    },
+    'no' : {
+        'grown' : 'Dyrket',
+        'grown-w' : 'Dyrket og plukket vill',
+        'both' : 'Begge',
+        'both-w' : 'Begge (også vill)',
+        'bought' : 'Kjøpt',
+    },
+}[config.get_language()]
 
 # ----- STEP 1: COLLECT THE DATA
 
@@ -25,7 +43,7 @@ WHERE {
 }'''
 for (s, t, lat, lng, v) in sparqllib.query_for_rows(query):
     hops = []
-    if data.has_key(s):
+    if s in data:
         hops = data[s][3]
     hops.append(strip_uri(v))
 
@@ -39,29 +57,33 @@ if OAT_BELT:
     geojson = open('/Users/larsga/data/privat/trad-beer/works/map-data/hasund-line.json').read()
     themap.add_line_string(geojson = geojson, color = '#0000FF', width = 3)
 
-green = themap.add_symbol('green', '#00FF00', '#000000', 1)   # grown
-yellow = themap.add_symbol('yellow', '#FFFF00', '#000000', 1) # mixed
-red = themap.add_symbol('red', '#FF0000', '#000000', 1)       # bought
-white = themap.add_symbol('white', '#FFFFFF', '#000000', 1)   # all three
+sw = 1
+green = themap.add_symbol('#00FF00', '#000000', sw, labels['grown'])
+green_tr = themap.add_symbol('#00FF00', '#000000', sw, labels['grown-w'],
+                             shape = maplib.TRIANGLE)
+yellow = themap.add_symbol('#FFFF00', '#000000', sw, labels['both'])
+yellow_tr = themap.add_symbol('#FFFF00', '#000000', sw, labels['both-w'],
+                              shape = maplib.TRIANGLE)
+red = themap.add_symbol('#FF0000', '#000000', sw, labels['bought'])
 
 symbols = {
     ('bought',)                                  : red,
-    ('bought', 'gathered-wild')                  : yellow,
-    ('locally-grown', 'bought', 'gathered-wild') : yellow,
-    ('locally-grown', 'bought')                  : yellow,
-    ('gathered-wild', 'bought')                  : yellow,
+    ('bought', 'gathered-wild')                  : yellow_tr,
+    ('bought', 'gathered-wild', 'locally-grown') : yellow_tr,
+    ('bought', 'locally-grown')                  : yellow,
     ('gathered-wild',)                           : green,
-    ('locally-grown', 'gathered-wild')           : green,
+    ('gathered-wild', 'locally-grown')           : green_tr,
     ('locally-grown',)                           : green,
-    ('locally-grown', 'gathered-wild', 'bought') : white,
     }
 
 for (s, (title, lat, lng, hops)) in data.items():
-    hops = set(hops)
+    hops = list(set(hops))
+    hops.sort()
     try:
         themap.add_marker(lat, lng, title, symbols[tuple(hops)], ' '.join(hops))
-    except KeyError, e:
-        print s
+    except KeyError:
+        print(s)
         raise
 
-themap.render_to('hop-growing-map')
+themap.set_legend(True)
+themap.render_to(config.get_file() or 'hop-growing-map')

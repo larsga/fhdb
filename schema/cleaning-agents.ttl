@@ -8,6 +8,9 @@
 
 # ===== DETAILED CLASSIFICATION
 
+clean:green-soap a tb:CleaningAgent;
+  rdfs:label "Grønnsåpe".
+
 clean:juniper-infusion a tb:CleaningAgent;
   rdfs:label "Juniper infusion";
   dc:description """Hot juniper infusion for cleaning the vessels.""".

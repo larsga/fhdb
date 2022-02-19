@@ -1,8 +1,15 @@
 # encoding=utf-8
+'''
+A map of the main method by which the mash was heated. Not a heatmap, but
+a map of heating methods.
+'''
 
 import config
 import sparqllib
 import proclib
+
+def get_no(url):
+    return url[url.rfind('/') + 1 : ]
 
 themap = config.make_map_from_cli_args()
 
@@ -48,8 +55,9 @@ for (s, lat, lng, proc, title, procname) in sparqllib.query_for_rows(query):
         #print('UNMAPPED', repr(proc))
         continue
 
-    #print(proc, cat)
-    themap.add_marker(lat, lng, title, symbols[cat], procname)
+    if config.get_debug():
+        print(proc, cat)
+    themap.add_marker(lat, lng, title, symbols[cat], get_no(proc) + ': ' + procname)
 
 themap.set_legend(True)
 themap.render_to('process-main-heat-map')

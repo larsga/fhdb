@@ -2,7 +2,8 @@
 General, reusable Google Maps library.
 '''
 
-import codecs, sys, os, json
+import codecs, sys, os, json, string, random
+import utils
 
 GOOGLE_MAPS_KEY = os.environ['GOOGLE_MAPS_KEY']
 
@@ -28,6 +29,7 @@ class AbstractMap:
         self._symbols = []
         self._legend = False
         self._default_scale = default_scale
+        self._show_unused_symbols = False
 
     def get_color(self):
         return True
@@ -43,14 +45,15 @@ class AbstractMap:
     def get_symbols(self):
         return self._symbols
 
-    def add_symbol(self, id, color, strokecolor = '#000000',
+    def add_symbol(self, color, strokecolor = '#000000',
                    strokeweight = None, title = None, scale = None,
-                   shape = CIRCLE, label = None, textcolor = None):
+                   shape = CIRCLE, label = None, textcolor = None,
+                   id = None):
         '''title: name in legend
         label: text inside actual symbol icon'''
-        s = Symbol(id, color, strokecolor, strokeweight, title = title,
+        s = Symbol(color, strokecolor, strokeweight, title = title,
                    scale = scale or self._default_scale, shape = shape,
-                   label = label, textcolor = textcolor)
+                   label = label, textcolor = textcolor, id = id)
         self._symbols.append(s)
         return s
 
@@ -63,8 +66,12 @@ class AbstractMap:
                 return True
         return False
 
-    def set_legend(self, legend):
+    def show_unused_symbols(self):
+        return self._show_unused_symbols
+
+    def set_legend(self, legend, show_unused = False):
         self._legend = legend
+        self._show_unused_symbols = show_unused
 
     def has_legend(self):
         return self._legend
@@ -97,8 +104,7 @@ class GoogleMap(AbstractMap):
                   format = 'html'):
         format = format or 'html'
         assert format == 'html', 'Incorrect format %s' % format
-        if not filename.endswith('.html'):
-            filename += '.html'
+        filename = utils.add_extension(filename, format)
 
         render(self, filename, width, height, bottom)
 
@@ -110,10 +116,11 @@ class GoogleMap(AbstractMap):
 
 class Symbol:
 
-    def __init__(self, id, color, strokecolor = None, strokeweight = None,
+    def __init__(self, color, strokecolor = None, strokeweight = None,
                  title = None, scale = None, shape = None, label = None,
-                 textcolor = None):
-        self._id = id
+                 textcolor = None, id = None):
+        self._id = id or ''.join([random.choice(string.ascii_letters)
+                                  for i in range(10)])
         self._color = color
         self._strokecolor = strokecolor or color
         self._strokeweight = strokeweight or DEFAULT_STROKEWEIGHT

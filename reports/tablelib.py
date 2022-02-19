@@ -1,5 +1,6 @@
 
 import sys, string, os, codecs
+import utils
 import sparqllib
 
 def get_format():
@@ -51,16 +52,34 @@ def flatten(listoflists):
 def intersect(list1, list2):
     return set(list1).intersection(set(list2))
 
+COUNTRY_LABELS = {
+    'en' : {
+        'col0-label' : 'Country',
+        'percent'    : 'Percent',
+        'count'      : 'Count',
+        'accounts'   : 'Accounts',
+        'other'      : 'Other',
+    },
+    'no' : {
+        'col0-label' : 'Land',
+        'percent'    : 'Prosent',
+        'count'      : 'Antall',
+        'accounts'   : 'Beskrivelser',
+        'other'      : 'Annet',
+    }
+}
+
 class CountryTable:
 
-    def __init__(self, min_accounts, sort_columns = None, sort_rows = None, row_label = 'Country'):
+    def __init__(self, min_accounts, sort_columns = None, sort_rows = None, row_label = None, lang = 'en'):
         self._min_accounts = min_accounts
         self._country = {} # account uri -> country
         self._values = {} # account uri -> values
         self._sort_columns = sort_columns or self.sort_columns
         self._sort_rows = sort_rows or self.sort_countries
         self._other_values = [] # values hidden in 'Other' column
-        self._row_label = row_label
+        self._row_label = row_label or COUNTRY_LABELS[lang]['col0-label']
+        self._lang = lang
 
     def get_row_label(self):
         return self._row_label
@@ -97,7 +116,7 @@ class CountryTable:
                 col for col in columns
                 if self.get_value_count(col) < self._min_accounts
             ]
-            filtered.append('Other')
+            filtered.append(COUNTRY_LABELS[self._lang]['other'])
 
         return filtered
 
@@ -125,7 +144,7 @@ class CountryTable:
         return len(self._values.values())
 
     def _translate(self, value):
-        if value == 'Other':
+        if value == COUNTRY_LABELS[self._lang]['other']:
             return self._other_values
         else:
             return [value]
@@ -139,9 +158,9 @@ def default_row_label(url):
 def make_table(filename, query, get_column_label, label, caption,
                min_accounts = 0, format = 'html',
                get_row_label = default_row_label,
-               row_type_name = 'Country',
+               row_type_name = None, lang = 'en',
                country = None, simplify_mapping = {}):
-    table = CountryTable(min_accounts, row_label = row_type_name)
+    table = CountryTable(min_accounts, row_label = row_type_name, lang = lang)
     if country:
         country = 'http://dbpedia.org/resource/' + country
 
@@ -150,25 +169,43 @@ def make_table(filename, query, get_column_label, label, caption,
         if country == None or country == c:
             table.add_account(simplify_mapping.get(v, v), c, s)
 
+    filename = utils.add_extension(filename, format)
+
     if format == 'html':
         writer = HtmlWriter(codecs.open(filename, 'w', 'utf-8'))
     elif format == 'latex':
         writer = LatexWriter(codecs.open(filename, 'w', 'utf-8'), label = label,
                              caption = caption,
                              columns = len(table.get_columns()) + 2)
+    elif format in ('png', 'pdf'):
+        writer = HtmlWriter(codecs.open('/tmp/table.html', 'w', 'utf-8'))
     else:
         assert False, 'Unknown format %s' % format
 
     if not country:
-        write_table(writer, table, get_column_label, get_row_label)
+        write_table(writer, table, get_column_label, get_row_label, lang = lang)
     else:
-        write_single_table(writer, table, get_column_label, get_row_label)
+        write_single_table(writer, table, get_column_label, get_row_label,
+                           lang = lang)
+
+    if format == 'png':
+        with open('/tmp/capture.js', 'w') as f:
+            f.write('''
+              var page = require('webpage').create();
+              page.open('%s', function() {
+                page.render('%s');
+                phantom.exit();
+              });
+            ''' % ('file://tmp/table.html', filename))
+            os.system('phantomjs file://tmp/capture.js')
+    elif format == 'pdf':
+        os.system('wkhtmltopdf /tmp/table.html ' + filename)
 
     if len(sys.argv) > 1:
         os.system('open %s' % filename)
 
 # herb-table-like
-def write_table(writer, table, get_column_label, get_row_label = default_row_label):
+def write_table(writer, table, get_column_label, get_row_label = default_row_label, lang = 'en'):
     writer.start_table()
     writer.new_row()
     writer.header(table.get_row_label())
@@ -177,7 +214,7 @@ def write_table(writer, table, get_column_label, get_row_label = default_row_lab
     for col in columns:
         writer.header(get_column_label(col))
 
-    writer.header('Accounts')
+    writer.header(COUNTRY_LABELS[lang]['accounts'])
 
     for country in table.get_countries():
         name = get_row_label(str(country)).strip()
@@ -204,7 +241,7 @@ def write_table(writer, table, get_column_label, get_row_label = default_row_lab
     writer.header(total)
 
     writer.new_row()
-    writer.header('Percent')
+    writer.header(COUNTRY_LABELS[lang]['percent'])
     for col in columns:
         count = table.get_value_count(col)
         p = percent(count, total)
@@ -218,8 +255,8 @@ def write_single_table(writer, table, get_column_label, get_row_label = default_
     writer.start_table()
     writer.new_row()
     writer.header(table.get_row_label())
-    writer.header('Count')
-    writer.header('Percent')
+    writer.header(COUNTRY_LABELS[lang]['count'])
+    writer.header(COUNTRY_LABELS[lang]['percent'])
 
     # there's only going to be one country
     for country in table.get_countries():

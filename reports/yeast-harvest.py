@@ -23,11 +23,11 @@ labels = {'en' : {
     }
 }
 
-BLACK = themap.add_symbol('black', '#000000', title = labels[LANG]['bottom'])
-DARK_GRAY = themap.add_symbol('dark_gray', '#555555', '#000000',
+BLACK = themap.add_symbol('#000000', title = labels[LANG]['bottom'])
+DARK_GRAY = themap.add_symbol('#555555', '#000000',
                               title = labels[LANG]['cask'])
-EITHER = themap.add_symbol('gray', '#999999', title = labels[LANG]['either'])
-TOP = themap.add_symbol('yellow', '#FFFF00', title = labels[LANG]['top'])
+EITHER = themap.add_symbol('#999999', title = labels[LANG]['either'])
+TOP = themap.add_symbol('#FFFF00', title = labels[LANG]['top'])
 
 NEG = 'http://www.garshol.priv.no/2014/neg/'
 symbols =  {
