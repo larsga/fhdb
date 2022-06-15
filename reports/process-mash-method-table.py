@@ -20,6 +20,26 @@ predicates = {
     'mashboil' : proclib.Process.is_mash_boiled,
     'stones' : proclib.Process.is_stone_mash,
 }
+col_labels = {
+    'en' : {
+        'infusion' : 'Infusion',
+        'step' : 'Step mash',
+        'decoction' : 'Decoction',
+        'circulation' : 'Circulation',
+        'kettle' : 'In kettle',
+        'mashboil' : 'Boiled mash',
+        'stones' : 'Stones',
+    },
+    'no' : {
+        'infusion' : 'Infusjon',
+        'step' : 'Stegmesk',
+        'decoction' : 'Dekoksjon',
+        'circulation' : 'Sirkulering',
+        'kettle' : 'I kjele',
+        'mashboil' : 'Kokt mesk',
+        'stones' : 'Steiner',
+    },
+}[LANG]
 
 processes = proclib.load_process_dict()
 table = tablelib.CountryTable(1, lang = LANG)
@@ -61,5 +81,8 @@ for (s, lat, lng, proc, title, where) in sparqllib.query_for_rows(query):
 
 filename = 'process-mash-method-table.html'
 writer = tablelib.HtmlWriter(codecs.open(filename, 'w', 'utf-8'))
-tablelib.write_table(writer, table, lambda col: str(col), lang = LANG,
-                     get_row_label = lambda uri: labels[uri])
+tablelib.write_table(
+    writer, table, lambda col: col_labels[str(col)],
+    lang = LANG,
+    get_row_label = lambda uri: labels[uri]
+)

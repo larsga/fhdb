@@ -165,7 +165,7 @@ tb:juniper-infusion rdfs:domain tb:Account;
   rdfs:comment "Did they use juniper infusion in the beer?".
 
 tb:juniper-preference rdfs:domain tb:Account;
-  rdfs:range neg:Thing;
+  rdfs:range rdfs:Literal;
   rdfs:comment "What kind of juniper did they prefer?".
 
 # terminology
@@ -510,7 +510,7 @@ tb:preferred-colour rdfs:domain tb:Account;
   rdfs:range rdfs:Literal;
   rdfs:comment "What colour should the beer be?".
 
-neg:remove-sprout rdfs:domain tb:Account;
+tb:remove-sprout rdfs:domain tb:Account;
   rdfs:range neg:Boolean;
   rdfs:comment """Whether the sprouts/rootlets were removed from the malts
   before they were used.""".
@@ -862,6 +862,12 @@ tb:hop-treatment rdfs:domain tb:Process;
   rdfs:label "Hop treatment";
   rdfs:comment """How the hops are processed and added to the beer.""";
   rdfs:range tb:HopTreatment.
+
+tb:strainer-used rdfs:domain tb:Process;
+  rdfs:label "Strainer used";
+  rdfs:comment """True iff the wort ran through a strainer. False means it
+  was ladled off without any true straining. (Default: true.)""";
+  rdfs:range neg:Boolean.
 
 tb:HopTreatment a rdfs:Class;
   rdfs:label "Hop treatment".

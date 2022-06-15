@@ -45,7 +45,7 @@ for (s, lat, lng, proc, title, procname) in sparqllib.query_for_rows(query):
 
     cat = process_categories.get(proc)
     if cat == None:
-        #print('UNMAPPED', repr(proc))
+        print('UNMAPPED', repr(proc))
         continue
 
     #print(proc, cat)

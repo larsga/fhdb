@@ -18,9 +18,9 @@ labels = {
     },
 }[LANG]
 
-white = themap.add_symbol('white', '#FFFFFF', '#000000', strokeweight = 1,
+white = themap.add_symbol('#FFFFFF', '#000000', strokeweight = 1,
                           title = labels['filter'])
-black = themap.add_symbol('black', '#000000', '#000000', strokeweight = 1,
+black = themap.add_symbol('#000000', '#000000', strokeweight = 1,
                           title = labels['none'])
 
 ALDER = 'http://www.garshol.priv.no/2014/neg/alder-branches'

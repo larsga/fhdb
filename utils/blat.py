@@ -94,7 +94,12 @@ def runquery(endpoint, query):
         s = resp.read()
         errf.write(s)
         errf.close()
-        print s
+
+        lines = s.split('\n')
+        if len(lines) > 20:
+            print '\n'.join(lines[ : 20])
+        else:
+            print s
 
     return resp.status, resp.reason
 

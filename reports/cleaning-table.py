@@ -1,6 +1,15 @@
 
+import argparse
 import sparqllib
 import tablelib
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--lang', default = 'en')
+parser.add_argument('--format', default = 'html')
+parser.add_argument('--min', type=int, default = 1)
+# <http://www.garshol.priv.no/2021/landsdel/Landsdel>
+parser.add_argument('--regiontype', default = 'dbp:Country')
+args = parser.parse_args()
 
 query = '''
 prefix dc: <http://purl.org/dc/elements/1.1/>
@@ -15,13 +24,17 @@ WHERE {
 
   ?s tb:clean-with ?h.
 
-  ?c a dbp:Country.
-}'''
+  ?c a %s.
+}''' % args.regiontype
 
 def get_herb_name(h):
     return tablelib.get_last_part(str(h))
 
-tablelib.make_table('cleaning-table.html', query, get_herb_name,
-                    label = 'cleaning',
-                    caption = 'Accounts of cleaning methods by country',
-                    format = 'html')
+tablelib.make_table(
+    'cleaning-table.html', query, get_herb_name,
+    min_accounts = args.min,
+    label = 'cleaning',
+    caption = 'Accounts of cleaning methods by country',
+    format = args.format,
+    lang = args.lang,
+)

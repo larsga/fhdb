@@ -45,7 +45,6 @@ WHERE {
   ?c a dbp:Country.
 
   ?s tb:year ?year.
-  FILTER( ?year > 1985 )
 
   %s
 }    '''

@@ -151,7 +151,7 @@ class SimpleBaseMap(BaseMap):
     def make_map(self):
         return self._mapnik_map
 
-def make_simple_map(shapefile = None, west = -5, south = 55, east = 35, north = 67, width = 2000, height = 1200, elevation = ELEVATION_DEFAULT, color = True, speciesfile = None, district_file = None):
+def make_simple_map(shapefile = None, west = -5, south = 55, east = 35, north = 67, width = 2000, height = 1200, elevation = ELEVATION_DEFAULT, color = True, speciesfile = None, district_file = None, district_line_width = 0.5):
     if color:
         colors = default_colors
     else:
@@ -175,7 +175,7 @@ def make_simple_map(shapefile = None, west = -5, south = 55, east = 35, north = 
     if speciesfile:
         _add_shaded_region(m, jsonfile = speciesfile, color = 'black', opacity = 0.25)
     if district_file:
-        _add_districts(m, district_file)
+        _add_districts(m, district_file, district_line_width)
 
     zoom_to_box(m, west, south, east, north)
     return SimpleBaseMap(m)
@@ -286,7 +286,7 @@ def _add_shaded_region(m, shape = None, opacity = 0.25, color = 'rgb(0%,0%,0%)',
 
     m.layers.append(layer)
 
-def _add_districts(m, district_file):
+def _add_districts(m, district_file, district_line_width):
     s = mapnik.Style()
     r = mapnik.Rule()
 
@@ -297,7 +297,7 @@ def _add_districts(m, district_file):
 
     line_symbolizer = mapnik.LineSymbolizer()
     line_symbolizer.stroke = mapnik.Color('rgb(0%,0%,0%)')
-    line_symbolizer.stroke_width = 0.5
+    line_symbolizer.stroke_width = district_line_width
     r.symbols.append(line_symbolizer)
     s.rules.append(r)
 

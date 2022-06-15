@@ -3,6 +3,9 @@
 import config
 import sparqllib
 
+config.parser.add_argument('--speciesfile', required = False)
+speciesfile = config._get_args().speciesfile
+
 def number(boolean):
     if boolean == 'http://www.garshol.priv.no/2014/neg/borderline':
         return 0.5
@@ -13,7 +16,7 @@ def number(boolean):
     else:
         return int(boolean)
 
-themap = config.make_map_from_cli_args()
+themap = config.make_map_from_cli_args(speciesfile = speciesfile)
 LANG = config.get_language()
 
 labels = {
@@ -29,11 +32,11 @@ labels = {
     },
 }[LANG]
 
-white = themap.add_symbol('white', '#FFFFFF', '#000000', strokeweight = 1,
+white = themap.add_symbol('#FFFFFF', '#000000', strokeweight = 1,
                           title = labels['infusion'])
-black = themap.add_symbol('black', '#000000', '#000000', strokeweight = 1,
+black = themap.add_symbol('#000000', '#000000', strokeweight = 1,
                           title = labels['none'])
-gray = themap.add_symbol('gray', '#BBBBBB', '#000000', strokeweight = 1,
+gray = themap.add_symbol('#BBBBBB', '#000000', strokeweight = 1,
                          title = labels['filter'])
 symbols = {1 : white, 0 : black, 0.5 : gray}
 
@@ -59,11 +62,13 @@ prefix tb: <http://www.garshol.priv.no/2014/trad-beer/>
 
 SELECT ?s ?title ?lat ?lng ?herbs
 WHERE {
-  ?s
+  ?s a ?klass;
     dc:title ?title;
     geo:lat ?lat;
     geo:long ?lng;
     tb:herbs ?herbs.
+
+  FILTER( ?klass != tb:ArchaeologicalFind )
 }'''
 for (s, title, lat, lng, herbs) in sparqllib.query_for_rows(query):
     if herbs.endswith('/juniper'):

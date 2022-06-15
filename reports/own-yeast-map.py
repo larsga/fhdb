@@ -9,7 +9,7 @@ maplib.DEFAULT_STROKEWEIGHT = 1
 themap = config.make_map_from_cli_args()
 
 NEG = 'http://www.garshol.priv.no/2014/neg/'
-symbol = themap.add_symbol('yellow', '#FFFF00', title = 'Own yeast')
+symbol = themap.add_symbol('#FFFF00', '#000000', title = 'Own yeast')
 
 query = '''
 prefix dc: <http://purl.org/dc/elements/1.1/>

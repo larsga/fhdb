@@ -71,7 +71,7 @@ COUNTRY_LABELS = {
 
 class CountryTable:
 
-    def __init__(self, min_accounts, sort_columns = None, sort_rows = None, row_label = None, lang = 'en'):
+    def __init__(self, min_accounts, sort_columns = None, sort_rows = None, row_label = None, lang = 'en', item_label = None):
         self._min_accounts = min_accounts
         self._country = {} # account uri -> country
         self._values = {} # account uri -> values
@@ -79,10 +79,14 @@ class CountryTable:
         self._sort_rows = sort_rows or self.sort_countries
         self._other_values = [] # values hidden in 'Other' column
         self._row_label = row_label or COUNTRY_LABELS[lang]['col0-label']
+        self._item_label = item_label or COUNTRY_LABELS[lang]['accounts']
         self._lang = lang
 
     def get_row_label(self):
         return self._row_label
+
+    def get_item_label(self):
+        return self._item_label
 
     def add_account(self, value, country, uri):
         self._country[uri] = country
@@ -214,7 +218,7 @@ def write_table(writer, table, get_column_label, get_row_label = default_row_lab
     for col in columns:
         writer.header(get_column_label(col))
 
-    writer.header(COUNTRY_LABELS[lang]['accounts'])
+    writer.header(table.get_item_label())
 
     for country in table.get_countries():
         name = get_row_label(str(country)).strip()

@@ -175,6 +175,9 @@ class Process:
         assert type(self._stones) == bool
         return self._stones
 
+    def is_oven_based(self):
+        return bool(self._inoven)
+
     # </mashing classification>
 
     def infusion_steps_in_range(self, low, high):

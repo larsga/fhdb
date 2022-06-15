@@ -2,6 +2,15 @@
 import os
 import sparqllib, maplib, mapniklib, config
 
+LANG = config.get_language()
+
+labels = {
+    'en' : {'ongoing' : 'Ongoing',
+            'ended'   : 'Ended'},
+    'no' : {'ongoing' : 'Brygging',
+            'ended'   : 'Slutt'},
+}[LANG]
+
 def collect_rows():
     q1 = '''
 prefix neg: <http://www.garshol.priv.no/2014/neg/>
@@ -37,11 +46,11 @@ def convert(year_none_false):
         return int(year_none_false)
 
 def render_year(year, rows, filename, mapfactory, legend = True, year_label = True):
-    themap = mapfactory(config.MapSpecification())
-    alive = themap.add_symbol('alive', '#FFFF00', '#000000', scale = 8,
-                              title = 'Ongoing')
-    dead = themap.add_symbol('dead', '#000000', '#000000', scale = 8,
-                             title = 'Ended')
+    themap = mapfactory()
+    alive = themap.add_symbol('#FFFF00', '#000000', scale = 8,
+                              title = labels['ongoing'])
+    dead = themap.add_symbol('#000000', '#000000', scale = 8,
+                             title = labels['ended'])
     # unknown = themap.add_symbol('unknown', '#AAAAAA', '#000000', scale = 8,
     #                             title = 'Unknown')
 

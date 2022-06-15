@@ -128,11 +128,6 @@ neg:skokubolle a tb:OppskakeType;
 neg:none a tb:OppskakeType;
   rdfs:label "Nothing".
 
-# ===== "JUNIPER PREFERENCE"
-# FIXME: not good enough
-
-neg:with-berries a neg:Thing.
-
 # ===== DRINK TYPES
 
 neg:small-beer a tb:DrinkType.

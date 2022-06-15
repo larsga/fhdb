@@ -8,7 +8,7 @@ import sparqllib
 
 themap = config.make_map_from_cli_args()
 
-alive = themap.add_symbol('yellow', '#FFFF00', '#000000')
+alive = themap.add_symbol('#FFFF00', '#000000')
 
 query = '''
 prefix tb: <http://www.garshol.priv.no/2014/trad-beer/>

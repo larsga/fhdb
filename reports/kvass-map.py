@@ -5,8 +5,19 @@ import sparqllib
 
 themap = config.make_map_from_cli_args()
 
-made = themap.add_symbol('white', '#FFFF00', '#000000', title = 'Kvass made')
-notmade = themap.add_symbol('white', '#FFFF00', '#000000', title = 'No kvass')
+labels = {
+    'no' : {
+        'made' : 'Kvas laget',
+        'notmade' : 'Ingen kvas',
+    },
+    'en' : {
+        'made' : 'Kvass made',
+        'notmade' : 'No kvass',
+    }
+}[config.get_language()]
+
+made = themap.add_symbol('#FFFF00', '#000000', title = labels['made'])
+notmade = themap.add_symbol('#000000', '#000000', title = labels['notmade'])
 symbols = {
     '1' : made,
     '0' : notmade,
@@ -32,4 +43,4 @@ for (s, lat, lng, title, mead) in sparqllib.query_for_rows(query):
     themap.add_marker(lat, lng, title, symbols[mead])
 
 themap.set_legend(True)
-themap.render_to('kvass')
+themap.render_to(config.get_file() or 'kvass-map')

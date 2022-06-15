@@ -39,4 +39,4 @@ symbols = [
         'en' : 'Lauter through hops', 'no' : 'Renn gjennom humle'
     }),
 ]
-maputils.make_thing_map(query, symbols, 'daily-drink-map', legend = True)
+maputils.make_thing_map(query, symbols, 'hop-treatment-map', legend = True)

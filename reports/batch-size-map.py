@@ -2,6 +2,9 @@
 
 import maputils
 
+# should add arguments so this can be set on command-line
+#  ?s tb:part-of dbp:Norway.
+
 query = '''
 prefix dc: <http://purl.org/dc/elements/1.1/>
 prefix neg: <http://www.garshol.priv.no/2014/neg/>

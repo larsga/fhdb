@@ -2,7 +2,7 @@
 import sys, os, argparse
 import maplib, mapniklib, mapleaflib
 
-def parse_spec(spec, speciesfile = None):
+def parse_spec(spec, speciesfile = None, district_file = None):
     parts = spec.split(':')
 
     spec = MapSpecification()
@@ -14,6 +14,8 @@ def parse_spec(spec, speciesfile = None):
         spec.district_file = LANDSDELER
     elif 'di' in parts:
         spec.district_file = DIALEKTER
+    else:
+        spec.district_file = district_file
 
     spec.speciesfile = speciesfile
     return spec
@@ -27,30 +29,33 @@ def make_map_from_cli_args(speciesfile = None, map_type = 'default',
         if sys.argv[1] == 'lf':
             return mapleaflib.LeafletMap(61.8, 9.45, 6)
 
-        spec = parse_spec(sys.argv[1], speciesfile)
-
-        if spec.area in map_views:
-            view = map_views[spec.area]
-
-            if map_type == 'default':
-                themap = mapniklib.MapnikMap(mapniklib.make_simple_map(
-                    east = view.east, west = view.west, south = view.south,
-                    north = view.north, width = view.width,
-                    height = view.height, elevation = spec.elevation,
-                    color = spec.color, speciesfile = spec.speciesfile,
-                    district_file = spec.district_file
-                ), color = spec.color, transform = view.transform)
-            elif map_type == 'choropleth':
-                themap = mapniklib.ChoroplethMap(view)
-            elif map_type == 'colored-region':
-                themap = mapniklib.ColoredRegionMap(view)
-
-            #add_kornol_region(themap)
-            #add_style_regions(themap)
-            #add_landsdeler(themap)
-            return themap
+        if sys.argv[1] != '1':
+            spec = parse_spec(sys.argv[1], speciesfile, district_file)
+            return make_map_from_spec(spec)
 
     return maplib.GoogleMap(61.8, 9.45, 6)
+
+def make_map_from_spec(spec, map_type = 'default'):
+    view = map_views[spec.area]
+
+    if map_type == 'default':
+        themap = mapniklib.MapnikMap(mapniklib.make_simple_map(
+            east = view.east, west = view.west, south = view.south,
+            north = view.north, width = view.width,
+            height = view.height, elevation = spec.elevation,
+            color = spec.color, speciesfile = spec.speciesfile,
+            district_file = spec.district_file,
+            district_line_width = spec.district_line_width
+        ), color = spec.color, transform = view.transform)
+    elif map_type == 'choropleth':
+        themap = mapniklib.ChoroplethMap(view)
+    elif map_type == 'colored-region':
+        themap = mapniklib.ColoredRegionMap(view)
+
+    #add_kornol_region(themap)
+    #add_style_regions(themap)
+    #add_landsdeler(themap)
+    return themap
 
 class MapView:
     def __init__(self, east, west, south, north, width = 2000, height = 1200,
@@ -111,6 +116,8 @@ map_views = {
     'norway-montage' : MapView(east = 6, west = 30, south = 57.9, north = 71.5,
                                width = 2200, height = 2500,
                                transform = norway_montage),
+    'norway-south' : MapView(east = 6, west = 13, south = 57.9, north = 64,
+                               width = 2000, height = 2500),
     'europe' : MapView(east = 4, west = 50, south = 50, north = 65),
     'europe-trim' : MapView(east = -3, west = 54, south = 50, north = 62.5,
                            width = 2000, height = 1400),
@@ -136,6 +143,8 @@ class MapSpecification:
         self.elevation = False
         self.color = True
         self.district_file = None
+        self.district_line_width = 0.5
+        self.speciesfile = None
 
 # ===== COMMAND-LINE OPTIONS
 

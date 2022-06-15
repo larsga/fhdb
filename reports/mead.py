@@ -1,5 +1,6 @@
+# encoding=utf-8
 
-import maputils
+import maputils, config
 
 maputils.make_boolean_map('''
 prefix dc: <http://purl.org/dc/elements/1.1/>
@@ -15,4 +16,16 @@ WHERE {
     geo:long ?lng;
     tb:mead ?mead.
 }''',
-'mead')
+filename = config.get_file() or 'mead-map',
+labels = {
+    'en' : {
+        'true' : 'Mead made',
+        'false' : 'No mead',
+        'borderline' : 'Borderline',
+    },
+    'no' : {
+        'true' : 'Mjød laget',
+        'false' : 'Ingen mjød',
+        'borderline' : 'Gråsone',
+    },
+}[config.get_language()])

@@ -209,6 +209,12 @@ neg:furze a neg:Herb;
 neg:pea-straw a neg:Herb;
   rdfs:label "Pea straw".
 
+neg:oak-leaves a neg:Herb;
+  rdfs:label "Oak leaves".
+
+neg:hylleblomst a neg:Herb;
+  rdfs:label "Sambucus nigra".
+
 # ===== UNCERTAIN
 
 neg:bryggergras a neg:Herb;

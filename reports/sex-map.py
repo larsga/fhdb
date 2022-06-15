@@ -20,9 +20,9 @@ labels = {'en' : {
 }
 
 l = labels[LANG]
-red = themap.add_symbol('red',   '#FF0000', '#000000', title = l['women'])
-pink = themap.add_symbol('pink', '#FF00FF', '#000000', title = l['either'])
-blue = themap.add_symbol('blue', '#0000FF', '#000000', title = l['men'])
+red = themap.add_symbol('#FF0000', '#000000', title = l['women'])
+pink = themap.add_symbol('#FF00FF', '#000000', title = l['either'])
+blue = themap.add_symbol('#0000FF', '#000000', title = l['men'])
 
 NEG = 'http://www.garshol.priv.no/2014/neg/'
 MALE = NEG + 'male'

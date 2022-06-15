@@ -1,7 +1,27 @@
 
-import sparqllib
+import sparqllib, config
 
 BINS = 20
+
+labels = {
+    'en': {
+        'title' : 'Farmhouse ale strength',
+        'xlabel' : 'Kilos of malt pr liter',
+        'ylabel' : 'Number of accounts',
+    },
+    'no' : {
+        'title' : 'Ølets styrke',
+        'xlabel' : 'Kilo malt pr liter',
+        'ylabel' : 'Antall beskrivelser',
+    }
+}[config.get_language()]
+
+thefilter = ''
+if config.get_country():
+    thefilter = '''
+      ?s tb:part-of ?c.
+      FILTER( ?c = dbp:%s )
+    ''' % config.get_country()
 
 query = '''
 prefix dc: <http://purl.org/dc/elements/1.1/>
@@ -18,21 +38,21 @@ WHERE {
     tb:malt-wort-ratio ?malts;
     geo:lat ?lat;
     geo:long ?lng.
-}'''
 
-  #   tb:process ?proc.
-  # ?proc neg:variant-of ?sproc.
-  # ?sproc neg:variant-of ?ssproc.
-  # FILTER (?ssproc = sproc:complex-mash)
+  %s
+}''' % thefilter
 
 ratios = [float(ratio) for (s, ratio) in sparqllib.query_for_rows(query)]
 
 from matplotlib import pyplot
 
-#pyplot.style.use('grayscale')
-(n, bins, patches) = pyplot.hist(ratios, BINS, alpha=0.5,
+pyplot.style.use(config.get_plot_style())
+(n, bins, patches) = pyplot.hist(ratios, BINS,
                                  label = 'Malt/wort ratios')
-pyplot.title('Farmhouse ale strength')
-pyplot.xlabel('Kilos of malt pr liter')
-pyplot.ylabel('Number of accounts')
-pyplot.show()
+pyplot.title(labels['title'])
+pyplot.xlabel(labels['xlabel'])
+pyplot.ylabel(labels['ylabel'])
+if not config.get_file():
+    pyplot.show()
+else:
+    pyplot.savefig(config.get_file())

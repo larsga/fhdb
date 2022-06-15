@@ -8,11 +8,13 @@ lng = 9.45
 
 themap = maplib.GoogleMap(lat, lng, 6)
 
+white = themap.add_symbol('#FFFFFF', '#000000')
+black = themap.add_symbol('#000000', '#000000')
 symbols = {
-    '1' : themap.add_symbol('white', '#FFFFFF', '#000000'),
-    '0' : themap.add_symbol('black', '#000000', '#000000'),
-    'true' : themap.add_symbol('white', '#FFFFFF', '#000000'),
-    'false' : themap.add_symbol('black', '#000000', '#000000')
+    '1' : white,
+    '0' : black,
+    'true' : white,
+    'false' : black
 }
 
 query = '''
@@ -32,4 +34,4 @@ WHERE {
 for (s, lat, lng, title, mead) in sparqllib.query_for_rows(query):
     themap.add_marker(lat, lng, title, symbols[mead])
 
-themap.render_to('small-beer.html')
+themap.render_to('small-beer')

@@ -63,9 +63,9 @@ WEIGHT = 1
 
 themap = config.make_map_from_cli_args()
 
-alive = themap.add_symbol('green', '#00FF00', '#000000', WEIGHT)
-dead  = themap.add_symbol('black', '#000000', '#000000', WEIGHT)
-dunno = themap.add_symbol('gray', '#AAAAAA', '#000000', WEIGHT)
+alive = themap.add_symbol('#00FF00', '#000000', WEIGHT)
+dead  = themap.add_symbol('#000000', '#000000', WEIGHT)
+dunno = themap.add_symbol('#AAAAAA', '#000000', WEIGHT)
 
 for (s, lat, lng, title, ended, year) in responses:
     number = get_last_part(s)

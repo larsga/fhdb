@@ -30,6 +30,9 @@ WHERE {
     %s ?term.
 }'''
 
+#  ?s tb:year ?year.
+#  FILTER (?year < 1990)
+
 def make_term_map(termprop, symbols, filename, usemap = None, scale = None,
                   language = config.get_language()):
     global lat, lng
@@ -65,7 +68,7 @@ def make_term_map(termprop, symbols, filename, usemap = None, scale = None,
 
     unmatched.sort()
     for term in unmatched:
-        print(term)
+        print(repr(term))
 
 def pick_name(name_or_names):
     if type(name_or_names) == type({}):
@@ -190,7 +193,7 @@ def color_scale_map(query, outfile, max_value = 1000000, legend = False,
 
 def color_scale_map_data(data, outfile, legend = False, symbol_count = 10,
                          label_formatter = format_scale_2_digits,
-                         the_range = None):
+                         the_range = None, strokeweight = 1):
     themap = config.make_map_from_cli_args()
 
     if the_range:
@@ -205,7 +208,7 @@ def color_scale_map_data(data, outfile, legend = False, symbol_count = 10,
     symbols = [themap.add_symbol(
         '#' + color(ix, symbol_count),
         '#000000',
-        strokeweight = 1,
+        strokeweight = strokeweight,
         title = label_formatter(smallest + increment * ix,
                                 smallest + increment * (ix+1)),
         id = 'id%s' % ix
@@ -216,7 +219,7 @@ def color_scale_map_data(data, outfile, legend = False, symbol_count = 10,
     for (lat, lng, title, org_value) in data:
         ratio = org_value
         index = (int((ratio - smallest) / increment))
-        symbol = symbols[index]
+        symbol = symbols[min(index, len(symbols) - 1)]
         themap.add_marker(lat, lng, title, symbol, 'Value: %s' % org_value)
 
     themap.set_legend(legend, show_unused = True)
