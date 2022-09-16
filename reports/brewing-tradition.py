@@ -4,14 +4,33 @@ import maplib
 import sparqllib
 
 themap = config.make_map_from_cli_args()
+labels = {
+    'no' : {
+        'brewing'    : 'Brygging',
+        'nobrew'     : 'Ingen brygging',
+        'borderline' : 'I grenseland',
+    },
+    'en' : {
+        'brewing'    : 'Brewing',
+        'nobrew'     : 'No brewing',
+        'borderline' : 'Borderline',
+    },
+}[config.get_language()]
+
+brew = themap.add_symbol('#FFFF00', '#000000', strokeweight = 1,
+                         title = labels['brewing'])
+nobrew = themap.add_symbol('#000000', '#000000', strokeweight = 1,
+                           title = labels['nobrew'])
+borderline = themap.add_symbol('#AAAAAA', '#000000', strokeweight = 1,
+                               title = labels['borderline'])
 
 symbols = {
-    '1' : themap.add_symbol('white', '#FFFF00', '#000000', strokeweight = 1),
-    '0' : themap.add_symbol('black', '#000000', '#000000', strokeweight = 1),
-    'true' : themap.add_symbol('white', '#FFFF00', '#000000', strokeweight = 1),
-    'false' : themap.add_symbol('black', '#000000', '#000000', strokeweight = 1),
+    '1' : brew,
+    '0' : nobrew,
+    'true' : brew,
+    'false' : nobrew,
     'http://www.garshol.priv.no/2014/neg/borderline' :
-        themap.add_symbol('gray', '#AAAAAA', '#000000', strokeweight = 1),
+        borderline,
 #    None : themap.add_symbol('red', '#FF0000', '#000000'),
  }
 
@@ -32,5 +51,6 @@ WHERE {
 for (s, lat, lng, title, trad) in sparqllib.query_for_rows(query):
     themap.add_marker(lat, lng, title, symbols[trad])
 
+themap.set_legend(True)
 themap.render_to(config.get_file() or 'brewing-tradition',
                  format = config.get_format())

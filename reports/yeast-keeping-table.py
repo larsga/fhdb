@@ -1,7 +1,22 @@
 
-import tablelib, sparqllib
+import tablelib, sparqllib, utils
+import argparse
 
-MIN_ACCOUNTS = 2
+parser = argparse.ArgumentParser()
+parser.add_argument('--lang', default = 'en')
+parser.add_argument('--country')
+parser.add_argument('--format', default = 'html')
+parser.add_argument('--min', type=int, default = 2)
+args = parser.parse_args()
+
+LABELS = {
+    'en' : {
+        'method' : 'Method',
+    },
+    'no' : {
+        'method' : 'Metode',
+    },
+}[args.lang]
 
 query = '''
 prefix dc: <http://purl.org/dc/elements/1.1/>
@@ -30,10 +45,10 @@ select ?s ?l where {
 }
 '''
 
-labels = {uri : label for (uri, label) in sparqllib.query_for_rows(q2)}
+labels = utils.collect_labels(q2, args.lang)
 def get_method_name(uri):
-    if uri == 'Other':
-        return 'Other'
+    if uri in ('Other', 'Annet'):
+        return uri
     return labels[uri]
 
 YEAST = 'http://www.garshol.priv.no/2017/trad-beer/yeast-keeping/'
@@ -53,8 +68,10 @@ tablelib.make_table(
     'yeast-keeping-table.html', query, get_method_name,
     label = 'yeast_keeping',
     caption = 'Methods for yeast preservation',
-    min_accounts = MIN_ACCOUNTS,
-    format = tablelib.get_format(),
-    country = tablelib.get_country(),
-    simplify_mapping = mapping
+    min_accounts = args.min,
+    format = args.format,
+    country = args.country,
+    simplify_mapping = mapping,
+    lang = args.lang,
+    row_type_name = LABELS['method']
 )

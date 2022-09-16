@@ -1,14 +1,13 @@
+# encoding=utf-8
 
 import sys, os, argparse
 import maplib, mapniklib, mapleaflib
 
-def parse_spec(spec, speciesfile = None, district_file = None):
+def parse_spec(spec, speciesfile = None, district_file = None, borders = True):
     parts = spec.split(':')
 
-    spec = MapSpecification()
-    spec.area = parts[0]
-    spec.elevation = 'el' in parts
-    spec.color = 'bw' not in parts
+    spec = MapSpecification(parts[0], 'el' in parts, 'bw' not in parts,
+                            borders = borders)
 
     if 'ld' in parts:
         spec.district_file = LANDSDELER
@@ -24,20 +23,20 @@ LANDSDELER = '/Users/larsga/prog/python/etno-distrikt/landsdeler.json'
 DIALEKTER = '/Users/larsga/prog/python/etno-distrikt/dialekter.json'
 
 def make_map_from_cli_args(speciesfile = None, map_type = 'default',
-                           district_file = None):
+                           district_file = None, borders = True):
     if len(sys.argv) > 1:
         if sys.argv[1] == 'lf':
             return mapleaflib.LeafletMap(61.8, 9.45, 6)
 
         if sys.argv[1] != '1':
-            spec = parse_spec(sys.argv[1], speciesfile, district_file)
-            return make_map_from_spec(spec)
+            spec = parse_spec(sys.argv[1], speciesfile, district_file,
+                              borders)
+            return make_map_from_spec(spec, map_type)
 
     return maplib.GoogleMap(61.8, 9.45, 6)
 
 def make_map_from_spec(spec, map_type = 'default'):
-    view = map_views[spec.area]
-
+    view = spec.view
     if map_type == 'default':
         themap = mapniklib.MapnikMap(mapniklib.make_simple_map(
             east = view.east, west = view.west, south = view.south,
@@ -45,7 +44,8 @@ def make_map_from_spec(spec, map_type = 'default'):
             height = view.height, elevation = spec.elevation,
             color = spec.color, speciesfile = spec.speciesfile,
             district_file = spec.district_file,
-            district_line_width = spec.district_line_width
+            district_line_width = spec.district_line_width,
+            national_borders = spec.national_borders
         ), color = spec.color, transform = view.transform)
     elif map_type == 'choropleth':
         themap = mapniklib.ChoroplethMap(view)
@@ -81,10 +81,11 @@ def norway_montage(filename, legend_box):
     from PIL import Image, ImageDraw
     im = Image.open(open(tmpfile, 'rb'))
 
+    # crop: (left, upper, right, lower)
     southern_no = im.crop((0, 1440, 720, 2500))   # 720x1060
-    northern_no = im.crop((486, 510, 1186, 1570)) # 700x1060
+    northern_no = im.crop((530, 380, 1250, 1440)) # 720x1060
 
-    composite = Image.new('RGB', (1420, 1060))
+    composite = Image.new('RGB', (1440, 1060))
     composite.paste(southern_no, (0, 0))
     composite.paste(northern_no, (720, 0))
 
@@ -139,12 +140,15 @@ map_views = {
 }
 
 class MapSpecification:
-    def __init__(self):
-        self.elevation = False
-        self.color = True
+    def __init__(self, area, elevation, color, borders = True):
+        self.area = area
+        self.elevation = elevation
+        self.color = color
         self.district_file = None
         self.district_line_width = 0.5
         self.speciesfile = None
+        self.view = map_views[area]
+        self.national_borders = borders
 
 # ===== COMMAND-LINE OPTIONS
 

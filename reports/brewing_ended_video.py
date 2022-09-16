@@ -82,12 +82,12 @@ def add_year(filename, year):
 
     im = Image.open(filename)
 
-    font = ImageFont.truetype('Arial.ttf', 36)
+    font = ImageFont.truetype('Arial.ttf', 48)
 
     draw = ImageDraw.Draw(im)
 
     draw.text(
-        (200, 15),
+        (50, 15),
         text = str(year),
         fill = (0, 0, 0),
         font = font,

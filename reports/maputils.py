@@ -4,6 +4,9 @@ import random, string, math
 import maplib
 import sparqllib
 import config
+import colorsys
+import sparqllib
+import math
 
 def random_id():
     return ''.join([random.choice(string.ascii_letters) for ix in range(10)])
@@ -34,8 +37,9 @@ WHERE {
 #  FILTER (?year < 1990)
 
 def make_term_map(termprop, symbols, filename, usemap = None, scale = None,
-                  language = config.get_language()):
+                  language = None, legend_location = None):
     global lat, lng
+    language = language or config.get_language()
     # symbols: [(regex, color, name), ...]
 
     stroke = '#000000'
@@ -64,6 +68,8 @@ def make_term_map(termprop, symbols, filename, usemap = None, scale = None,
             unmatched.append(term)
 
     themap.set_legend(True)
+    if legend_location:
+        themap.set_legend_location(legend_location[0], legend_location[1])
     themap.render_to(config.get_file() or filename)
 
     unmatched.sort()
@@ -123,12 +129,6 @@ def make_boolean_map(query, filename, labels = None):
 
     themap.render_to(filename)
 
-import config
-import colorsys
-import maplib
-import sparqllib
-import math
-
 def chex(color):
     return hex(int(color * 255))[2 : ].zfill(2)
 
@@ -160,11 +160,15 @@ max_scale = 25
 def value_mapper(v):
     'Remap values for better visualization.'
     return math.log(v)
+    #return v
 
 def format_scale_2_digits(low, high):
     low = int(round(low * 10.0)) / 10.0
     high = int(round(high * 10.0)) / 10.0
     return '%s-%s' % (low, high)
+
+def format_scale_int(low, high):
+    return '%s-%s' % (int(low), int(high))
 
 def _biggest_scale(biggest):
     oom = 10 ** (int(math.log10(biggest)))
@@ -180,19 +184,19 @@ def calibrate_scale(biggest, smallest):
         new_smallest = _biggest_scale(abs(smallest)) * -1
     else:
         oom = 10 ** (int(math.log10(smallest)))
-        new_smallest = oom * math.floor(smallest / oom)
+        new_smallest = oom * math.floor(smallest / 10 ** oom)
     return (new_biggest, new_smallest)
 
 def color_scale_map(query, outfile, max_value = 1000000, legend = False,
                     symbol_count = 10, value_mapper = value_mapper,
-                    label_formatter = format_scale_2_digits):
+                    label_formatter = None):
     data = [(lat, lng, title, value_mapper(min(float(ratio), max_value)))
             for (lat, lng, title, ratio) in sparqllib.query_for_rows(query)]
     color_scale_map_data(data, outfile, legend, symbol_count,
                          label_formatter)
 
 def color_scale_map_data(data, outfile, legend = False, symbol_count = 10,
-                         label_formatter = format_scale_2_digits,
+                         label_formatter = None,
                          the_range = None, strokeweight = 1):
     themap = config.make_map_from_cli_args()
 
@@ -204,6 +208,12 @@ def color_scale_map_data(data, outfile, legend = False, symbol_count = 10,
 
     (biggest, smallest) = calibrate_scale(biggest, smallest)
     increment = (biggest - smallest) / symbol_count
+
+    if not label_formatter:
+        if increment == int(increment):
+            label_formatter = format_scale_int
+        else:
+            label_formatter = format_scale_2_digits
 
     symbols = [themap.add_symbol(
         '#' + color(ix, symbol_count),

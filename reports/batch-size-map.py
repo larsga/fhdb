@@ -1,9 +1,13 @@
 #encoding=utf-8
 
-import maputils
+import config, maputils
 
-# should add arguments so this can be set on command-line
-#  ?s tb:part-of dbp:Norway.
+config.parser.add_argument('--max', default = 10 ** 9, type = int)
+themax = config._get_args().max
+
+thefilter = ''
+if config.get_country():
+    thefilter = '?s tb:part-of dbp:%s.' % config.get_country()
 
 query = '''
 prefix dc: <http://purl.org/dc/elements/1.1/>
@@ -20,5 +24,12 @@ WHERE {
     geo:lat ?lat;
     geo:long ?lng;
     tb:batch-size ?t.
-}'''
-maputils.color_scale_map(query, 'batch-size-map', value_mapper = lambda x: x)
+
+  %s
+}''' % thefilter
+maputils.color_scale_map(
+    query,
+    config.get_file() or 'batch-size-map',
+    value_mapper = lambda x: min(x, themax),
+    legend = True,
+)

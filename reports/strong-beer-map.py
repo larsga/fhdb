@@ -6,10 +6,10 @@ import sparqllib
 themap = config.make_map_from_cli_args()
 
 symbols = {
-    '1' : themap.add_symbol('white', '#FFFFFF', '#000000'),
-    '0' : themap.add_symbol('black', '#000000', '#000000'),
-    'true' : themap.add_symbol('white', '#FFFFFF', '#000000'),
-    'false' : themap.add_symbol('black', '#000000', '#000000')
+    '1' : themap.add_symbol('#FFFFFF', '#000000'),
+    '0' : themap.add_symbol('#000000', '#000000'),
+    'true' : themap.add_symbol('#FFFFFF', '#000000'),
+    'false' : themap.add_symbol('#000000', '#000000')
 }
 
 query = '''

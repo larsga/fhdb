@@ -255,7 +255,7 @@ def write_table(writer, table, get_column_label, get_row_label = default_row_lab
     writer.cell('100%')
     writer.end_table()
 
-def write_single_table(writer, table, get_column_label, get_row_label = default_row_label):
+def write_single_table(writer, table, get_column_label, get_row_label = default_row_label, lang = 'en'):
     writer.start_table()
     writer.new_row()
     writer.header(table.get_row_label())

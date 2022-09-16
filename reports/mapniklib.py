@@ -48,7 +48,6 @@ class MapnikMap(maplib.AbstractMap):
         self._base_map = base_map
         self._color = color
         self._transform = transform
-        self._legend_location = ('top', 'left')
 
     def get_base_map(self):
         return self._base_map
@@ -60,11 +59,12 @@ class MapnikMap(maplib.AbstractMap):
         if isinstance(self._base_map, ColoredRegionMap):
             self._base_map.add_line_string(geojson, color, width)
         else:
-            render_line_string(self._base_map._mapnik_map)
+            render_line_string(self._base_map._mapnik_map, geojson, color, width)
 
-    def add_shaded_region(self, shape, color = 'rgb(0%, 0%, 0%)', opacity = 0.15):
+    def add_shaded_region(self, shape = None, color = 'rgb(0%, 0%, 0%)', opacity = 0.15, jsonfile = None):
         m = self._base_map._mapnik_map
-        _add_shaded_region(m, shape = shape, color = color, opacity = opacity)
+        _add_shaded_region(m, shape = shape, color = color, opacity = opacity,
+                           jsonfile = jsonfile)
 
     def add_rectangle(self, east, west, north, south, color, width = 1):
         m = self._base_map._mapnik_map
@@ -151,7 +151,7 @@ class SimpleBaseMap(BaseMap):
     def make_map(self):
         return self._mapnik_map
 
-def make_simple_map(shapefile = None, west = -5, south = 55, east = 35, north = 67, width = 2000, height = 1200, elevation = ELEVATION_DEFAULT, color = True, speciesfile = None, district_file = None, district_line_width = 0.5):
+def make_simple_map(shapefile = None, west = -5, south = 55, east = 35, north = 67, width = 2000, height = 1200, elevation = ELEVATION_DEFAULT, color = True, speciesfile = None, district_file = None, district_line_width = 0.5, national_borders = True):
     if color:
         colors = default_colors
     else:
@@ -166,7 +166,8 @@ def make_simple_map(shapefile = None, west = -5, south = 55, east = 35, north = 
     _add_green_land(m, shapefile, colors)
     if elevation:
         _add_elevation(m)
-    _add_borders(m, shapefile, colors)
+    if national_borders:
+        _add_borders(m, shapefile, colors)
 
     _add_lakes(m, colors)
     _add_rivers(m, colors)
@@ -470,73 +471,6 @@ def _add_rivers(m, colors):
 
 # ===== RENDERING
 
-def _generate_svg(filename, symbol):
-    with open(filename, 'w') as f:
-        size = symbol.get_scale() * 2
-        mid = symbol.get_scale()
-
-        if symbol.get_shape() == maplib.CIRCLE:
-            f.write('''
-                <svg viewBox="0 0 %s %s" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="%s" cy="%s" r="%s" stroke="%s" fill="%s"
-                          stroke-width="%s"/>
-                </svg>
-            ''' % (
-                size,
-                size,
-                mid,
-                mid,
-                mid,
-                symbol.get_stroke_color(),
-                symbol.get_color(),
-                symbol.get_stroke_weight()
-            ))
-
-        elif symbol.get_shape() == maplib.SQUARE:
-            f.write('''
-                <svg viewBox="0 0 %s %s" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="%s" height="%s" stroke="%s" fill="%s"/>
-                </svg>
-            ''' % (
-                size,
-                size,
-                size,
-                size,
-                symbol.get_stroke_color(),
-                symbol.get_color()
-            ))
-
-        elif symbol.get_shape() == maplib.TRIANGLE:
-            topx = size / 2.0
-            topy = 0
-
-            botleftx = 0
-            botlefty = size
-
-            botrightx = size
-            botrighty = size
-
-            f.write('''
-                <svg viewBox="0 0 %s %s" xmlns="http://www.w3.org/2000/svg">
-                  <polygon points="%s,%s %s,%s %s,%s"
-                           stroke="%s" fill="%s" />
-                </svg>
-            ''' % (
-                size,
-                size,
-                topx,
-                topy,
-                botleftx,
-                botlefty,
-                botrightx,
-                botrighty,
-                symbol.get_stroke_color(),
-                symbol.get_color()
-            ))
-
-        else:
-            assert False, 'Unknown shape: %s' % symbol.get_shape()
-
 def _render(themap, filename, format, legend_location):
     m = themap.get_base_map().make_map()
     ctx = mapnik.Context()
@@ -546,7 +480,7 @@ def _render(themap, filename, format, legend_location):
         assert not(symbol.get_label())
 
         svgfile = '/tmp/%s.svg' % symbol.get_id()
-        _generate_svg(svgfile, symbol)
+        symbol.generate_svg(svgfile)
 
         ps = mapnik.PointSymbolizer()
         ps.file = svgfile
@@ -721,12 +655,16 @@ class ColoredRegionMap(BaseMap):
         self._symbols = []
         self._water_color = water_color or default_colors.water_color
         self._line_strings = []
+        self._shaded_regions = []
 
     def set_legend(self, legend):
         self._legend = legend
 
     def set_district_file(self, district_file):
         self._district_file = district_file
+
+    def add_shaded_region(self, shape = None, color = 'rgb(0%, 0%, 0%)', opacity = 0.15, jsonfile = None):
+        self._shaded_regions.append((shape, color, opacity, jsonfile))
 
     def set_label_formatter(self, label_formatter):
         self._label_formatter = label_formatter
@@ -778,6 +716,10 @@ class ColoredRegionMap(BaseMap):
         for (geojson, color, width) in self._line_strings:
             render_line_string(m, geojson, color, width)
 
+        for (shape, color, opacity, geojson) in self._shaded_regions:
+            _add_shaded_region(m, shape = shape, color = color,
+                               opacity = opacity, jsonfile = geojson)
+
         view = self._view
         zoom_to_box(m, view.west, view.south, view.east, view.north)
         return m
@@ -788,7 +730,7 @@ def _render_coloured_map(themap, outfile, view, symbols):
 
     legend_box = None
     if symbols:
-        legend_box = _add_legend(outfile, symbols)
+        legend_box = _add_legend(outfile, symbols, ('top', 'left'))
 
     if view.transform:
         view.transform(outfile, legend_box)
@@ -801,7 +743,7 @@ def _render_coloured_map(themap, outfile, view, symbols):
 def make_color_scale(count):
     import colormaps
 
-    inc = len(colormaps._magma_data) / count
+    inc = int(len(colormaps._magma_data) / count)
     return [
         'rgb(%s%%, %s%%, %s%%)' % tuple([int(round(x * 100)) for x in colormaps._magma_data[inc * ix]])
         for ix in range(count + 1)
@@ -813,7 +755,7 @@ def nicehex(v):
 def make_color_scale_rgb(count):
     import colormaps
 
-    inc = len(colormaps._magma_data) / count
+    inc = int(len(colormaps._magma_data) / count)
     return [
         '#%s%s%s' % tuple([nicehex(int(round(x * 256))) for x in colormaps._magma_data[inc * ix]])
         for ix in range(count + 1)

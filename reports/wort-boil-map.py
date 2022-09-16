@@ -1,3 +1,4 @@
+# encoding=utf-8
 
 import sys, os
 import colorsys
@@ -22,13 +23,13 @@ labels = {
 }[LANG]
 
 stroke = 1
-istrue = themap.add_symbol('boiled', '#FFFF00', '#000000',
+istrue = themap.add_symbol('#FFFF00', '#000000',
                            strokeweight = stroke,
                            title = labels['boiled'])
-isfalse = themap.add_symbol('notboiled', '#000000', '#000000',
+isfalse = themap.add_symbol('#000000', '#000000',
                             strokeweight = stroke,
                             title = labels['notboiled'])
-borderline = themap.add_symbol('borderline', '#AAAAAA', '#000000',
+borderline = themap.add_symbol('#AAAAAA', '#000000',
                                strokeweight = stroke,
                                title = labels['borderline'])
 

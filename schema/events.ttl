@@ -183,3 +183,7 @@ event:ship-launch a tb:Event;
   rdfs:label "Ship launch"@en, "Fartygsbyggen"@sv;
   dc:descriptions "Building of a ship/boat.";
   tb:repeating-event false.
+
+event:peat-cutting a tb:Event;
+  rdfs:label "Peat cutting";
+  tb:repeating-event false.

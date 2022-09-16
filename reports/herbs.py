@@ -2,6 +2,7 @@
 import argparse
 import sparqllib
 import tablelib
+import utils
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--lang', default = 'en')
@@ -26,43 +27,9 @@ TRANSLATIONS = {
     NEG + 'grobone' : NEG + 'artemisia-vulgaris'
 }
 
-def better_than(repl, orig):
-    if not orig:
-        return True
-
-    if repl.lang == LANG:
-        return True
-
-    return False
-
-query = '''
-prefix neg: <http://www.garshol.priv.no/2014/neg/>
-prefix dc: <http://purl.org/dc/terms/>
-prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-prefix owl: <http://www.w3.org/2002/07/owl#>
-
-select * where {
-  ?h a neg:Herb; rdfs:label ?l
-}
-'''
-herb_names = {}
-for (h, l) in sparqllib.sparql.query(sparqllib.ENDPOINT, query):
-    h = sparqllib.value(h)
-
-    n = herb_names.get(h)
-    if better_than(l, n):
-        herb_names[h] = l
-
-herb_names = {url : sparqllib.value(label) for (url, label)
-              in herb_names.items()}
-
-# import pprint
-# pprint.pprint(herb_names)
-# import sys; sys.exit(0)
-
 # ===== HERBS BY COUNTRY
 
-query = '''
+PREFIXES = '''
 prefix dc: <http://purl.org/dc/elements/1.1/>
 prefix neg: <http://www.garshol.priv.no/2014/neg/>
 prefix neu: <http://www.garshol.priv.no/2015/neu/>
@@ -70,7 +37,24 @@ prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
 prefix tb: <http://www.garshol.priv.no/2014/trad-beer/>
 prefix dbp: <http://dbpedia.org/resource/>
 prefix uff: <http://www.garshol.priv.no/2015/uff/>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+'''
 
+query = PREFIXES + '''
+select ?c ?l where {
+  ?c a %s; rdfs:label ?l
+}
+''' % region_type
+region_labels = utils.collect_labels(query, LANG)
+
+query = PREFIXES + '''
+select ?h ?l where {
+  ?h a neg:Herb; rdfs:label ?l
+}
+'''
+herb_names = utils.collect_labels(query, LANG)
+
+query = PREFIXES + '''
 SELECT DISTINCT ?h ?c ?s
 WHERE {
   ?s dc:title ?title;
@@ -84,15 +68,25 @@ WHERE {
 def get_herb_name(h):
     return herb_names.get(str(h), tablelib.get_last_part(str(h)))
 
+def get_region_name(url):
+    return region_labels[url]
+
+q = PREFIXES + 'select <http://whoops> ?label where { %s rdfs:label ?label }' % region_type
+regiontype_name = utils.collect_labels(q, LANG)['http://whoops']
+
 CAPTION = '''Herbs used in farmhouse brewing. Columns are not exclusive. Every herb mentioned in the source is included, even if the source says only 'I have heard' or 'I think it was used'.'''
 
 if __name__ == '__main__':
-    tablelib.make_table('herbs', query, get_herb_name,
-                        label = 'herbs',
-                        caption = CAPTION,
-                        min_accounts = MIN_ACCOUNTS,
-                        format = format,
-                        lang = LANG)
+    tablelib.make_table(
+        'herbs', query, get_herb_name,
+        label = 'herbs',
+        caption = CAPTION,
+        min_accounts = MIN_ACCOUNTS,
+        get_row_label = get_region_name,
+        row_type_name = regiontype_name,
+        format = format,
+        lang = LANG
+    )
 
 # # ===== HERBS BY PROVINCE
 

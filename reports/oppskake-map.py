@@ -37,7 +37,7 @@ PREFIX = 'http://www.garshol.priv.no/2014/neg/'
 symbols = [
     (PREFIX + 'party',         '#FFFF00', labels[LANG]['party']),
     (PREFIX + 'house-tasting', '#AAAAAA', labels[LANG]['house-tasting']),
-    (PREFIX + 'skokubolle',    '#00FF00', labels[LANG]['skokubolle']),
+    (PREFIX + 'skokubolle',    '#5555FF', labels[LANG]['skokubolle']),
     (PREFIX + 'none',          '#000000', labels[LANG]['none']),
 ]
 maputils.make_thing_map(query, symbols,

@@ -5,7 +5,7 @@ import re
 import maputils
 
 DRAV = re.compile('drav(a)?')
-MASK = re.compile(u'm(a|ei|e|ä|æ|ö)sk')
+MASK = re.compile(u'm(a|ei|e|ä|æ|ö)sk(sæva)?')
 
 symbols = [
     (DRAV, '#00FF00', 'Drav'),

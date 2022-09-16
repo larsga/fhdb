@@ -4,13 +4,13 @@ import re
 import config
 import maputils
 
-KORNOL = re.compile(u'k((orn)|(ønnj))øl')
+KORNOL = re.compile(u'k((o[rd]n)|(ønnj))øl')
 HEIMABRYGG = re.compile('heim(a|e)br(y|u)gg')
 MALTOL = re.compile(u'malt(ø|ö)l')
 DRICKA = re.compile(u'dr(i|e)(c|k)?k(a|e)?')
 
 symbols = [
-    (KORNOL,     '#FFFFFF', u'Kornøl'),
+    (KORNOL,     '#FFFF00', u'Kornøl'),
     (HEIMABRYGG, '#0000FF', u'Heimabrygg'),
     (MALTOL,     '#00FF00', u'Maltøl'),
     (DRICKA,     '#FF0000', u'Dricka'),

@@ -20,7 +20,7 @@ WHERE {
     dc:title ?title;
     geo:lat ?lat;
     geo:long ?lng;
-    neg:remove-sprout ?remove.
+    tb:remove-sprout ?remove.
 }'''
 for (s, lat, lng, remove, title) in sparqllib.query_for_rows(query):
     if remove == 'true':

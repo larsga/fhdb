@@ -28,6 +28,7 @@ class AbstractMap:
         self._markers = []
         self._symbols = []
         self._legend = False
+        self._legend_location = ('top', 'left')
         self._default_scale = default_scale
         self._show_unused_symbols = False
 
@@ -73,6 +74,9 @@ class AbstractMap:
         self._legend = legend
         self._show_unused_symbols = show_unused
 
+    def set_legend_location(self, vertical, horizontal):
+        pass # don't think we can control this on Google Maps
+
     def has_legend(self):
         return self._legend
 
@@ -87,6 +91,7 @@ class GoogleMap(AbstractMap):
         self._center_lat = center_lat
         self._center_lng = center_lng
         self._zoom = zoom
+        self._lines = []
 
     def get_id(self):
         return self._id
@@ -100,6 +105,10 @@ class GoogleMap(AbstractMap):
     def get_zoom_level(self):
         return self._zoom
 
+    def add_line_string(self, geojson, color, width):
+        data = json.loads(geojson)
+        self._lines.append((geojson, color, width))
+
     def render_to(self, filename, width = '100%', height = '100%', bottom = '',
                   format = 'html'):
         format = format or 'html'
@@ -110,7 +119,6 @@ class GoogleMap(AbstractMap):
 
         if len(sys.argv) > 1:
             os.system('open ' + filename)
-
 
 # ===== SYMBOL
 
@@ -168,6 +176,76 @@ var %s = {
   scale: %s
 };
         ''' % (self._id, self._color, self._strokecolor, self._strokeweight, self._scale))
+
+    def generate_svg(self, filename):
+        with open(filename, 'w') as f:
+            padding = 2
+            viewsize = (self.get_scale()+padding) * 2
+            size = self.get_scale() * 2
+            mid = self.get_scale() + padding / 2.0
+            radius = self.get_scale()
+
+            if self.get_shape() == CIRCLE:
+                f.write('''
+                    <svg viewBox="0 0 %s %s" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="%s" cy="%s" r="%s" stroke="%s" fill="%s"
+                              stroke-width="%s"/>
+                    </svg>
+                ''' % (
+                    viewsize,
+                    viewsize,
+                    mid,
+                    mid,
+                    radius,
+                    self.get_stroke_color(),
+                    self.get_color(),
+                    self.get_stroke_weight()
+                ))
+
+            elif self.get_shape() == SQUARE:
+                f.write('''
+                    <svg viewBox="0 0 %s %s" xmlns="http://www.w3.org/2000/svg">
+                      <rect width="%s" height="%s" stroke="%s" fill="%s"/>
+                    </svg>
+                ''' % (
+                    size,
+                    size,
+                    size,
+                    size,
+                    self.get_stroke_color(),
+                    self.get_color()
+                ))
+
+            elif self.get_shape() == TRIANGLE:
+                topx = size / 2.0
+                topy = 0
+
+                botleftx = 0
+                botlefty = size
+
+                botrightx = size
+                botrighty = size
+
+                f.write('''
+                    <svg viewBox="0 0 %s %s" xmlns="http://www.w3.org/2000/svg">
+                      <polygon points="%s,%s %s,%s %s,%s"
+                               stroke="%s" fill="%s" />
+                    </svg>
+                ''' % (
+                    size,
+                    size,
+                    topx,
+                    topy,
+                    botleftx,
+                    botlefty,
+                    botrightx,
+                    botrighty,
+                    self.get_stroke_color(),
+                    self.get_color()
+                ))
+
+            else:
+                assert False, 'Unknown shape: %s' % self.get_shape()
 
 # ===== MARKER
 
@@ -317,6 +395,28 @@ function add_marker(theid, lat, lng, title, symbol, label, textcolor, data) {
                     to_jstr(marker.get_symbol().get_label()),
                     to_jstr(marker.get_symbol().get_text_color()),
                     json.dumps(marker.get_data())))
+
+    if themap._lines:
+        outf.write(u'''
+  function add_line(themap, coordinates, weight) {
+    const path = new google.maps.Polyline({
+      path: coordinates,
+      geodesic: false,
+      strokeColor: "#000000",
+      strokeOpacity: 1.0,
+      strokeWeight: weight,
+    });
+
+    path.setMap(themap);
+  }
+        ''')
+
+    for (geojson, color, width) in themap._lines:
+        geojson = json.loads(geojson)
+        for line in geojson['features']:
+            line = line['geometry']['coordinates']
+            latlngs = ['{ lng: %s, lat: %s }' % (lon, lat) for (lon, lat) in line]
+            outf.write('add_line(map, [%s], %s);\n' % (','.join(latlngs), width))
 
     outf.write(u'</script>\n\n\n')
 

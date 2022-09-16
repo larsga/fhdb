@@ -49,7 +49,12 @@ clean:boiling-water a tb:CleaningAgent;
 
 clean:soda-water a tb:CleaningAgent;
   rdfs:label "Soda water";
-  dc:description """Not sure exactly what it is.""".
+  dc:description """Sodium carbonate used for cleaning. Krystallsoda.
+  Na2CO3.""".
+
+clean:caustic-soda a tb:CleaningAgent;
+  rdfs:label "Caustic soda";
+  dc:description """Natrium hydroksid. NaOH.""".
 
 clean:chains a tb:CleaningAgent;
   rdfs:label "Chains";

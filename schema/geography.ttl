@@ -7,33 +7,35 @@
 
 # ONTOLOGY
 
-dbp:Country rdfs:subClassOf dbo:Place.
+dbp:Country rdfs:subClassOf dbo:Place;
+  rdfs:label "Country"@en, "Land"@no.
 dbp:Region rdfs:subClassOf dbo:Place.
 dbp:Province rdfs:subClassOf dbp:Region.
 
 # COUNTRIES
 
-dbp:Austria rdfs:label "Austria"; a dbp:Country.
+dbp:Austria rdfs:label "Austria", "Østerrike"@no; a dbp:Country.
 dbp:Belarus rdfs:label "Belarus"; a dbp:Country.
-dbp:Belgium rdfs:label "Belgium"; a dbp:Country.
-dbp:Croatia rdfs:label "Croatia"; a dbp:Country.
-dbp:Denmark rdfs:label "Denmark"; a dbp:Country.
-dbp:Estonia rdfs:label "Estonia"; a dbp:Country.
+dbp:Belgium rdfs:label "Belgium", "Belgia"@no; a dbp:Country.
+dbp:Croatia rdfs:label "Croatia", "Kroatia"@no; a dbp:Country.
+dbp:Denmark rdfs:label "Denmark", "Danmark"@no; a dbp:Country.
+dbp:Estonia rdfs:label "Estonia", "Estland"@no; a dbp:Country.
 dbp:Finland rdfs:label "Finland"; a dbp:Country.
-dbp:France rdfs:label  "France"; a dbp:Country.
+dbp:France rdfs:label  "France", "Frankrike"@no; a dbp:Country.
 dbp:Georgia rdfs:label "Georgia"; a dbp:Country.
-dbp:Germany rdfs:label "Germany"; a dbp:Country.
+dbp:Germany rdfs:label "Germany", "Tyskland"@no; a dbp:Country.
 dbp:Greece rdfs:label  "Greece"; a dbp:Country.
 dbp:Iceland rdfs:label "Iceland"; a dbp:Country.
 dbp:Ireland rdfs:label "Ireland"; a dbp:Country.
 dbp:Latvia rdfs:label  "Latvia"; a dbp:Country.
-dbp:Lithuania rdfs:label "Lithuania"; a dbp:Country.
+dbp:Lithuania rdfs:label "Lithuania", "Litauen"@no; a dbp:Country.
 dbp:Netherlands rdfs:label "Netherlands"; a dbp:Country.
-dbp:Norway rdfs:label "Norway"; a dbp:Country.
-dbp:Russia rdfs:label "Russia"; a dbp:Country.
+dbp:Norway rdfs:label "Norway", "Norge"@no; a dbp:Country.
+dbp:Russia rdfs:label "Russia", "Russland"@no; a dbp:Country.
 dbp:Slovenia rdfs:label "Slovenia"; a dbp:Country.
-dbp:Sweden rdfs:label "Sweden"; a dbp:Country.
-dbp:United_Kingdom rdfs:label "United Kingdom"; a dbp:Country.
+dbp:Sweden rdfs:label "Sweden", "Sverige"@no; a dbp:Country.
+dbp:United_Kingdom rdfs:label "United Kingdom", "Storbritannia"@no;
+  a dbp:Country.
   dbp:England a dbp:Region; rdfs:label "England";
     tb:part-of dbp:United_Kingdom.
   dbp:Scotland a dbp:Region; rdfs:label "Scotland";

@@ -9,6 +9,14 @@ BINS = 10
 def average(numbers):
     return sum(numbers) / len(numbers)
 
+def median(numbers):
+    numbers.sort()
+    if len(numbers) % 2 == 0:
+        return numbers[int(len(numbers) / 2)]
+    else:
+        return (numbers[int(len(numbers) / 2)] +
+                numbers[int(len(numbers) / 2) + 1]) / 2.0
+
 # ===== ALL IN ONE DATA SET
 
 singles = []
@@ -38,7 +46,7 @@ for (s, lat, lng, t, c) in sparqllib.query_for_rows(q):
         else:
             other += 1
     else:
-        # print 'UNINTERPRETABLE', t
+        print('UNINTERPRETABLE', t)
         unreadable += 1
 
 import numpy
@@ -47,6 +55,7 @@ temperatures.sort()
 print(temperatures)
 print('Interpreted temperatures', len(temperatures))
 print('Unreadable', unreadable)
+print('Median', median(temperatures))
 print('Average', average(temperatures))
 print('  Single', len(singles), average(singles), numpy.std(singles))
 print('  Range', len(ranges), average(ranges), numpy.std(ranges))

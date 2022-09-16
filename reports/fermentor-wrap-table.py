@@ -1,7 +1,13 @@
 
-import tablelib, sparqllib
+import tablelib, sparqllib, utils
+import argparse
 
-MIN_ACCOUNTS = 1
+parser = argparse.ArgumentParser()
+parser.add_argument('--lang', default = 'en')
+parser.add_argument('--country')
+parser.add_argument('--format', default = 'html')
+parser.add_argument('--min', type=int, default = 1)
+args = parser.parse_args()
 
 query = '''
 prefix dc: <http://purl.org/dc/elements/1.1/>
@@ -27,7 +33,7 @@ select ?s ?l where {
 }
 '''
 
-labels = {uri : label for (uri, label) in sparqllib.query_for_rows(q2)}
+labels = utils.collect_labels(q2, args.lang)
 def get_method_name(uri):
     if uri == 'Other':
         return 'Other'
@@ -49,8 +55,9 @@ tablelib.make_table(
     'fermentor-wrap-table.html', query, get_method_name,
     label = 'fermentor_wrap',
     caption = 'What fermentors are wrapped in',
-    min_accounts = MIN_ACCOUNTS,
-    format = tablelib.get_format(),
-    country = tablelib.get_country(),
-    simplify_mapping = mapping
+    min_accounts = args.min,
+    format = args.format,
+    country = args.country,
+    simplify_mapping = mapping,
+    lang = args.lang
 )

@@ -5,22 +5,42 @@ import sparqllib
 import proclib
 
 themap = config.make_map_from_cli_args()
+labels = {
+    'en' : {
+        None      : 'Unclassified',
+        'stone'   : 'Stone',
+        'boiled'  : 'Boiled',
+        'raw'     : 'Raw ale',
+        'complex' : 'Complex mash',
+        'fermash' : 'Ferment mash',
+        'oven'    : 'Oven',
+    },
+    'no' : {
+        None      : 'Uklassifisert',
+        'stone'   : 'Steinøl',
+        'boiled'  : 'Kokt vørter',
+        'raw'     : 'Råøl',
+        'complex' : 'Kompleks mesk',
+        'fermash' : 'Gjæret mesk',
+        'oven'    : 'Ovn',
+    }
+}[config.get_language()]
 
 symbols = {
     None : themap.add_symbol('#000000', '#000000', strokeweight = 1,
-                             title = 'Unclassified'),
+                             title = labels[None]),
     'Stone' : themap.add_symbol('#00FF00', '#000000',
-                                title = 'Stone', strokeweight = 1),
-    'Ferment mash' : themap.add_symbol('#42DFFF', '#000000',
-                                       title = 'Ferment mash', strokeweight = 1),
-    'Oven' : themap.add_symbol('#FFFF00', '#000000',
-                               title = 'Oven', strokeweight = 1),
-    'Complex mash' : themap.add_symbol('#4444FF', '#000000',
-                               title = 'Complex mash', strokeweight = 1),
-    'Raw ale' : themap.add_symbol('#FF8800', '#000000',
-                                  title = 'Raw ale', strokeweight = 1),
-    'Boiled' : themap.add_symbol('#FFFFFF', '#000000',
-                                  title = 'Boiled', strokeweight = 1),
+                                title = labels['stone'], strokeweight = 1),
+    'Ferment mash' : themap.add_symbol('#42DFFF', '#000000', strokeweight = 1,
+                                       title = labels['fermash']),
+    'Oven' : themap.add_symbol('#FFFF00', '#000000', strokeweight = 1,
+                               title = labels['oven']),
+    'Complex mash' : themap.add_symbol('#4444FF', '#000000', strokeweight = 1,
+                                       title = labels['complex']),
+    'Raw ale' : themap.add_symbol('#FF8800', '#000000', strokeweight = 1,
+                                  title = labels['raw']),
+    'Boiled' : themap.add_symbol('#FFFFFF', '#000000', strokeweight = 1,
+                                  title = labels['boiled']),
 }
 
 process_categories = proclib.classify_processes()

@@ -9,9 +9,9 @@ def combine_charts(images, per_row, filename):
     images = [Image.open(image) for image in images]
     widths, heights = zip(*(i.size for i in images))
 
-    width = max(widths) * per_row
-    rows = (len(images) / per_row) + min(1, len(images) % per_row)
-    height = max(heights) * rows
+    width = int(max(widths)) * per_row
+    rows = int((len(images) / per_row) + min(1, len(images) % per_row))
+    height = int(max(heights)) * rows
 
     new_im = Image.new('RGB', (width, height))
 

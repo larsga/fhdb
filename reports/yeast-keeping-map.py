@@ -26,19 +26,19 @@ labels = {'en' : {
     }
 }
 
-black = themap.add_symbol('black', '#000000', '#000000', strokeweight = 1,
+black = themap.add_symbol('#000000', '#000000', strokeweight = 1,
                           title = labels[LANG]['other'])
-yellow = themap.add_symbol('yellow', '#FFAAAA', '#000000', strokeweight = 1, title = labels[LANG]['cakes'])
-dark_yellow = themap.add_symbol('dark_yellow', '#AAAAFF', '#000000', strokeweight = 1, title = labels[LANG]['log'])
-dark_yellow2 = themap.add_symbol('dark_yellow2', '#FFFFAA', '#000000', strokeweight = 1, title = labels[LANG]['ring'])
-brown = themap.add_symbol('brown', '#C04343', '#000000', strokeweight = 1,
+yellow = themap.add_symbol('#FFAAAA', '#000000', strokeweight = 1, title = labels[LANG]['cakes'])
+dark_yellow = themap.add_symbol('#AAAAFF', '#000000', strokeweight = 1, title = labels[LANG]['log'])
+dark_yellow2 = themap.add_symbol('#FFFFAA', '#000000', strokeweight = 1, title = labels[LANG]['ring'])
+brown = themap.add_symbol('#C04343', '#000000', strokeweight = 1,
                           title = labels[LANG]['dried'])
 #white = themap.add_symbol('white', '#FFFFFF', '#000000', strokeweight = 1)
-green = themap.add_symbol('green', '#00FF00', '#000000', strokeweight = 1,
+green = themap.add_symbol('#00FF00', '#000000', strokeweight = 1,
                           title = labels[LANG]['cask'])
-#red = themap.add_symbol('red', '#FF0000', '#000000', strokeweight = 1)
+#red = themap.add_symbol('#FF0000', '#000000', strokeweight = 1)
 #dark_red = themap.add_symbol('dark_red', '#AA0000', '#000000', strokeweight = 1)
-blue = themap.add_symbol('blue', '#4444FF', '#000000', strokeweight = 1,
+blue = themap.add_symbol('#4444FF', '#000000', strokeweight = 1,
                          title = labels[LANG]['wet'])
 symbols = {
     'Dried in a trough'           : brown,

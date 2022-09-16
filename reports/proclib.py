@@ -200,9 +200,9 @@ class Process:
         elif self._mashboil or self._mashkettle or self._circ or (self._inf and self._inf >= STEP_MASH_MIN_STEPS):
             return 'Complex mash'
         elif self.infusion_steps_in_range(1, STEP_MASH_MIN_STEPS):
-            if self._wboil == False:
+            if self._wboil in (False, BORDERLINE):
                 return 'Raw ale'
-            elif self._wboil in (True, BORDERLINE):
+            elif self._wboil == True:
                 return 'Boiled'
             else:
                 assert False

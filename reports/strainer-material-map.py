@@ -1,16 +1,16 @@
 
 import sys, string
 import config
-import colorsys
-import maputils
 import sparqllib
 
-themap = config.make_map_from_cli_args()
-material = sys.argv[2]
+config.parser.add_argument('material', nargs = '?')
+material = config._get_args().material
 
-white = themap.add_symbol('white', '#FFFFFF', '#000000', strokeweight = 1,
-                          title = string.upper(material[0]) + material[1 : ])
-black = themap.add_symbol('black', '#000000', '#000000', strokeweight = 1,
+themap = config.make_map_from_cli_args()
+
+white = themap.add_symbol('#FFFFFF', '#000000', strokeweight = 1,
+                          title = material[0].upper() + material[1 : ])
+black = themap.add_symbol('#000000', '#000000', strokeweight = 1,
                           title = 'No ' + material)
 
 query = '''

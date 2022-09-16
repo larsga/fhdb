@@ -12,7 +12,7 @@ SVAGDRICKA = re.compile(u'svagdri(c|k)k(a|e)')
 DRICKA = re.compile(u'dr(e|i)(c|k)k(a|e)?')
 DAGLIGOL = re.compile(u'dagligøl')
 ETTERLAG = re.compile(u'(e|ä)(i|f)?(t)?te(r)?la(g|ck|k)')
-TAPPDREKK = re.compile('tapp(e)?dr(e|ø|y)k(k)?')
+TAPPDREKK = re.compile('t(a|o)pp(e)?dr(e|ø|y)k(k)?')
 
 symbols = [
     (LETT,       '#FFFFFF', u'Lettøl'),
@@ -26,4 +26,7 @@ symbols = [
     (ETTERLAG,   '#FF0000', u'Etterlag'),
     (TAPPDREKK,  '#AAAAFF', u'Tappdrekk'),
 ]
-maputils.make_term_map('tb:small-beer-name', symbols, 'small-beer-names')
+maputils.make_term_map(
+    'tb:small-beer-name', symbols, 'small-beer-names',
+    legend_location = ('top', 'right')
+)

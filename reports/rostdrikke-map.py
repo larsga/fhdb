@@ -14,18 +14,18 @@ WHERE {
     dc:title ?title;
     geo:lat ?lat;
     geo:long ?lng;
-    tb:mead ?mead.
+    tb:rostdrikke ?mead.
 }''',
-filename = config.get_file() or 'mead-map',
+filename = config.get_file() or 'rostdrikke-map',
 labels = {
     'en' : {
-        'true' : 'Mead made',
-        'false' : 'No mead',
+        'true' : 'Rostdrikke made',
+        'false' : 'No rostdrikke',
         'borderline' : 'Borderline',
     },
     'no' : {
-        'true' : 'Mjød laget',
-        'false' : 'Ingen mjød',
-        'borderline' : 'Usikkert',
+        'true' : 'Rostdrikke laget',
+        'false' : 'Ingen rostdrikke',
+        'borderline' : 'Gråsone',
     },
 }[config.get_language()])

@@ -17,4 +17,4 @@ WHERE {
     geo:lat ?lat;
     geo:long ?lng.
 }'''
-maputils.color_scale_map(query, 'malt-wort-ratio-map', legend = False)
+maputils.color_scale_map(query, 'malt-wort-ratio-map', legend = True)

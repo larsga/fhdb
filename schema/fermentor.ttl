@@ -14,15 +14,18 @@ neg:aakle a tb:FermentorWrapping;
   rdfs:seeAlso <https://no.wikipedia.org/wiki/%C3%85kle>.
 
 neg:blankets a tb:FermentorWrapping;
-  rdfs:label "Blankets";
+  rdfs:label "Blankets", "Tykke tepper"@no;
   dc:description "Any kind of blanket.".
 
+neg:carpet a tb:FermentorWrapping;
+  rdfs:label "Carpet", "Teppe"@no.
+
 neg:cloth a tb:FermentorWrapping;
-  rdfs:label "Cloth";
+  rdfs:label "Cloth", "Tøy"@no;
   dc:description "Any kind of cloth.".
 
 neg:duvet a tb:FermentorWrapping;
-  rdfs:label "Duvet";
+  rdfs:label "Duvet", "Dyne"@no;
   dc:description "A cloth bag filled with bird down.".
 
 neg:felt-blankets a tb:FermentorWrapping;
@@ -30,11 +33,14 @@ neg:felt-blankets a tb:FermentorWrapping;
   dc:description "'Feltar' in Swedish.".
 
 neg:insulated-steel a tb:FermentorWrapping;
-  rdfs:label "Insulated steel tank";
+  rdfs:label "Insulated steel tank", "Isolert ståltank"@no;
   dc:description "For example modern dairy tank with insulation.".
 
+neg:jute-sacks a tb:FermentorWrapping;
+  rdfs:label "Jute sacks", "Jutesekker"@no.
+
 neg:insulation-mat a tb:FermentorWrapping;
-  rdfs:label "Insulation mat";
+  rdfs:label "Insulation mat", "Isolasjonsmatte"@no;
   dc:description "Any sort of insulation mat.".
 
 neg:none a tb:FermentorWrapping;
@@ -42,23 +48,23 @@ neg:none a tb:FermentorWrapping;
   dc:description "The fermentor was not covered with anything.".
 
 neg:pelt a tb:FermentorWrapping;
-  rdfs:label "Pelt";
+  rdfs:label "Pelt", "Skinnfeller"@no;
   dc:description "Animal skin with fur.".
 
 neg:skynke a tb:FermentorWrapping;
-  rdfs:label "Skynke (sv)";
+  rdfs:label "Skynke"@sv, "Laken"@no;
   dc:description "A relatively thin cloth.".
 
 neg:straw-and-cloth a tb:FermentorWrapping;
-  rdfs:label "Straw and cloth";
+  rdfs:label "Straw and cloth", "Strå med tøy rundt"@no;
   dc:description "Straw round the vessel, then cloth around that.".
 
 neg:unspecified-insulation a tb:FermentorWrapping;
-  rdfs:label "Unspecified insulation";
+  rdfs:label "Unspecified insulation", "Uspesifisert isolasjon"@no;
   dc:description "It's covered with something, but not clear what.".
 
 neg:woolen-blanket a tb:FermentorWrapping;
-  rdfs:label "Woolen blanket".
+  rdfs:label "Woolen blanket", "Ullteppe"@no.
 
 # --- fermentor location
 
@@ -67,34 +73,34 @@ neg:stueloft a tb:FermentorLocation;
   dc:description "Loft room above the main living room.".
 
 neg:living-room a tb:FermentorLocation;
-  rdfs:label "Living room";
+  rdfs:label "Living room", "Stue"@no;
   dc:description "The main living room.".
 
 neg:kitchen a tb:FermentorLocation;
-  rdfs:label "Kitchen";
+  rdfs:label "Kitchen", "Kjøkken"@no;
   dc:description "In the kitchen in the main house. Not outside rough kitchen.".
 
 neg:warm-room a tb:FermentorLocation;
-  rdfs:label "Warm room";
+  rdfs:label "Warm room", "Varmt rom"@no;
   dc:description "Some heated room described as 'warm'.".
 
 neg:cool-room a tb:FermentorLocation;
-  rdfs:label "Cool room";
+  rdfs:label "Cool room", "Kjølig rom"@no;
   dc:description "Some room described as 'not too warm'.".
 
 neg:cold-room a tb:FermentorLocation;
-  rdfs:label "Cold room";
+  rdfs:label "Cold room", "Kaldt rom"@no;
   dc:description "Some room described as cold, but well above freezing.".
 
 neg:near-fire a tb:FermentorLocation;
-  rdfs:label "Near the fire/oven".
+  rdfs:label "Near the fire/oven", "Ved ilden/ovnen"@no.
 
 neg:near-chimney a tb:FermentorLocation;
-  rdfs:label "Near the chimney";
+  rdfs:label "Near the chimney", "Ved pipa"@no;
   dc:description "This is a warm place because of the heat from chimney.".
 
 neg:brewhouse a tb:FermentorLocation;
-  rdfs:label "Brewhouse";
+  rdfs:label "Brewhouse", "Brygghus"@no;
   dc:description "This assumes the brewhouse was not heated.".
 
 neg:brewroom-next-to-folkestue a tb:FermentorLocation;
@@ -103,8 +109,8 @@ neg:brewroom-next-to-folkestue a tb:FermentorLocation;
   folkestue, where the farm workers sat. The folkestue was heated in winter.""".
 
 neg:vetlestova a tb:FermentorLocation;
-  rdfs:label "Room next to kitchen";
+  rdfs:label "Room next to kitchen", "Rom ved siden av kjøkken"@no;
   dc:description """Room that's neither cold nor warm.""".
 
 neg:cellar a tb:FermentorLocation;
-  rdfs:label "Cellar".
+  rdfs:label "Cellar", "Kjeller"@no.

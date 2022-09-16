@@ -28,11 +28,11 @@ labels = {
 'no' : {
     'infusion' : u'Einerlåg',
     'none' : 'Ingen einer',
-    'filter' : 'Bare i rost'
+    'filter' : 'Bare i filter'
     },
 }[LANG]
 
-white = themap.add_symbol('#FFFFFF', '#000000', strokeweight = 1,
+white = themap.add_symbol('#FFFF00', '#000000', strokeweight = 1,
                           title = labels['infusion'])
 black = themap.add_symbol('#000000', '#000000', strokeweight = 1,
                           title = labels['none'])

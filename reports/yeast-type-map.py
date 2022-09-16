@@ -10,15 +10,15 @@ themap = config.make_map_from_cli_args()
 
 NEG = 'http://www.garshol.priv.no/2014/neg/'
 symbols = {
-    NEG + 'own-yeast' : themap.add_symbol('yellow', '#FFFF00',
+    NEG + 'own-yeast' : themap.add_symbol('#FFFF00',
                                           title = 'Own yeast'),
-    NEG + 'bakers-yeast' : themap.add_symbol('black', '#000000',
+    NEG + 'bakers-yeast' : themap.add_symbol('#000000',
                                              title = "Baker's yeast"),
-    NEG + 'brewers-yeast' : themap.add_symbol('blue', '#0000FF',
+    NEG + 'brewers-yeast' : themap.add_symbol('#0000FF',
                                               title = "Brewer's yeast"),
-    NEG + 'lager-yeast' : themap.add_symbol('paleblue', '#CCCCFF',
+    NEG + 'lager-yeast' : themap.add_symbol('#CCCCFF',
                                             title = 'Lager yeast'),
-    NEG + 'distillers-yeast' : themap.add_symbol('red', '#FF0000',
+    NEG + 'distillers-yeast' : themap.add_symbol('#FF0000',
                                                  title = "Distiller's yeast"),
 }
 

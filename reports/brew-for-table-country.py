@@ -47,9 +47,12 @@ for (url, event) in sparqllib.query_for_rows(query):
     events[event] = events.get(event, 0) + 1
 
 def clean(label):
-    if type(label) in (type(''), type(u'')):
+    if type(label) == type(u''):
         return label
-    return label.value
+    return str(label.value)
+
+def iri2str(iri):
+    return str(iri.value)
 
 def prefer(l1, l2):
     if not l2:
@@ -75,22 +78,23 @@ WHERE {
 }'''
 event_labels = {}
 for (event, label) in sparqllib.query_for_rows_raw(query):
-    prev = event_labels.get(str(event))
+    event = iri2str(event)
+    prev = event_labels.get(event)
     if prefer(label, prev):
-        event_labels[str(event)] = label
+        event_labels[event] = label
 
 outf = codecs.open('brew-for-table-country.tex', 'w', 'utf-8')
 tab = tablelib.LatexWriter(outf, 'tbl-brew-for-country', u'''
 Antall kilder som oppgir at man brygget til ulike anledninger.
-Summerer til mer enn 100% fordi mange brygget til mer enn én anledning.
+Summerer til mer enn 100\\% fordi mange brygget til mer enn én anledning.
 ''', 3)
 tab.start_table()
 tab.header_row(headers[LANG][0], headers[LANG][1], headers[LANG][2])
 
-events = events.items()
+events = list(events.items())
 events.sort(key = lambda e: -e[1])
 for (event, count) in events:
-    p = round(float(count) / len(accounts) * 1000) / 10.0
+    p = round(float(count) / len(accounts) * 100)
     #print repr(clean(event_labels.get(event, event)))
     tab.row(clean(event_labels.get(event, event)), count, '%s %%' % p)
 

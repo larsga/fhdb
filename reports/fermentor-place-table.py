@@ -1,7 +1,14 @@
 
-import tablelib, sparqllib
+import tablelib, sparqllib, utils
 
-MIN_ACCOUNTS = 1
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--lang', default = 'en')
+parser.add_argument('--country')
+parser.add_argument('--format', default = 'html')
+parser.add_argument('--min', type=int, default = 2)
+args = parser.parse_args()
 
 query = '''
 prefix dc: <http://purl.org/dc/elements/1.1/>
@@ -27,10 +34,10 @@ select ?s ?l where {
 }
 '''
 
-labels = {uri : label for (uri, label) in sparqllib.query_for_rows(q2)}
+labels = utils.collect_labels(q2, args.lang)
 def get_method_name(uri):
-    if uri == 'Other':
-        return 'Other'
+    if uri in ('Other', 'Annet'):
+        return uri
     return labels[uri]
 
 mapping = {
@@ -42,8 +49,9 @@ tablelib.make_table(
     'fermentor-place-table.html', query, get_method_name,
     label = 'fermentor_place',
     caption = 'Where fermentors were traditionally placed during fermentation',
-    min_accounts = MIN_ACCOUNTS,
-    format = tablelib.get_format(),
-    country = tablelib.get_country(),
-    simplify_mapping = mapping
+    min_accounts = args.min,
+    format = args.format,
+    country = args.country,
+    simplify_mapping = mapping,
+    lang = args.lang
 )

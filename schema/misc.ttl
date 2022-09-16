@@ -51,6 +51,7 @@ neg:pine-sticks a neg:Thing. # is this used correctly?
 neg:juniper a neg:Thing.
 neg:juniper-sticks a neg:Thing. # it's not the same ...
 neg:hatle-sticks a neg:Thing. # dunno what this is
+neg:hay a neg:Thing.
 neg:hazel-sticks a neg:Thing.
 neg:hazel-branches a neg:Thing.
 neg:rowan-branches a neg:Thing.
@@ -136,6 +137,7 @@ neg:milk a tb:DrinkType.
 neg:sour-milk a tb:DrinkType.
 neg:juniper-beer a tb:DrinkType.
 neg:rostdrikke a tb:DrinkType.
+neg:water a tb:DrinkType.
 
 # ===== YEAST TYPES
 
